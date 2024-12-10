@@ -1,4 +1,4 @@
-package com.example.UniAssist;
+package com.example.UniAssist.repository;
 
 import com.example.UniAssist.model.Group;
 import org.springframework.data.jpa.repository.JpaRepository;
