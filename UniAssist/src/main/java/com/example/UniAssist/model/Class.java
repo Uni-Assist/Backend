@@ -7,47 +7,36 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.UUID;
 
-import com.fasterxml.jackson.annotation.JsonView;
-
 @Entity
 @Table(name = "classes")
 public class Class {
 
     @Id
-    @JsonView({Views.WithoutTeacherId.class, Views.WithoutGroupId.class})
     @Column(name = "id", updatable = false, nullable = false)
     private UUID id;
 
-    @JsonView({Views.WithoutTeacherId.class, Views.WithoutGroupId.class})
     @Column(name = "subject", length = 40, nullable = false)
     private String subject;
 
-    @JsonView(Views.WithoutTeacherId.class)
     @Column(name = "teacher_id", nullable = false)
     private UUID teacherId;
 
-    @JsonView(Views.WithoutGroupId.class)
     @Column(name = "group_id", nullable = false)
     private UUID groupId;
 
-    @JsonView({Views.WithoutTeacherId.class, Views.WithoutGroupId.class})
     @Column(name = "start_time", nullable = false)
     private LocalDateTime startTime;
 
-    @JsonView({Views.WithoutTeacherId.class, Views.WithoutGroupId.class})
     @Column(name = "end_time", nullable = false)
     private LocalDateTime endTime;
 
-    @JsonView({Views.WithoutTeacherId.class, Views.WithoutGroupId.class})
     @Enumerated(EnumType.STRING)
     @Column(name = "type", nullable = false)
     private ClassType type;
 
-    @JsonView({Views.WithoutTeacherId.class, Views.WithoutGroupId.class})
     @Column(name = "classroom", length = 10, nullable = false)
     private String classroom;
 
-    @JsonView({Views.WithoutTeacherId.class, Views.WithoutGroupId.class})
     @Column(name = "date", nullable = false)
     private LocalDate date;
 
