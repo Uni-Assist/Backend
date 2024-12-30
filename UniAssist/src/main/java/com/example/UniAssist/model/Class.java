@@ -4,7 +4,7 @@ import com.example.UniAssist.type.ClassType;
 import jakarta.persistence.*;
 
 import java.time.LocalDate;
-import java.time.LocalDateTime;
+import java.time.LocalTime;
 import java.util.UUID;
 
 @Entity
@@ -25,20 +25,20 @@ public class Class {
     private UUID groupId;
 
     @Column(name = "start_time", nullable = false)
-    private LocalDateTime startTime;
+    private LocalTime startTime;
 
     @Column(name = "end_time", nullable = false)
-    private LocalDateTime endTime;
-
-    @Enumerated(EnumType.STRING)
-    @Column(name = "type", nullable = false)
-    private ClassType type;
+    private LocalTime endTime;
 
     @Column(name = "classroom", length = 10, nullable = false)
     private String classroom;
 
     @Column(name = "date", nullable = false)
     private LocalDate date;
+
+    @Enumerated(EnumType.STRING)
+    @Column(name = "type", nullable = false)
+    private ClassType type;
 
     public UUID getId() {
         return id;
@@ -72,28 +72,20 @@ public class Class {
         this.groupId = groupId;
     }
 
-    public LocalDateTime getStartTime() {
+    public LocalTime getStartTime() {
         return startTime;
     }
 
-    public void setStartTime(LocalDateTime startTime) {
+    public void setStartTime(LocalTime startTime) {
         this.startTime = startTime;
     }
 
-    public LocalDateTime getEndTime() {
+    public LocalTime getEndTime() {
         return endTime;
     }
 
-    public void setEndTime(LocalDateTime endTime) {
+    public void setEndTime(LocalTime endTime) {
         this.endTime = endTime;
-    }
-
-    public ClassType getType() {
-        return type;
-    }
-
-    public void setType(ClassType type) {
-        this.type = type;
     }
 
     public String getClassroom() {
@@ -110,5 +102,13 @@ public class Class {
 
     public void setDate(LocalDate date) {
         this.date = date;
+    }
+
+    public ClassType getType() {
+        return type;
+    }
+
+    public void setType(ClassType type) {
+        this.type = type;
     }
 }

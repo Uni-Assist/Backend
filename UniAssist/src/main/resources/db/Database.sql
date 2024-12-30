@@ -2,10 +2,10 @@
 -- PostgreSQL database dump
 --
 
--- Dumped from database version 16.4 (Ubuntu 16.4-0ubuntu0.24.04.2)
--- Dumped by pg_dump version 16.4 (Ubuntu 16.4-0ubuntu0.24.04.2)
+-- Dumped from database version 16.6 (Ubuntu 16.6-0ubuntu0.24.04.1)
+-- Dumped by pg_dump version 16.6 (Ubuntu 16.6-0ubuntu0.24.04.1)
 
--- Started on 2024-12-10 19:33:54 +07
+-- Started on 2024-12-29 16:15:37 +07
 
 SET statement_timeout = 0;
 SET lock_timeout = 0;
@@ -27,7 +27,7 @@ CREATE EXTENSION IF NOT EXISTS pgcrypto WITH SCHEMA public;
 
 
 --
--- TOC entry 3491 (class 0 OID 0)
+-- TOC entry 3507 (class 0 OID 0)
 -- Dependencies: 2
 -- Name: EXTENSION pgcrypto; Type: COMMENT; Schema: -; Owner: -
 --
@@ -36,7 +36,7 @@ COMMENT ON EXTENSION pgcrypto IS 'cryptographic functions';
 
 
 --
--- TOC entry 900 (class 1247 OID 16582)
+-- TOC entry 902 (class 1247 OID 16582)
 -- Name: ClassType; Type: TYPE; Schema: public; Owner: -
 --
 
@@ -47,7 +47,7 @@ CREATE TYPE public."ClassType" AS ENUM (
 
 
 --
--- TOC entry 903 (class 1247 OID 16588)
+-- TOC entry 905 (class 1247 OID 16588)
 -- Name: ResponseType; Type: TYPE; Schema: public; Owner: -
 --
 
@@ -71,12 +71,47 @@ CREATE TABLE public.classes (
     subject character varying(40) NOT NULL,
     teacher_id uuid NOT NULL,
     group_id uuid NOT NULL,
-    start_time timestamp without time zone NOT NULL,
-    end_time timestamp without time zone NOT NULL,
+    start_time time without time zone NOT NULL,
+    end_time time without time zone NOT NULL,
     classroom character varying(10) NOT NULL,
     date date NOT NULL,
-    type character varying(255) NOT NULL,
-    name character varying(255)
+    type public."ClassType" NOT NULL
+);
+
+
+--
+-- TOC entry 222 (class 1259 OID 16614)
+-- Name: databasechangelog; Type: TABLE; Schema: public; Owner: -
+--
+
+CREATE TABLE public.databasechangelog (
+    id character varying(255) NOT NULL,
+    author character varying(255) NOT NULL,
+    filename character varying(255) NOT NULL,
+    dateexecuted timestamp without time zone NOT NULL,
+    orderexecuted integer NOT NULL,
+    exectype character varying(10) NOT NULL,
+    md5sum character varying(35),
+    description character varying(255),
+    comments character varying(255),
+    tag character varying(255),
+    liquibase character varying(20),
+    contexts character varying(255),
+    labels character varying(255),
+    deployment_id character varying(10)
+);
+
+
+--
+-- TOC entry 223 (class 1259 OID 16619)
+-- Name: databasechangeloglock; Type: TABLE; Schema: public; Owner: -
+--
+
+CREATE TABLE public.databasechangeloglock (
+    id integer NOT NULL,
+    locked boolean NOT NULL,
+    lockgranted timestamp without time zone,
+    lockedby character varying(255)
 );
 
 
@@ -122,7 +157,7 @@ CREATE TABLE public.students (
     phone integer NOT NULL,
     email character varying(30) NOT NULL,
     birthdate date NOT NULL,
-    group_id uuid
+    group_id uuid NOT NULL
 );
 
 
@@ -156,12 +191,112 @@ CREATE TABLE public.teachers (
     phone integer NOT NULL,
     email character varying(30) NOT NULL,
     birthdate date NOT NULL,
-    department character varying(30) NOT NULL
+    department character varying(30) NOT NULL,
+    job_title character varying(40) NOT NULL
 );
 
 
 --
--- TOC entry 3327 (class 2606 OID 16518)
+-- TOC entry 3497 (class 0 OID 16510)
+-- Dependencies: 219
+-- Data for Name: classes; Type: TABLE DATA; Schema: public; Owner: -
+--
+
+COPY public.classes (id, subject, teacher_id, group_id, start_time, end_time, classroom, date, type) FROM stdin;
+387bee1c-83c6-40c4-959d-5286504055f7	Современные технологии программирования	e4727d51-d25f-4e19-a6e7-dfd57334b594	42ebaa8f-d4c9-4b8e-8962-e2657871cc42	09:00:00	10:30:00	303	2024-12-12	seminar
+4e408be5-f4a5-4afe-94e2-c2e0096334bd	Архитектура АВС	cc5fa67e-2774-4fc9-a803-944d44f4019a	f4b6dabb-e19c-47d8-983d-0c0c482f1a36	12:00:00	13:30:00	202	2024-12-11	seminar
+5a270429-4dbe-4aa4-b038-7822c968c46c	Сети ЭВМ и телекомуникации	39f4a254-0619-4a30-a7d1-d49c0e7ad394	9f7706b2-ce24-4042-af4a-4302a23d521f	10:00:00	11:30:00	101	2024-12-10	seminar
+\.
+
+
+--
+-- TOC entry 3500 (class 0 OID 16614)
+-- Dependencies: 222
+-- Data for Name: databasechangelog; Type: TABLE DATA; Schema: public; Owner: -
+--
+
+COPY public.databasechangelog (id, author, filename, dateexecuted, orderexecuted, exectype, md5sum, description, comments, tag, liquibase, contexts, labels, deployment_id) FROM stdin;
+\.
+
+
+--
+-- TOC entry 3501 (class 0 OID 16619)
+-- Dependencies: 223
+-- Data for Name: databasechangeloglock; Type: TABLE DATA; Schema: public; Owner: -
+--
+
+COPY public.databasechangeloglock (id, locked, lockgranted, lockedby) FROM stdin;
+1	f	\N	\N
+\.
+
+
+--
+-- TOC entry 3494 (class 0 OID 16438)
+-- Dependencies: 216
+-- Data for Name: groups; Type: TABLE DATA; Schema: public; Owner: -
+--
+
+COPY public.groups (id, name) FROM stdin;
+9f7706b2-ce24-4042-af4a-4302a23d521f	IV-221
+f4b6dabb-e19c-47d8-983d-0c0c482f1a36	IV-222
+42ebaa8f-d4c9-4b8e-8962-e2657871cc42	IV-223
+\.
+
+
+--
+-- TOC entry 3499 (class 0 OID 16549)
+-- Dependencies: 221
+-- Data for Name: responses; Type: TABLE DATA; Schema: public; Owner: -
+--
+
+COPY public.responses (id, student_id, task_id, body, mark, response_type) FROM stdin;
+037bac42-92fc-4789-8f40-958daa62b144	120ce5a6-d320-4c18-b8ff-f3c8ae962a5f	b48b08ba-71f4-4f1c-b453-e913cdcea5ef	.	95	file
+6e43d62a-cdaf-4b8b-88cb-1da07e095ee5	cfc4bf68-50b7-48d3-8321-992d5de83c74	eddbfa43-fe13-4e7e-b768-1b17194803dd	.	88	text
+d781c5a0-765e-4461-948a-30d5b1b42a9d	20dc0a83-a114-4908-bba6-9f1a22817213	a0891d31-a700-4227-9567-8a7ee8880660	.	92	file
+\.
+
+
+--
+-- TOC entry 3495 (class 0 OID 16444)
+-- Dependencies: 217
+-- Data for Name: students; Type: TABLE DATA; Schema: public; Owner: -
+--
+
+COPY public.students (student_id, fathername, surname, name, login, password, phone, email, birthdate, group_id) FROM stdin;
+120ce5a6-d320-4c18-b8ff-f3c8ae962a5f	Петрович	Иванов	Сергей	iv221s1	hl832jUE	9324782	sergey.ivanov@mail.com	2003-03-15	9f7706b2-ce24-4042-af4a-4302a23d521f
+cfc4bf68-50b7-48d3-8321-992d5de83c74	Игоревна	Сидорова	Елена	iv222s1	3jYE7oPE	9348275	elena.sidorova@mail.com	2002-12-10	f4b6dabb-e19c-47d8-983d-0c0c482f1a36
+20dc0a83-a114-4908-bba6-9f1a22817213	Михайлович	Орлов	Дмитрий	iv223s1	9Kpo32jd	4572674	dmitry.orlov@mail.com	2003-06-25	42ebaa8f-d4c9-4b8e-8962-e2657871cc42
+\.
+
+
+--
+-- TOC entry 3498 (class 0 OID 16529)
+-- Dependencies: 220
+-- Data for Name: tasks; Type: TABLE DATA; Schema: public; Owner: -
+--
+
+COPY public.tasks (id, header, body, due_time, teacher_id, class_id) FROM stdin;
+b48b08ba-71f4-4f1c-b453-e913cdcea5ef	Расчетно-Графическое задание	Собрать маршрутизатор	2024-12-15 23:59:59	39f4a254-0619-4a30-a7d1-d49c0e7ad394	5a270429-4dbe-4aa4-b038-7822c968c46c
+eddbfa43-fe13-4e7e-b768-1b17194803dd	Лабораторный отчет	Удалить docker desktop	2024-12-16 23:59:59	cc5fa67e-2774-4fc9-a803-944d44f4019a	4e408be5-f4a5-4afe-94e2-c2e0096334bd
+a0891d31-a700-4227-9567-8a7ee8880660	Эссе	Написать эссе на тему, поче вы любите c++	2024-12-17 23:59:59	e4727d51-d25f-4e19-a6e7-dfd57334b594	387bee1c-83c6-40c4-959d-5286504055f7
+\.
+
+
+--
+-- TOC entry 3496 (class 0 OID 16481)
+-- Dependencies: 218
+-- Data for Name: teachers; Type: TABLE DATA; Schema: public; Owner: -
+--
+
+COPY public.teachers (teacher_id, fathername, surrname, name, login, password, phone, email, birthdate, department, job_title) FROM stdin;
+39f4a254-0619-4a30-a7d1-d49c0e7ad394	Иванович	Петров	Иван	ivt-1	j83bHI7e	7027683	ivan.petrov@mail.com	1980-05-15	ИВТ	Преподаватель
+cc5fa67e-2774-4fc9-a803-944d44f4019a	Сергеевна	Смирнова	Анна	ivt-2	9JG7bn60	9385193	anna.smirnova@mail.com	1985-07-20	ИВТ	Старший преподаватель
+e4727d51-d25f-4e19-a6e7-dfd57334b594	Александрович	Кузнецов	Алексей	ivt-3	K86K1d7q	9375024	alexey.kuznetsov@mail.com	1978-09-10	ИВТ	Младший преподаватель
+\.
+
+
+--
+-- TOC entry 3335 (class 2606 OID 16518)
 -- Name: classes classes_pkey; Type: CONSTRAINT; Schema: public; Owner: -
 --
 
@@ -170,7 +305,16 @@ ALTER TABLE ONLY public.classes
 
 
 --
--- TOC entry 3321 (class 2606 OID 16443)
+-- TOC entry 3343 (class 2606 OID 16623)
+-- Name: databasechangeloglock databasechangeloglock_pkey; Type: CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.databasechangeloglock
+    ADD CONSTRAINT databasechangeloglock_pkey PRIMARY KEY (id);
+
+
+--
+-- TOC entry 3329 (class 2606 OID 16443)
 -- Name: groups groups_pkey; Type: CONSTRAINT; Schema: public; Owner: -
 --
 
@@ -179,7 +323,7 @@ ALTER TABLE ONLY public.groups
 
 
 --
--- TOC entry 3333 (class 2606 OID 16558)
+-- TOC entry 3341 (class 2606 OID 16558)
 -- Name: responses responses_pkey; Type: CONSTRAINT; Schema: public; Owner: -
 --
 
@@ -188,16 +332,7 @@ ALTER TABLE ONLY public.responses
 
 
 --
--- TOC entry 3335 (class 2606 OID 16560)
--- Name: responses responses_task_id_key; Type: CONSTRAINT; Schema: public; Owner: -
---
-
-ALTER TABLE ONLY public.responses
-    ADD CONSTRAINT responses_task_id_key UNIQUE (task_id);
-
-
---
--- TOC entry 3323 (class 2606 OID 16449)
+-- TOC entry 3331 (class 2606 OID 16449)
 -- Name: students students_pkey; Type: CONSTRAINT; Schema: public; Owner: -
 --
 
@@ -206,7 +341,7 @@ ALTER TABLE ONLY public.students
 
 
 --
--- TOC entry 3329 (class 2606 OID 16538)
+-- TOC entry 3337 (class 2606 OID 16538)
 -- Name: tasks tasks_class_id_key; Type: CONSTRAINT; Schema: public; Owner: -
 --
 
@@ -215,7 +350,7 @@ ALTER TABLE ONLY public.tasks
 
 
 --
--- TOC entry 3331 (class 2606 OID 16536)
+-- TOC entry 3339 (class 2606 OID 16536)
 -- Name: tasks tasks_pkey; Type: CONSTRAINT; Schema: public; Owner: -
 --
 
@@ -224,7 +359,7 @@ ALTER TABLE ONLY public.tasks
 
 
 --
--- TOC entry 3325 (class 2606 OID 16489)
+-- TOC entry 3333 (class 2606 OID 16489)
 -- Name: teachers teachers_pkey; Type: CONSTRAINT; Schema: public; Owner: -
 --
 
@@ -233,7 +368,7 @@ ALTER TABLE ONLY public.teachers
 
 
 --
--- TOC entry 3337 (class 2606 OID 16524)
+-- TOC entry 3345 (class 2606 OID 16524)
 -- Name: classes classes_group_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
@@ -242,7 +377,7 @@ ALTER TABLE ONLY public.classes
 
 
 --
--- TOC entry 3338 (class 2606 OID 16519)
+-- TOC entry 3346 (class 2606 OID 16519)
 -- Name: classes classes_teacher_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
@@ -251,7 +386,7 @@ ALTER TABLE ONLY public.classes
 
 
 --
--- TOC entry 3341 (class 2606 OID 16561)
+-- TOC entry 3349 (class 2606 OID 16561)
 -- Name: responses responses_student_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
@@ -260,7 +395,7 @@ ALTER TABLE ONLY public.responses
 
 
 --
--- TOC entry 3342 (class 2606 OID 16566)
+-- TOC entry 3350 (class 2606 OID 16566)
 -- Name: responses responses_task_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
@@ -269,7 +404,7 @@ ALTER TABLE ONLY public.responses
 
 
 --
--- TOC entry 3336 (class 2606 OID 16450)
+-- TOC entry 3344 (class 2606 OID 16450)
 -- Name: students students_group_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
@@ -278,7 +413,7 @@ ALTER TABLE ONLY public.students
 
 
 --
--- TOC entry 3339 (class 2606 OID 16544)
+-- TOC entry 3347 (class 2606 OID 16544)
 -- Name: tasks tasks_class_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
@@ -287,7 +422,7 @@ ALTER TABLE ONLY public.tasks
 
 
 --
--- TOC entry 3340 (class 2606 OID 16539)
+-- TOC entry 3348 (class 2606 OID 16539)
 -- Name: tasks tasks_teacher_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
@@ -295,7 +430,7 @@ ALTER TABLE ONLY public.tasks
     ADD CONSTRAINT tasks_teacher_id_fkey FOREIGN KEY (teacher_id) REFERENCES public.teachers(teacher_id) ON DELETE SET NULL;
 
 
--- Completed on 2024-12-10 19:33:54 +07
+-- Completed on 2024-12-29 16:15:38 +07
 
 --
 -- PostgreSQL database dump complete

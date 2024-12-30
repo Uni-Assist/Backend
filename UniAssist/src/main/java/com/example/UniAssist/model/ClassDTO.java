@@ -2,7 +2,7 @@ package com.example.UniAssist.model;
 import com.example.UniAssist.type.ClassType;
 
 import java.time.LocalDate;
-import java.time.LocalDateTime;
+import java.time.LocalTime;
 import java.util.UUID;
 
 public class ClassDTO {
@@ -11,22 +11,24 @@ public class ClassDTO {
         private UUID id;
         private String subject;
         private UUID teacherId;
-        private LocalDateTime startTime;
-        private LocalDateTime endTime;
-        private ClassType type;
+        private LocalTime startTime;
+        private LocalTime endTime;
         private String classroom;
         private LocalDate date;
+        private ClassType type;
+        private String header;
 
-        public static StudentSchedule fromEntity(Class entity) {
+        public static StudentSchedule fromEntity(Class entity, String taskHeader) {
             StudentSchedule dto = new StudentSchedule();
             dto.id = entity.getId();
             dto.subject = entity.getSubject();
             dto.teacherId = entity.getTeacherId();
             dto.startTime = entity.getStartTime();
             dto.endTime = entity.getEndTime();
-            dto.type = entity.getType();
             dto.classroom = entity.getClassroom();
             dto.date = entity.getDate();
+            dto.type = entity.getType();
+            dto.header = taskHeader;
             return dto;
         }
 
@@ -54,28 +56,20 @@ public class ClassDTO {
             this.teacherId = teacherId;
         }
 
-        public LocalDateTime getStartTime() {
+        public LocalTime getStartTime() {
             return startTime;
         }
 
-        public void setStartTime(LocalDateTime startTime) {
+        public void setStartTime(LocalTime startTime) {
             this.startTime = startTime;
         }
 
-        public LocalDateTime getEndTime() {
+        public LocalTime getEndTime() {
             return endTime;
         }
 
-        public void setEndTime(LocalDateTime endTime) {
+        public void setEndTime(LocalTime endTime) {
             this.endTime = endTime;
-        }
-
-        public ClassType getType() {
-            return type;
-        }
-
-        public void setType(ClassType type) {
-            this.type = type;
         }
 
         public String getClassroom() {
@@ -93,28 +87,46 @@ public class ClassDTO {
         public void setDate(LocalDate date) {
             this.date = date;
         }
+
+        public ClassType getType() {
+            return type;
+        }
+
+        public void setType(ClassType type) {
+            this.type = type;
+        }
+
+        public String getHeader() {
+            return header;
+        }
+
+        public void setHeader(String header) {
+            this.header = header;
+        }
     }
 
     public static class TeacherSchedule {
         private UUID id;
         private String subject;
         private UUID groupId;
-        private LocalDateTime startTime;
-        private LocalDateTime endTime;
-        private ClassType type;
+        private LocalTime startTime;
+        private LocalTime endTime;
         private String classroom;
         private LocalDate date;
+        private ClassType type;
+        private String header;
 
-        public static TeacherSchedule fromEntity(Class entity) {
+        public static TeacherSchedule fromEntity(Class entity, String taskHeader) {
             TeacherSchedule dto = new TeacherSchedule();
             dto.id = entity.getId();
             dto.subject = entity.getSubject();
             dto.groupId = entity.getGroupId();
             dto.startTime = entity.getStartTime();
             dto.endTime = entity.getEndTime();
-            dto.type = entity.getType();
             dto.classroom = entity.getClassroom();
             dto.date = entity.getDate();
+            dto.type = entity.getType();
+            dto.header = taskHeader;
             return dto;
         }
 
@@ -142,28 +154,20 @@ public class ClassDTO {
             this.groupId = groupId;
         }
 
-        public LocalDateTime getStartTime() {
+        public LocalTime getStartTime() {
             return startTime;
         }
 
-        public void setStartTime(LocalDateTime startTime) {
+        public void setStartTime(LocalTime startTime) {
             this.startTime = startTime;
         }
 
-        public LocalDateTime getEndTime() {
+        public LocalTime getEndTime() {
             return endTime;
         }
 
-        public void setEndTime(LocalDateTime endTime) {
+        public void setEndTime(LocalTime endTime) {
             this.endTime = endTime;
-        }
-
-        public ClassType getType() {
-            return type;
-        }
-
-        public void setType(ClassType type) {
-            this.type = type;
         }
 
         public String getClassroom() {
@@ -180,6 +184,22 @@ public class ClassDTO {
 
         public void setDate(LocalDate date) {
             this.date = date;
+        }
+
+        public ClassType getType() {
+            return type;
+        }
+
+        public void setType(ClassType type) {
+            this.type = type;
+        }
+
+        public String getHeader() {
+            return header;
+        }
+
+        public void setHeader(String header) {
+            this.header = header;
         }
     }
 }
