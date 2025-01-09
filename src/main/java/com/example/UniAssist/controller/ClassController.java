@@ -1,6 +1,7 @@
 package com.example.UniAssist.controller;
 
-import com.example.UniAssist.model.ClassDTO;
+import com.example.UniAssist.model.StudentScheduleDTO;
+import com.example.UniAssist.model.TeacherScheduleDTO;
 import com.example.UniAssist.projection.TaskHeaderProjection;
 import com.example.UniAssist.service.ClassService;
 import com.example.UniAssist.repository.StudentRepository;
@@ -39,7 +40,7 @@ public class ClassController {
     }
 
     @GetMapping("/student")
-    public ResponseEntity<List<ClassDTO.StudentSchedule>> getStudentSchedule(
+    public ResponseEntity<List<StudentScheduleDTO>> getStudentSchedule(
             @RequestParam("date") String date,
             @RequestParam("student_id") UUID studentId) {
         UUID groupId = studentRepository.findGroupIdByStudentId(studentId);
@@ -50,10 +51,10 @@ public class ClassController {
         Map<UUID, String> taskHeaders = rawTaskHeaders.stream()
                 .collect(Collectors.toMap(TaskHeaderProjection::getClassId, TaskHeaderProjection::getHeader));
 
-        List<ClassDTO.StudentSchedule> result = classes.stream()
+        List<StudentScheduleDTO> result = classes.stream()
                 .map(clazz -> {
                     String taskHeader = taskHeaders.getOrDefault(clazz.getId(), null);
-                    return ClassDTO.StudentSchedule.fromEntity(clazz, taskHeader);
+                    return StudentScheduleDTO.fromEntity(clazz, taskHeader);
                 })
                 .collect(Collectors.toList());
 
@@ -61,7 +62,7 @@ public class ClassController {
     }
 
     @GetMapping("/teacher")
-    public ResponseEntity<List<ClassDTO.TeacherSchedule>> getTeacherSchedule(
+    public ResponseEntity<List<TeacherScheduleDTO>> getTeacherSchedule(
             @RequestParam("date") String date,
             @RequestParam("teacher_id") UUID teacherId) {
         List<Class> classes = classService.getTeacherSchedule(teacherId, LocalDate.parse(date));
@@ -71,10 +72,10 @@ public class ClassController {
         Map<UUID, String> taskHeaders = rawTaskHeaders.stream()
                 .collect(Collectors.toMap(TaskHeaderProjection::getClassId, TaskHeaderProjection::getHeader));
 
-        List<ClassDTO.TeacherSchedule> result = classes.stream()
+        List<TeacherScheduleDTO> result = classes.stream()
                 .map(clazz -> {
                     String taskHeader = taskHeaders.getOrDefault(clazz.getId(), null);
-                    return ClassDTO.TeacherSchedule.fromEntity(clazz, taskHeader);
+                    return TeacherScheduleDTO.fromEntity(clazz, taskHeader);
                 })
                 .collect(Collectors.toList());
 
