@@ -13,8 +13,12 @@ import java.util.UUID;
 @Service
 public class ClassService {
 
-    @Autowired
     private ClassRepository classRepository;
+
+    @Autowired
+    public ClassService(ClassRepository classRepository) {
+        this.classRepository = classRepository;
+    }
 
     public List<Class> getStudentSchedule(UUID groupId, LocalDate date) {
         List<Class> classes = classRepository.findClassesByGroupAndDate(groupId, date);

@@ -20,17 +20,23 @@ import java.util.UUID;
 import java.util.stream.Collectors;
 
 @RestController
-@RequestMapping("/schedule")
+@RequestMapping("api/v1/schedule")
 public class ClassController {
 
-    @Autowired
     private ClassService classService;
-
-    @Autowired
     private StudentRepository studentRepository;
+    private TaskRepository taskRepository;
 
     @Autowired
-    private TaskRepository taskRepository;
+    public ClassController(
+        ClassService classService,
+        StudentRepository studentRepository,
+        TaskRepository taskRepository) {
+
+        this.taskRepository = taskRepository;
+        this.classService = classService;
+        this.studentRepository = studentRepository;
+    }
 
     @GetMapping("/student")
     public ResponseEntity<List<ClassDTO.StudentSchedule>> getStudentSchedule(
