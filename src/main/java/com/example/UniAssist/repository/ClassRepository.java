@@ -1,6 +1,6 @@
 package com.example.UniAssist.repository;
 
-import com.example.UniAssist.model.Class;
+import com.example.UniAssist.model.entity.Class;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;

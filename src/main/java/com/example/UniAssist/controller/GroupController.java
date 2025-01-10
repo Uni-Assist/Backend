@@ -1,7 +1,7 @@
 package com.example.UniAssist.controller;
 
 import com.example.UniAssist.repository.GroupRepository;
-import com.example.UniAssist.model.Group;
+import com.example.UniAssist.model.entity.Group;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.GetMapping;

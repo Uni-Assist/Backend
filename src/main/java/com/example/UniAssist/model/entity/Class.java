@@ -1,4 +1,4 @@
-package com.example.UniAssist.model;
+package com.example.UniAssist.model.entity;
 
 import com.example.UniAssist.type.ClassType;
 import jakarta.persistence.*;

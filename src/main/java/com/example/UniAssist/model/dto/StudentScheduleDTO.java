@@ -1,14 +1,16 @@
-package com.example.UniAssist.model;
+package com.example.UniAssist.model.dto;
 import com.example.UniAssist.type.ClassType;
+import com.example.UniAssist.model.entity.Class;
 
 import java.time.LocalDate;
 import java.time.LocalTime;
 import java.util.UUID;
 
-public class TeacherScheduleDTO {
+
+public class StudentScheduleDTO {
     private UUID id;
     private String subject;
-    private UUID groupId;
+    private UUID teacherId;
     private LocalTime startTime;
     private LocalTime endTime;
     private String classroom;
@@ -16,11 +18,11 @@ public class TeacherScheduleDTO {
     private ClassType type;
     private String header;
 
-    public static TeacherScheduleDTO fromEntity(Class entity, String taskHeader) {
-        TeacherScheduleDTO dto = new TeacherScheduleDTO();
+    public static StudentScheduleDTO fromEntity(Class entity, String taskHeader) {
+        StudentScheduleDTO dto = new StudentScheduleDTO();
         dto.id = entity.getId();
         dto.subject = entity.getSubject();
-        dto.groupId = entity.getGroupId();
+        dto.teacherId = entity.getTeacherId();
         dto.startTime = entity.getStartTime();
         dto.endTime = entity.getEndTime();
         dto.classroom = entity.getClassroom();
@@ -46,12 +48,12 @@ public class TeacherScheduleDTO {
         this.subject = subject;
     }
 
-    public UUID getGroupId() {
-        return groupId;
+    public UUID getTeacherId() {
+        return teacherId;
     }
 
-    public void setGroupId(UUID groupId) {
-        this.groupId = groupId;
+    public void setTeacherId(UUID teacherId) {
+        this.teacherId = teacherId;
     }
 
     public LocalTime getStartTime() {

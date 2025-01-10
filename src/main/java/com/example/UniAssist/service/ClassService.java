@@ -1,7 +1,7 @@
 package com.example.UniAssist.service;
 
 import com.example.UniAssist.exception.ScheduleNotFound;
-import com.example.UniAssist.model.Class;
+import com.example.UniAssist.model.entity.Class;
 import com.example.UniAssist.repository.ClassRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;

@@ -1,6 +1,6 @@
 package com.example.UniAssist.repository;
 
-import com.example.UniAssist.model.Task;
+import com.example.UniAssist.model.entity.Task;
 import com.example.UniAssist.projection.TaskHeaderProjection;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;

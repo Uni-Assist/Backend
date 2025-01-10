@@ -1,12 +1,12 @@
 package com.example.UniAssist.controller;
 
-import com.example.UniAssist.model.StudentScheduleDTO;
-import com.example.UniAssist.model.TeacherScheduleDTO;
+import com.example.UniAssist.model.dto.StudentScheduleDTO;
+import com.example.UniAssist.model.dto.TeacherScheduleDTO;
 import com.example.UniAssist.projection.TaskHeaderProjection;
 import com.example.UniAssist.service.ClassService;
 import com.example.UniAssist.repository.StudentRepository;
 import com.example.UniAssist.repository.TaskRepository;
-import com.example.UniAssist.model.Class;
+import com.example.UniAssist.model.entity.Class;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
