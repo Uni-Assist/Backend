@@ -37,10 +37,10 @@ COMMENT ON EXTENSION pgcrypto IS 'cryptographic functions';
 
 --
 -- TOC entry 902 (class 1247 OID 16582)
--- Name: ClassType; Type: TYPE; Schema: public; Owner: -
+-- Name: SubjectType; Type: TYPE; Schema: public; Owner: -
 --
 
-CREATE TYPE public."ClassType" AS ENUM (
+CREATE TYPE public."SubjectType" AS ENUM (
     'lecture',
     'seminar'
 );
@@ -63,19 +63,19 @@ SET default_table_access_method = heap;
 
 --
 -- TOC entry 219 (class 1259 OID 16510)
--- Name: classes; Type: TABLE; Schema: public; Owner: -
+-- Name: subjects; Type: TABLE; Schema: public; Owner: -
 --
 
-CREATE TABLE public.classes (
+CREATE TABLE public.subjects (
     id uuid DEFAULT gen_random_uuid() NOT NULL,
-    subject character varying(40) NOT NULL,
+    subject_name character varying(40) NOT NULL,
     teacher_id uuid NOT NULL,
     group_id uuid NOT NULL,
     start_time time without time zone NOT NULL,
     end_time time without time zone NOT NULL,
     classroom character varying(10) NOT NULL,
     date date NOT NULL,
-    type public."ClassType" NOT NULL
+    type public."SubjectType" NOT NULL
 );
 
 
@@ -199,10 +199,10 @@ CREATE TABLE public.teachers (
 --
 -- TOC entry 3497 (class 0 OID 16510)
 -- Dependencies: 219
--- Data for Name: classes; Type: TABLE DATA; Schema: public; Owner: -
+-- Data for Name: subjects; Type: TABLE DATA; Schema: public; Owner: -
 --
 
-COPY public.classes (id, subject, teacher_id, group_id, start_time, end_time, classroom, date, type) FROM stdin;
+COPY public.subjects (id, subject_name, teacher_id, group_id, start_time, end_time, classroom, date, type) FROM stdin;
 387bee1c-83c6-40c4-959d-5286504055f7	Современные технологии программирования	e4727d51-d25f-4e19-a6e7-dfd57334b594	42ebaa8f-d4c9-4b8e-8962-e2657871cc42	09:00:00	10:30:00	303	2024-12-12	seminar
 4e408be5-f4a5-4afe-94e2-c2e0096334bd	Архитектура АВС	cc5fa67e-2774-4fc9-a803-944d44f4019a	f4b6dabb-e19c-47d8-983d-0c0c482f1a36	12:00:00	13:30:00	202	2024-12-11	seminar
 5a270429-4dbe-4aa4-b038-7822c968c46c	Сети ЭВМ и телекомуникации	39f4a254-0619-4a30-a7d1-d49c0e7ad394	9f7706b2-ce24-4042-af4a-4302a23d521f	10:00:00	11:30:00	101	2024-12-10	seminar
@@ -297,11 +297,11 @@ e4727d51-d25f-4e19-a6e7-dfd57334b594	Александрович	Кузнецов
 
 --
 -- TOC entry 3335 (class 2606 OID 16518)
--- Name: classes classes_pkey; Type: CONSTRAINT; Schema: public; Owner: -
+-- Name: subjects subjects_pkey; Type: CONSTRAINT; Schema: public; Owner: -
 --
 
-ALTER TABLE ONLY public.classes
-    ADD CONSTRAINT classes_pkey PRIMARY KEY (id);
+ALTER TABLE ONLY public.subjects
+    ADD CONSTRAINT subjects_pkey PRIMARY KEY (id);
 
 
 --
@@ -369,20 +369,20 @@ ALTER TABLE ONLY public.teachers
 
 --
 -- TOC entry 3345 (class 2606 OID 16524)
--- Name: classes classes_group_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: -
+-- Name: subjects subjects_group_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
-ALTER TABLE ONLY public.classes
-    ADD CONSTRAINT classes_group_id_fkey FOREIGN KEY (group_id) REFERENCES public.groups(id) ON DELETE SET NULL;
+ALTER TABLE ONLY public.subjects
+    ADD CONSTRAINT subjects_group_id_fkey FOREIGN KEY (group_id) REFERENCES public.groups(id) ON DELETE SET NULL;
 
 
 --
 -- TOC entry 3346 (class 2606 OID 16519)
--- Name: classes classes_teacher_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: -
+-- Name: subjects subjects_teacher_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
-ALTER TABLE ONLY public.classes
-    ADD CONSTRAINT classes_teacher_id_fkey FOREIGN KEY (teacher_id) REFERENCES public.teachers(teacher_id) ON DELETE SET NULL;
+ALTER TABLE ONLY public.subjects
+    ADD CONSTRAINT subjects_teacher_id_fkey FOREIGN KEY (teacher_id) REFERENCES public.teachers(teacher_id) ON DELETE SET NULL;
 
 
 --
@@ -418,7 +418,7 @@ ALTER TABLE ONLY public.students
 --
 
 ALTER TABLE ONLY public.tasks
-    ADD CONSTRAINT tasks_class_id_fkey FOREIGN KEY (class_id) REFERENCES public.classes(id) ON DELETE CASCADE;
+    ADD CONSTRAINT tasks_class_id_fkey FOREIGN KEY (class_id) REFERENCES public.subjects(id) ON DELETE CASCADE;
 
 
 --
