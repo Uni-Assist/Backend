@@ -1,6 +1,6 @@
 package com.example.UniAssist.model.entity;
 
-import com.example.UniAssist.type.ClassType;
+import com.example.UniAssist.type.SubjectType;
 import jakarta.persistence.*;
 
 import java.time.LocalDate;
@@ -8,15 +8,15 @@ import java.time.LocalTime;
 import java.util.UUID;
 
 @Entity
-@Table(name = "classes")
-public class Class {
+@Table(name = "subjects")
+public class Subject {
 
     @Id
     @Column(name = "id", updatable = false, nullable = false)
     private UUID id;
 
-    @Column(name = "subject", length = 40, nullable = false)
-    private String subject;
+    @Column(name = "subject_name", length = 40, nullable = false)
+    private String subjectName;
 
     @Column(name = "teacher_id", nullable = false)
     private UUID teacherId;
@@ -38,7 +38,7 @@ public class Class {
 
     @Enumerated(EnumType.STRING)
     @Column(name = "type", nullable = false)
-    private ClassType type;
+    private SubjectType type;
 
     public UUID getId() {
         return id;
@@ -48,12 +48,12 @@ public class Class {
         this.id = id;
     }
 
-    public String getSubject() {
-        return subject;
+    public String getSubjectName() {
+        return subjectName;
     }
 
-    public void setSubject(String subject) {
-        this.subject = subject;
+    public void setSubjectName(String subjectName) {
+        this.subjectName = subjectName;
     }
 
     public UUID getTeacherId() {
@@ -104,11 +104,11 @@ public class Class {
         this.date = date;
     }
 
-    public ClassType getType() {
+    public SubjectType getType() {
         return type;
     }
 
-    public void setType(ClassType type) {
+    public void setType(SubjectType type) {
         this.type = type;
     }
 }

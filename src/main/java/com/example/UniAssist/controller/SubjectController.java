@@ -3,10 +3,10 @@ package com.example.UniAssist.controller;
 import com.example.UniAssist.model.dto.StudentScheduleDTO;
 import com.example.UniAssist.model.dto.TeacherScheduleDTO;
 import com.example.UniAssist.projection.TaskHeaderProjection;
-import com.example.UniAssist.service.ClassService;
+import com.example.UniAssist.service.SubjectService;
 import com.example.UniAssist.repository.StudentRepository;
 import com.example.UniAssist.repository.TaskRepository;
-import com.example.UniAssist.model.entity.Class;
+import com.example.UniAssist.model.entity.Subject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -24,13 +24,13 @@ import java.util.stream.Collectors;
 @RequestMapping("api/v1/schedule")
 public class ClassController {
 
-    private ClassService classService;
+    private SubjectService classService;
     private StudentRepository studentRepository;
     private TaskRepository taskRepository;
 
     @Autowired
     public ClassController(
-        ClassService classService,
+        SubjectService classService,
         StudentRepository studentRepository,
         TaskRepository taskRepository) {
 
@@ -44,14 +44,14 @@ public class ClassController {
             @RequestParam("date") String date,
             @RequestParam("student_id") UUID studentId) {
         UUID groupId = studentRepository.findGroupIdByStudentId(studentId);
-        List<Class> classes = classService.getStudentSchedule(groupId, LocalDate.parse(date));
+        List<Subject> subjects = classService.getStudentSchedule(groupId, LocalDate.parse(date));
 
-        List<UUID> classIds = classes.stream().map(Class::getId).collect(Collectors.toList());
-        List<TaskHeaderProjection> rawTaskHeaders = taskRepository.findTaskHeadersByClassIds(classIds);
+        List<UUID> subjectIds = subjects.stream().map(Subject::getId).collect(Collectors.toList());
+        List<TaskHeaderProjection> rawTaskHeaders = taskRepository.findTaskHeadersByClassIds(subjectIds);
         Map<UUID, String> taskHeaders = rawTaskHeaders.stream()
                 .collect(Collectors.toMap(TaskHeaderProjection::getClassId, TaskHeaderProjection::getHeader));
 
-        List<StudentScheduleDTO> result = classes.stream()
+        List<StudentScheduleDTO> result = subjects.stream()
                 .map(clazz -> {
                     String taskHeader = taskHeaders.getOrDefault(clazz.getId(), null);
                     return StudentScheduleDTO.fromEntity(clazz, taskHeader);
@@ -65,14 +65,14 @@ public class ClassController {
     public ResponseEntity<List<TeacherScheduleDTO>> getTeacherSchedule(
             @RequestParam("date") String date,
             @RequestParam("teacher_id") UUID teacherId) {
-        List<Class> classes = classService.getTeacherSchedule(teacherId, LocalDate.parse(date));
+        List<Subject> subjects = classService.getTeacherSchedule(teacherId, LocalDate.parse(date));
 
-        List<UUID> classIds = classes.stream().map(Class::getId).collect(Collectors.toList());
-        List<TaskHeaderProjection> rawTaskHeaders = taskRepository.findTaskHeadersByClassIds(classIds);
+        List<UUID> subjectIds = subjects.stream().map(Subject::getId).collect(Collectors.toList());
+        List<TaskHeaderProjection> rawTaskHeaders = taskRepository.findTaskHeadersByClassIds(subjectIds);
         Map<UUID, String> taskHeaders = rawTaskHeaders.stream()
                 .collect(Collectors.toMap(TaskHeaderProjection::getClassId, TaskHeaderProjection::getHeader));
 
-        List<TeacherScheduleDTO> result = classes.stream()
+        List<TeacherScheduleDTO> result = subjects.stream()
                 .map(clazz -> {
                     String taskHeader = taskHeaders.getOrDefault(clazz.getId(), null);
                     return TeacherScheduleDTO.fromEntity(clazz, taskHeader);

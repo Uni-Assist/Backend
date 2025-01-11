@@ -1,6 +1,6 @@
 package com.example.UniAssist.model.dto;
-import com.example.UniAssist.type.ClassType;
-import com.example.UniAssist.model.entity.Class;
+import com.example.UniAssist.type.SubjectType;
+import com.example.UniAssist.model.entity.Subject;
 
 import java.time.LocalDate;
 import java.time.LocalTime;
@@ -9,19 +9,19 @@ import java.util.UUID;
 
 public class StudentScheduleDTO {
     private UUID id;
-    private String subject;
+    private String subjectName;
     private UUID teacherId;
     private LocalTime startTime;
     private LocalTime endTime;
     private String classroom;
     private LocalDate date;
-    private ClassType type;
+    private SubjectType type;
     private String header;
 
-    public static StudentScheduleDTO fromEntity(Class entity, String taskHeader) {
+    public static StudentScheduleDTO fromEntity(Subject entity, String taskHeader) {
         StudentScheduleDTO dto = new StudentScheduleDTO();
         dto.id = entity.getId();
-        dto.subject = entity.getSubject();
+        dto.subjectName = entity.getSubjectName();
         dto.teacherId = entity.getTeacherId();
         dto.startTime = entity.getStartTime();
         dto.endTime = entity.getEndTime();
@@ -40,12 +40,12 @@ public class StudentScheduleDTO {
         this.id = id;
     }
 
-    public String getSubject() {
-        return subject;
+    public String getSubjectName() {
+        return subjectName;
     }
 
-    public void setSubject(String subject) {
-        this.subject = subject;
+    public void setSubjectName(String subjectName) {
+        this.subjectName = subjectName;
     }
 
     public UUID getTeacherId() {
@@ -88,11 +88,11 @@ public class StudentScheduleDTO {
         this.date = date;
     }
 
-    public ClassType getType() {
+    public SubjectType getType() {
         return type;
     }
 
-    public void setType(ClassType type) {
+    public void setType(SubjectType type) {
         this.type = type;
     }
 
