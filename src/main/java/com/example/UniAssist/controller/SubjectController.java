@@ -22,14 +22,14 @@ import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("api/v1/schedule")
-public class ClassController {
+public class SubjectController {
 
     private SubjectService classService;
     private StudentRepository studentRepository;
     private TaskRepository taskRepository;
 
     @Autowired
-    public ClassController(
+    public SubjectController(
         SubjectService classService,
         StudentRepository studentRepository,
         TaskRepository taskRepository) {
