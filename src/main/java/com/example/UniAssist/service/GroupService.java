@@ -1,5 +1,6 @@
 package com.example.UniAssist.service;
 
+import com.example.UniAssist.mapper.GroupMapper;
 import com.example.UniAssist.model.dto.GroupDTO;
 import com.example.UniAssist.repository.GroupRepository;
 import com.example.UniAssist.model.entity.Group;
@@ -22,7 +23,7 @@ public class GroupService {
     public List<GroupDTO> getAllGroups() {
         List<Group> groups = groupRepository.findAll();
         return groups.stream()
-                .map(GroupDTO::fromEntity)
+                .map(GroupMapper::toDTO)
                 .collect(Collectors.toList());
     }
 }

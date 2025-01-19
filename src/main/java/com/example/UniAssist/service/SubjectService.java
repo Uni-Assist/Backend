@@ -1,5 +1,7 @@
 package com.example.UniAssist.service;
 
+import com.example.UniAssist.mapper.StudentScheduleMapper;
+import com.example.UniAssist.mapper.TeacherScheduleMapper;
 import com.example.UniAssist.model.dto.StudentScheduleDTO;
 import com.example.UniAssist.model.dto.TeacherScheduleDTO;
 import com.example.UniAssist.projection.TaskHeaderProjection;
@@ -45,7 +47,7 @@ public class SubjectService {
         Map<UUID, String> taskHeaders = fetchTaskHeaders(subjectIds);
 
         return subjects.stream()
-                .map(subject -> StudentScheduleDTO.fromEntity(subject, taskHeaders.getOrDefault(subject.getId(), null)))
+                .map(subject -> StudentScheduleMapper.toDTO(subject, taskHeaders.getOrDefault(subject.getId(), null)))
                 .collect(Collectors.toList());
     }
 
@@ -59,7 +61,7 @@ public class SubjectService {
         Map<UUID, String> taskHeaders = fetchTaskHeaders(subjectIds);
 
         return subjects.stream()
-                .map(subject -> TeacherScheduleDTO.fromEntity(subject, taskHeaders.getOrDefault(subject.getId(), null)))
+                .map(subject -> TeacherScheduleMapper.toDTO(subject, taskHeaders.getOrDefault(subject.getId(), null)))
                 .collect(Collectors.toList());
     }
 

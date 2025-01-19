@@ -18,20 +18,6 @@ public class StudentScheduleDTO {
     private SubjectType type;
     private String header;
 
-    public static StudentScheduleDTO fromEntity(Subject entity, String taskHeader) {
-        StudentScheduleDTO dto = new StudentScheduleDTO();
-        dto.id = entity.getId();
-        dto.subjectName = entity.getSubjectName();
-        dto.teacherId = entity.getTeacherId();
-        dto.startTime = entity.getStartTime();
-        dto.endTime = entity.getEndTime();
-        dto.classroom = entity.getClassroom();
-        dto.date = entity.getDate();
-        dto.type = entity.getType();
-        dto.header = taskHeader;
-        return dto;
-    }
-
     public UUID getId() {
         return id;
     }

@@ -10,13 +10,6 @@ public class GroupDTO {
     private UUID id;
     private String name;
 
-    public static GroupDTO fromEntity(Group entity) {
-        GroupDTO dto = new GroupDTO();
-        dto.id = entity.getId();
-        dto.name = entity.getName();
-        return dto;
-    }
-
     public UUID getId() {
         return id;
     }
