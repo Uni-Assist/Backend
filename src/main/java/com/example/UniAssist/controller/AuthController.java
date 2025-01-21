@@ -11,13 +11,13 @@ import org.springframework.web.bind.annotation.RestController;
 import java.util.Map;
 
 @RestController
-@RequestMapping("/login")
+@RequestMapping("/api/v1")
 public class AuthController {
 
     @Autowired
     private AuthService authService;
 
-    @PostMapping("/teacher")
+    @PostMapping("/login/teacher")
     public ResponseEntity<Map<String, Object>> teacherLogin(
             @RequestBody Map<String, String> credentials) {
         String login = credentials.get("login");
@@ -27,7 +27,7 @@ public class AuthController {
         return ResponseEntity.ok(response);
     }
 
-    @PostMapping("/student")
+    @PostMapping("/login/student")
     public ResponseEntity<Map<String, Object>> studentLogin(
             @RequestBody Map<String, String> credentials) {
         String login = credentials.get("login");
