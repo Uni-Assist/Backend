@@ -2,7 +2,7 @@ package com.example.UniAssist.controller;
 
 import com.example.UniAssist.model.dto.StudentScheduleDTO;
 import com.example.UniAssist.model.dto.TeacherScheduleDTO;
-import com.example.UniAssist.service.SubjectService;
+import com.example.UniAssist.service.ScheduleService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -16,20 +16,20 @@ import java.util.UUID;
 
 @RestController
 @RequestMapping("/api/v1/schedule")
-public class SubjectController {
+public class ScheduleController {
 
-    private final SubjectService subjectService;
+    private final ScheduleService scheduleService;
 
     @Autowired
-    public SubjectController(SubjectService subjectService) {
-        this.subjectService = subjectService;
+    public ScheduleController(ScheduleService scheduleService) {
+        this.scheduleService = scheduleService;
     }
 
     @GetMapping("/student")
     public ResponseEntity<List<StudentScheduleDTO>> getStudentSchedule(
             @RequestParam("date") String date,
             @RequestParam("student_id") UUID studentId) {
-        List<StudentScheduleDTO> schedule = subjectService.getStudentSchedule(studentId, LocalDate.parse(date));
+        List<StudentScheduleDTO> schedule = scheduleService.getStudentSchedule(studentId, LocalDate.parse(date));
         return ResponseEntity.ok(schedule);
     }
 
@@ -37,7 +37,7 @@ public class SubjectController {
     public ResponseEntity<List<TeacherScheduleDTO>> getTeacherSchedule(
             @RequestParam("date") String date,
             @RequestParam("teacher_id") UUID teacherId) {
-        List<TeacherScheduleDTO> schedule = subjectService.getTeacherSchedule(teacherId, LocalDate.parse(date));
+        List<TeacherScheduleDTO> schedule = scheduleService.getTeacherSchedule(teacherId, LocalDate.parse(date));
         return ResponseEntity.ok(schedule);
     }
 }

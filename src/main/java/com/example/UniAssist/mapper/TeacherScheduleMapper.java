@@ -1,13 +1,13 @@
 package com.example.UniAssist.mapper;
 
 import com.example.UniAssist.model.dto.TeacherScheduleDTO;
-import com.example.UniAssist.model.entity.Subject;
+import com.example.UniAssist.model.entity.Lesson;
 
 public class TeacherScheduleMapper {
-    public static TeacherScheduleDTO toDTO(Subject entity, String taskHeader) {
+    public static TeacherScheduleDTO toDTO(Lesson entity, String taskHeader) {
         TeacherScheduleDTO dto = new TeacherScheduleDTO();
         dto.setId(entity.getId());
-        dto.setSubjectName(entity.getSubjectName());
+        dto.setLessonName(entity.getLessonName());
         dto.setGroupId(entity.getGroupId());
         dto.setStartTime(entity.getStartTime());
         dto.setEndTime(entity.getEndTime());

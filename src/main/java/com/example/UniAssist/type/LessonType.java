@@ -1,6 +1,6 @@
 package com.example.UniAssist.type;
 
-public enum SubjectType {
+public enum LessonType {
     LECTURE,
     SEMINAR
 }

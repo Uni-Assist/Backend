@@ -10,8 +10,8 @@ import java.util.UUID;
 public class Student {
 
     @Id
-    @Column(name = "student_id", updatable = false, nullable = false)
-    private UUID studentId;
+    @Column(name = "id", updatable = false, nullable = false)
+    private UUID id;
 
     @Column(name = "fathername", length = 15)
     private String fatherName;
@@ -41,11 +41,11 @@ public class Student {
     private UUID groupId;
 
     public UUID getStudentId() {
-        return studentId;
+        return id;
     }
 
     public void setStudentId(UUID studentId) {
-        this.studentId = studentId;
+        this.id = studentId;
     }
 
     public String getFatherName() {

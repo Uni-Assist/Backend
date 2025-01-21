@@ -1,6 +1,6 @@
 package com.example.UniAssist.model.entity;
 
-import com.example.UniAssist.type.SubjectType;
+import com.example.UniAssist.type.LessonType;
 import jakarta.persistence.*;
 
 import java.time.LocalDate;
@@ -8,15 +8,15 @@ import java.time.LocalTime;
 import java.util.UUID;
 
 @Entity
-@Table(name = "subjects")
-public class Subject {
+@Table(name = "lessons")
+public class Lesson {
 
     @Id
     @Column(name = "id", updatable = false, nullable = false)
     private UUID id;
 
-    @Column(name = "subject_name", length = 40, nullable = false)
-    private String subjectName;
+    @Column(name = "lesson_name", length = 40, nullable = false)
+    private String lessonName;
 
     @Column(name = "teacher_id", nullable = false)
     private UUID teacherId;
@@ -38,7 +38,7 @@ public class Subject {
 
     @Enumerated(EnumType.STRING)
     @Column(name = "type", nullable = false)
-    private SubjectType type;
+    private LessonType type;
 
     public UUID getId() {
         return id;
@@ -48,12 +48,12 @@ public class Subject {
         this.id = id;
     }
 
-    public String getSubjectName() {
-        return subjectName;
+    public String getLessonName() {
+        return lessonName;
     }
 
-    public void setSubjectName(String subjectName) {
-        this.subjectName = subjectName;
+    public void setLessonName(String lessonName) {
+        this.lessonName = lessonName;
     }
 
     public UUID getTeacherId() {
@@ -104,11 +104,11 @@ public class Subject {
         this.date = date;
     }
 
-    public SubjectType getType() {
+    public LessonType getType() {
         return type;
     }
 
-    public void setType(SubjectType type) {
+    public void setType(LessonType type) {
         this.type = type;
     }
 }

@@ -25,8 +25,8 @@ public class Task {
     @Column(name = "teacher_id", nullable = false)
     private UUID teacherId;
 
-    @Column(name = "class_id", nullable = false)
-    private UUID classId;
+    @Column(name = "lesson_id", nullable = false)
+    private UUID lessonId;
 
     public UUID getId() {
         return id;
@@ -68,11 +68,11 @@ public class Task {
         this.teacherId = teacherId;
     }
 
-    public UUID getClassId() {
-        return classId;
+    public UUID getLessonId() {
+        return lessonId;
     }
 
-    public void setClassId(UUID classId) {
-        this.classId = classId;
+    public void setLessonId(UUID lessonId) {
+        this.lessonId = lessonId;
     }
 }

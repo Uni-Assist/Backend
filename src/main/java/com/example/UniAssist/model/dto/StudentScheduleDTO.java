@@ -1,5 +1,5 @@
 package com.example.UniAssist.model.dto;
-import com.example.UniAssist.type.SubjectType;
+import com.example.UniAssist.type.LessonType;
 
 import java.time.LocalDate;
 import java.time.LocalTime;
@@ -7,13 +7,13 @@ import java.util.UUID;
 
 public class StudentScheduleDTO {
     private UUID id;
-    private String subjectName;
+    private String lessonName;
     private UUID teacherId;
     private LocalTime startTime;
     private LocalTime endTime;
     private String classroom;
     private LocalDate date;
-    private SubjectType type;
+    private LessonType type;
     private String header;
 
     public UUID getId() {
@@ -24,12 +24,12 @@ public class StudentScheduleDTO {
         this.id = id;
     }
 
-    public String getSubjectName() {
-        return subjectName;
+    public String getLessonName() {
+        return lessonName;
     }
 
-    public void setSubjectName(String subjectName) {
-        this.subjectName = subjectName;
+    public void setLessonName(String lessonName) {
+        this.lessonName = lessonName;
     }
 
     public UUID getTeacherId() {
@@ -72,11 +72,11 @@ public class StudentScheduleDTO {
         this.date = date;
     }
 
-    public SubjectType getType() {
+    public LessonType getType() {
         return type;
     }
 
-    public void setType(SubjectType type) {
+    public void setType(LessonType type) {
         this.type = type;
     }
 
