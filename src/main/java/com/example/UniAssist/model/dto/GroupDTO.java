@@ -1,9 +1,5 @@
 package com.example.UniAssist.model.dto;
-import com.example.UniAssist.type.SubjectType;
-import com.example.UniAssist.model.entity.Group;
 
-import java.time.LocalDate;
-import java.time.LocalTime;
 import java.util.UUID;
 
 public class GroupDTO {

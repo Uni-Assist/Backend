@@ -1,11 +1,9 @@
 package com.example.UniAssist.model.dto;
 import com.example.UniAssist.type.SubjectType;
-import com.example.UniAssist.model.entity.Subject;
 
 import java.time.LocalDate;
 import java.time.LocalTime;
 import java.util.UUID;
-
 
 public class StudentScheduleDTO {
     private UUID id;
