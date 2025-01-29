@@ -1,7 +1,6 @@
 package com.example.UniAssist.controller;
 
 import com.example.UniAssist.service.AuthService;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -14,8 +13,11 @@ import java.util.Map;
 @RequestMapping("/api/v1")
 public class AuthController {
 
-    @Autowired
-    private AuthService authService;
+    private final AuthService authService;
+
+    public AuthController(AuthService authService) {
+        this.authService = authService;
+    }
 
     @PostMapping("/login/teacher")
     public ResponseEntity<Map<String, Object>> teacherLogin(
@@ -37,4 +39,3 @@ public class AuthController {
         return ResponseEntity.ok(response);
     }
 }
-
