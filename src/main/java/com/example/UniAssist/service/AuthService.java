@@ -3,7 +3,6 @@ package com.example.UniAssist.service;
 import com.example.UniAssist.exception.AuthenticationException;
 import com.example.UniAssist.repository.StudentRepository;
 import com.example.UniAssist.repository.TeacherRepository;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.HashMap;
@@ -12,11 +11,13 @@ import java.util.Map;
 @Service
 public class AuthService {
 
-    @Autowired
-    private TeacherRepository teacherRepository;
+    private final TeacherRepository teacherRepository;
+    private final StudentRepository studentRepository;
 
-    @Autowired
-    private StudentRepository studentRepository;
+    public AuthService(TeacherRepository teacherRepository, StudentRepository studentRepository) {
+        this.teacherRepository = teacherRepository;
+        this.studentRepository = studentRepository;
+    }
 
     public Map<String, Object> authenticateTeacher(String login, String password) {
         return teacherRepository.findByLoginAndPassword(login, password)
@@ -40,4 +41,3 @@ public class AuthService {
                 .orElseThrow(() -> new AuthenticationException("Invalid login or password for student"));
     }
 }
-
