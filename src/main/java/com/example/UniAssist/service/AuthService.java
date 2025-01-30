@@ -24,7 +24,6 @@ public class AuthService {
                 .map(teacher -> {
                     Map<String, Object> response = new HashMap<>();
                     response.put("teacher_id", teacher.getTeacherId());
-                    response.put("role", "teacher");
                     return response;
                 })
                 .orElseThrow(() -> new AuthenticationException("Invalid login or password for teacher"));
@@ -35,7 +34,6 @@ public class AuthService {
                 .map(student -> {
                     Map<String, Object> response = new HashMap<>();
                     response.put("student_id", student.getStudentId());
-                    response.put("role", "student");
                     return response;
                 })
                 .orElseThrow(() -> new AuthenticationException("Invalid login or password for student"));

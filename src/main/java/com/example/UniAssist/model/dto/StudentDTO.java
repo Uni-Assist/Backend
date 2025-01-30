@@ -4,11 +4,9 @@ import java.util.UUID;
 
 public class StudentDTO {
     private UUID studentId;
-    private String role;
 
-    public StudentDTO(UUID studentId, String role) {
+    public StudentDTO(UUID studentId) {
         this.studentId = studentId;
-        this.role = role;
     }
 
     public UUID getStudentId() {
@@ -19,11 +17,4 @@ public class StudentDTO {
         this.studentId = studentId;
     }
 
-    public String getRole() {
-        return role;
-    }
-
-    public void setRole(String role) {
-        this.role = role;
-    }
 }

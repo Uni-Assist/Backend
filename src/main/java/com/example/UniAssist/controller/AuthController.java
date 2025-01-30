@@ -29,7 +29,7 @@ public class AuthController {
         String password = credentials.get("password");
 
         Map<String, Object> response = authService.authenticateTeacher(login, password);
-        TeacherDTO teacherDTO = new TeacherDTO((UUID) response.get("teacher_id"), (String) response.get("role"));
+        TeacherDTO teacherDTO = new TeacherDTO((UUID) response.get("teacher_id"));
         return ResponseEntity.ok(teacherDTO);
     }
 
@@ -40,7 +40,7 @@ public class AuthController {
         String password = credentials.get("password");
 
         Map<String, Object> response = authService.authenticateStudent(login, password);
-        StudentDTO studentDTO = new StudentDTO((UUID) response.get("student_id"), (String) response.get("role"));
+        StudentDTO studentDTO = new StudentDTO((UUID) response.get("student_id"));
         return ResponseEntity.ok(studentDTO);
     }
 }
