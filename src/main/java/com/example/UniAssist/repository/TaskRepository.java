@@ -13,6 +13,6 @@ import java.util.UUID;
 @Repository
 public interface TaskRepository extends JpaRepository<Task, UUID> {
 
-    @Query("SELECT t.lessonId AS classId, t.header AS header FROM Task t WHERE t.lessonId IN :classIds")
-    List<TaskHeaderProjection> findTaskHeadersByClassIds(@Param("classIds") List<UUID> classIds);
+    @Query("SELECT t.lessonId AS lessonId, t.header AS header FROM Task t WHERE t.lessonId IN :lessonIds")
+    List<TaskHeaderProjection> findTaskHeadersByLessonIds(@Param("lessonIds") List<UUID> lessonIds);
 }

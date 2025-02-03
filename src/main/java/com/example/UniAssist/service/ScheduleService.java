@@ -6,9 +6,8 @@ import com.example.UniAssist.model.dto.StudentScheduleDTO;
 import com.example.UniAssist.model.dto.TeacherScheduleDTO;
 import com.example.UniAssist.projection.TaskHeaderProjection;
 import com.example.UniAssist.exception.ScheduleNotFound;
-import com.example.UniAssist.model.entity.Lesson;
+import com.example.UniAssist.repository.ScheduleRepository;
 import com.example.UniAssist.repository.StudentRepository;
-import com.example.UniAssist.repository.LessonRepository;
 import com.example.UniAssist.repository.TaskRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -22,51 +21,51 @@ import java.util.stream.Collectors;
 @Service
 public class ScheduleService {
 
-    private final LessonRepository lessonRepository;
+    private final ScheduleRepository scheduleRepository;
     private final StudentRepository studentRepository;
     private final TaskRepository taskRepository;
 
     @Autowired
     public ScheduleService(
-            LessonRepository lessonRepository,
+            ScheduleRepository scheduleRepository,
             StudentRepository studentRepository,
             TaskRepository taskRepository) {
-        this.lessonRepository = lessonRepository;
+        this.scheduleRepository = scheduleRepository;
         this.studentRepository = studentRepository;
         this.taskRepository = taskRepository;
     }
 
     public List<StudentScheduleDTO> getStudentSchedule(UUID studentId, LocalDate date) {
         UUID groupId = studentRepository.findGroupIdByStudentId(studentId);
-        List<Lesson> lessons = lessonRepository.findLessonsByGroupAndDate(groupId, date);
-        if (lessons.isEmpty()) {
+        List<StudentScheduleDTO> schedule = scheduleRepository.findScheduleByGroupAndDate(groupId, date);
+        if (schedule.isEmpty()) {
             throw new ScheduleNotFound("No lessons found");
         }
 
-        List<UUID> subjectIds = lessons.stream().map(Lesson::getId).collect(Collectors.toList());
-        Map<UUID, String> taskHeaders = fetchTaskHeaders(subjectIds);
+        List<UUID> LessonsIds = schedule.stream().map(StudentScheduleDTO::getId).collect(Collectors.toList());
+        Map<UUID, String> taskHeaders = fetchTaskHeaders(LessonsIds);
 
-        return lessons.stream()
+        return schedule.stream()
                 .map(lesson -> StudentScheduleMapper.toDTO(lesson, taskHeaders.getOrDefault(lesson.getId(), null)))
                 .collect(Collectors.toList());
     }
 
     public List<TeacherScheduleDTO> getTeacherSchedule(UUID teacherId, LocalDate date) {
-        List<Lesson> lessons = lessonRepository.findLessonsByTeacherAndDate(teacherId, date);
-        if (lessons.isEmpty()) {
+        List<TeacherScheduleDTO> schedule = scheduleRepository.findScheduleByTeacherAndDate(teacherId, date);
+        if (schedule.isEmpty()) {
             throw new ScheduleNotFound("No lessons found");
         }
 
-        List<UUID> subjectIds = lessons.stream().map(Lesson::getId).collect(Collectors.toList());
+        List<UUID> subjectIds = schedule.stream().map(TeacherScheduleDTO::getId).collect(Collectors.toList());
         Map<UUID, String> taskHeaders = fetchTaskHeaders(subjectIds);
 
-        return lessons.stream()
+        return schedule.stream()
                 .map(lesson -> TeacherScheduleMapper.toDTO(lesson, taskHeaders.getOrDefault(lesson.getId(), null)))
                 .collect(Collectors.toList());
     }
 
     private Map<UUID, String> fetchTaskHeaders(List<UUID> lessonIds) {
-        List<TaskHeaderProjection> rawTaskHeaders = taskRepository.findTaskHeadersByClassIds(lessonIds);
+        List<TaskHeaderProjection> rawTaskHeaders = taskRepository.findTaskHeadersByLessonIds(lessonIds);
         return rawTaskHeaders.stream()
                 .collect(Collectors.toMap(TaskHeaderProjection::getLessonId, TaskHeaderProjection::getHeader));
     }

@@ -7,7 +7,7 @@ import java.util.UUID;
 
 public class StudentScheduleDTO {
     private UUID id;
-    private String lessonName;
+    private String name;
     private UUID teacherId;
     private LocalTime startTime;
     private LocalTime endTime;
@@ -15,6 +15,20 @@ public class StudentScheduleDTO {
     private LocalDate date;
     private LessonType type;
     private String header;
+
+    public StudentScheduleDTO() {}
+
+    public StudentScheduleDTO(UUID id, String name, UUID teacherId, LocalTime startTime, LocalTime endTime, String classroom, LocalDate date, LessonType type, String header) {
+        this.id = id;
+        this.name = name;
+        this.teacherId = teacherId;
+        this.startTime = startTime;
+        this.endTime = endTime;
+        this.classroom = classroom;
+        this.date = date;
+        this.type = type;
+        this.header = header;
+    }
 
     public UUID getId() {
         return id;
@@ -24,12 +38,12 @@ public class StudentScheduleDTO {
         this.id = id;
     }
 
-    public String getLessonName() {
-        return lessonName;
+    public String getName() {
+        return name;
     }
 
-    public void setLessonName(String lessonName) {
-        this.lessonName = lessonName;
+    public void setName(String name) {
+        this.name = name;
     }
 
     public UUID getTeacherId() {
