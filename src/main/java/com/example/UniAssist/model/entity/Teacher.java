@@ -1,13 +1,14 @@
 package com.example.UniAssist.model.entity;
 
+import com.example.UniAssist.type.Department;
 import jakarta.persistence.*;
 
 import java.time.LocalDate;
 import java.util.UUID;
 
 @Entity
-@Table(name = "students")
-public class Student {
+@Table(name = "teachers")
+public class Teacher {
 
     @Id
     @Column(name = "id", updatable = false, nullable = false)
@@ -37,15 +38,19 @@ public class Student {
     @Column(name = "birthdate", nullable = false)
     private LocalDate birthdate;
 
-    @Column(name = "group_id", nullable = false)
-    private UUID groupId;
+    @Column(name = "job_title", length = 40, nullable = false)
+    private String jobTitle;
 
-    public UUID getStudentId() {
+    @Enumerated(EnumType.STRING)
+    @Column(name = "department", nullable = false)
+    private Department department;
+
+    public UUID getId() {
         return id;
     }
 
-    public void setStudentId(UUID studentId) {
-        this.id = studentId;
+    public void setId(UUID id) {
+        this.id = id;
     }
 
     public String getFatherName() {
@@ -104,19 +109,27 @@ public class Student {
         this.email = email;
     }
 
-    public LocalDate getDate() {
+    public LocalDate getBirthdate() {
         return birthdate;
     }
 
-    public void setDate(LocalDate birthdate) {
+    public void setBirthdate(LocalDate birthdate) {
         this.birthdate = birthdate;
     }
 
-    public UUID getGroupId() {
-        return groupId;
+    public String getJobTitle() {
+        return jobTitle;
     }
 
-    public void setGroupId(UUID groupId) {
-        this.groupId = groupId;
+    public void setJobTitle(String jobTitle) {
+        this.jobTitle = jobTitle;
+    }
+
+    public Department getDepartment() {
+        return department;
+    }
+
+    public void setDepartment(Department department) {
+        this.department = department;
     }
 }
