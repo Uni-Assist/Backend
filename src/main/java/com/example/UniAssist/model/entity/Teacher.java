@@ -14,14 +14,14 @@ public class Teacher {
     @Column(name = "id", updatable = false, nullable = false)
     private UUID id;
 
-    @Column(name = "fathername", length = 15)
-    private String fatherName;
+    @Column(name = "middle_name", length = 15)
+    private String middleName;
 
-    @Column(name = "surname", length = 15)
-    private String surName;
+    @Column(name = "last_name", length = 15)
+    private String lastName;
 
-    @Column(name = "name", length = 15, nullable = false)
-    private String name;
+    @Column(name = "first_name", length = 15, nullable = false)
+    private String firstName;
 
     @Column(name = "login", length = 15, nullable = false)
     private String login;
@@ -29,8 +29,8 @@ public class Teacher {
     @Column(name = "password", length = 15, nullable = false)
     private String password;
 
-    @Column(name = "phone", nullable = false)
-    private int phone;
+    @Column(name = "phone", length = 20, nullable = false)
+    private String phone;
 
     @Column(name = "email", length = 30, nullable = false)
     private String email;
@@ -53,28 +53,28 @@ public class Teacher {
         this.id = id;
     }
 
-    public String getFatherName() {
-        return fatherName;
+    public String getMiddleName() {
+        return middleName;
     }
 
-    public void setFatherName(String fatherName) {
-        this.fatherName = fatherName;
+    public void setMiddleName(String middleName) {
+        this.middleName = middleName;
     }
 
-    public String getSurName() {
-        return surName;
+    public String getLastName() {
+        return lastName;
     }
 
-    public void setSurName(String surName) {
-        this.surName = surName;
+    public void setLastName(String lastName) {
+        this.lastName = lastName;
     }
 
-    public String getName() {
-        return name;
+    public String getFirstName() {
+        return firstName;
     }
 
-    public void setName(String name) {
-        this.name = name;
+    public void setFirstName(String firstName) {
+        this.firstName = firstName;
     }
 
     public String getLogin() {
@@ -93,11 +93,11 @@ public class Teacher {
         this.password = password;
     }
 
-    public int getPhone() {
+    public String getPhone() {
         return phone;
     }
 
-    public void setPhone(int phone) {
+    public void setPhone(String phone) {
         this.phone = phone;
     }
 

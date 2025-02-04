@@ -5,7 +5,7 @@
 -- Dumped from database version 16.6 (Ubuntu 16.6-0ubuntu0.24.04.1)
 -- Dumped by pg_dump version 16.6 (Ubuntu 16.6-0ubuntu0.24.04.1)
 
--- Started on 2025-02-03 17:09:50 +07
+-- Started on 2025-02-04 22:41:55 +07
 
 SET statement_timeout = 0;
 SET lock_timeout = 0;
@@ -177,12 +177,12 @@ CREATE TABLE public.schedules (
 
 CREATE TABLE public.students (
     id uuid DEFAULT gen_random_uuid() NOT NULL,
-    fathername character varying(15),
-    surname character varying(15),
-    name character varying(15) NOT NULL,
+    middle_name character varying(15),
+    last_name character varying(15),
+    first_name character varying(15) NOT NULL,
     login character varying(15) NOT NULL,
     password character varying(15) NOT NULL,
-    phone integer NOT NULL,
+    phone character varying(20) NOT NULL,
     email character varying(30) NOT NULL,
     birthdate date NOT NULL,
     group_id uuid NOT NULL
@@ -222,12 +222,12 @@ CREATE TABLE public.tasks (
 
 CREATE TABLE public.teachers (
     id uuid DEFAULT gen_random_uuid() NOT NULL,
-    fathername character varying(15),
-    surrname character varying(15),
-    name character varying(15) NOT NULL,
+    middle_name character varying(15),
+    last_name character varying(15),
+    first_name character varying(15) NOT NULL,
     login character varying(15) NOT NULL,
     password character varying(15) NOT NULL,
-    phone integer NOT NULL,
+    phone character varying(20) NOT NULL,
     email character varying(30) NOT NULL,
     birthdate date NOT NULL,
     job_title character varying(40) NOT NULL,
@@ -302,9 +302,9 @@ INSERT INTO public.schedules VALUES ('c709e770-4538-479f-8449-6d6de29754cd', 'b5
 -- Data for Name: students; Type: TABLE DATA; Schema: public; Owner: -
 --
 
-INSERT INTO public.students VALUES ('120ce5a6-d320-4c18-b8ff-f3c8ae962a5f', 'Петрович', 'Иванов', 'Сергей', 'iv221s1', 'hl832jUE', 9324782, 'sergey.ivanov@mail.com', '2003-03-15', '9f7706b2-ce24-4042-af4a-4302a23d521f');
-INSERT INTO public.students VALUES ('cfc4bf68-50b7-48d3-8321-992d5de83c74', 'Игоревна', 'Сидорова', 'Елена', 'iv222s1', '3jYE7oPE', 9348275, 'elena.sidorova@mail.com', '2002-12-10', 'f4b6dabb-e19c-47d8-983d-0c0c482f1a36');
-INSERT INTO public.students VALUES ('20dc0a83-a114-4908-bba6-9f1a22817213', 'Михайлович', 'Орлов', 'Дмитрий', 'iv223s1', '9Kpo32jd', 4572674, 'dmitry.orlov@mail.com', '2003-06-25', '42ebaa8f-d4c9-4b8e-8962-e2657871cc42');
+INSERT INTO public.students VALUES ('120ce5a6-d320-4c18-b8ff-f3c8ae962a5f', 'Петрович', 'Иванов', 'Сергей', 'iv221s1', 'hl832jUE', '89139324782', 'sergey.ivanov@mail.com', '2003-03-15', '9f7706b2-ce24-4042-af4a-4302a23d521f');
+INSERT INTO public.students VALUES ('20dc0a83-a114-4908-bba6-9f1a22817213', 'Михайлович', 'Орлов', 'Дмитрий', 'iv223s1', '9Kpo32jd', '+79134572674', 'dmitry.orlov@mail.com', '2003-06-25', '42ebaa8f-d4c9-4b8e-8962-e2657871cc42');
+INSERT INTO public.students VALUES ('cfc4bf68-50b7-48d3-8321-992d5de83c74', 'Игоревна', 'Сидорова', 'Елена', 'iv222s1', '3jYE7oPE', '89239348275', 'elena.sidorova@mail.com', '2002-12-10', 'f4b6dabb-e19c-47d8-983d-0c0c482f1a36');
 
 
 --
@@ -335,9 +335,9 @@ INSERT INTO public.tasks VALUES ('eddbfa43-fe13-4e7e-b768-1b17194803dd', 'Лаб
 -- Data for Name: teachers; Type: TABLE DATA; Schema: public; Owner: -
 --
 
-INSERT INTO public.teachers VALUES ('39f4a254-0619-4a30-a7d1-d49c0e7ad394', 'Иванович', 'Петров', 'Иван', 'ivt-1', 'j83bHI7e', 7027683, 'ivan.petrov@mail.com', '1980-05-15', 'Преподаватель', 'ИВТ');
-INSERT INTO public.teachers VALUES ('cc5fa67e-2774-4fc9-a803-944d44f4019a', 'Сергеевна', 'Смирнова', 'Анна', 'ivt-2', '9JG7bn60', 9385193, 'anna.smirnova@mail.com', '1985-07-20', 'Старший преподаватель', 'ИВТ');
-INSERT INTO public.teachers VALUES ('e4727d51-d25f-4e19-a6e7-dfd57334b594', 'Александрович', 'Кузнецов', 'Алексей', 'ivt-3', 'K86K1d7q', 9375024, 'alexey.kuznetsov@mail.com', '1978-09-10', 'Младший преподаватель', 'ИВТ');
+INSERT INTO public.teachers VALUES ('39f4a254-0619-4a30-a7d1-d49c0e7ad394', 'Иванович', 'Петров', 'Иван', 'ivt-1', 'j83bHI7e', '+79136307529', 'ivan.petrov@mail.com', '1980-05-15', 'Преподаватель', 'ИВТ');
+INSERT INTO public.teachers VALUES ('cc5fa67e-2774-4fc9-a803-944d44f4019a', 'Сергеевна', 'Смирнова', 'Анна', 'ivt-2', '9JG7bn60', '89136402306', 'anna.smirnova@mail.com', '1985-07-20', 'Старший преподаватель', 'ИВТ');
+INSERT INTO public.teachers VALUES ('e4727d51-d25f-4e19-a6e7-dfd57334b594', 'Александрович', 'Кузнецов', 'Алексей', 'ivt-3', 'K86K1d7q', '89230907642', 'alexey.kuznetsov@mail.com', '1978-09-10', 'Младший преподаватель', 'ИВТ');
 
 
 --
@@ -511,7 +511,7 @@ ALTER TABLE ONLY public.tasks
     ADD CONSTRAINT tasks_teacher_id_fkey FOREIGN KEY (teacher_id) REFERENCES public.teachers(id) ON UPDATE CASCADE ON DELETE CASCADE;
 
 
--- Completed on 2025-02-03 17:09:50 +07
+-- Completed on 2025-02-04 22:41:55 +07
 
 --
 -- PostgreSQL database dump complete
