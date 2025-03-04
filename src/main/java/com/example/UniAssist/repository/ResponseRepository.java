@@ -1,5 +1,6 @@
 package com.example.UniAssist.repository;
 
+import com.example.UniAssist.model.dto.StudentResponseDTO;
 import com.example.UniAssist.model.dto.TeacherResponseDTO;
 import com.example.UniAssist.model.entity.Response;
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -21,4 +22,13 @@ public interface ResponseRepository extends JpaRepository<Response, UUID> {
         WHERE r.TaskId = :taskId
     """)
     List<TeacherResponseDTO> findResponsesByTaskId(@Param("taskId") UUID taskId);
+
+    @Query("""
+        SELECT new com.example.UniAssist.model.dto.StudentResponseDTO(
+            r.id, r.studentId, r.body, r.mark
+        )
+        FROM Response r
+        WHERE r.TaskId = :taskId
+    """)
+    StudentResponseDTO findResponseByTaskId(@Param("taskId") UUID taskId);
 }

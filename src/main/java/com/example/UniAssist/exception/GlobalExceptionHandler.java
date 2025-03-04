@@ -13,7 +13,7 @@ public class GlobalExceptionHandler {
         return ResponseEntity.status(HttpStatus.NOT_FOUND).body(ex.getMessage());
     }
 
-    @ExceptionHandler(ScheduleNotFound.class)
+    @ExceptionHandler(LessonNotFound.class)
     public ResponseEntity<String> handleLessonNotFound(LessonNotFound ex) {
         return ResponseEntity.status(HttpStatus.NOT_FOUND).body(ex.getMessage());
     }

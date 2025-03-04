@@ -1,5 +1,6 @@
 package com.example.UniAssist.repository;
 
+import com.example.UniAssist.model.dto.StudentTaskDTO;
 import com.example.UniAssist.model.dto.TeacherTaskDTO;
 import com.example.UniAssist.model.entity.Task;
 import com.example.UniAssist.projection.TaskHeaderProjection;
@@ -23,5 +24,13 @@ public interface TaskRepository extends JpaRepository<Task, UUID> {
         )
         FROM Task t WHERE t.lessonId = :lessonId
     """)
-    TeacherTaskDTO findTaskByLessonId(@Param("lessonId") UUID lessonId);
+    TeacherTaskDTO findTaskByLessonIdForTeacher(@Param("lessonId") UUID lessonId);
+
+    @Query("""
+        SELECT new com.example.UniAssist.model.dto.StudentTaskDTO(
+            t.id, t.header, t.body, null
+        )
+        FROM Task t WHERE t.lessonId = :lessonId
+    """)
+    StudentTaskDTO findTaskByLessonIdForStudent(@Param("lessonId") UUID lessonId);
 }
