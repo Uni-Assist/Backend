@@ -42,8 +42,8 @@ public class ScheduleService {
             throw new ScheduleNotFound("No lessons found");
         }
 
-        List<UUID> LessonsIds = schedule.stream().map(StudentScheduleDTO::getId).collect(Collectors.toList());
-        Map<UUID, String> taskHeaders = fetchTaskHeaders(LessonsIds);
+        List<UUID> lessonsIds = schedule.stream().map(StudentScheduleDTO::getId).collect(Collectors.toList());
+        Map<UUID, String> taskHeaders = fetchTaskHeaders(lessonsIds);
 
         return schedule.stream()
                 .map(lesson -> StudentScheduleMapper.toDTO(lesson, taskHeaders.getOrDefault(lesson.getId(), null)))
@@ -56,8 +56,8 @@ public class ScheduleService {
             throw new ScheduleNotFound("No lessons found");
         }
 
-        List<UUID> subjectIds = schedule.stream().map(TeacherScheduleDTO::getId).collect(Collectors.toList());
-        Map<UUID, String> taskHeaders = fetchTaskHeaders(subjectIds);
+        List<UUID> lessonsIds = schedule.stream().map(TeacherScheduleDTO::getId).collect(Collectors.toList());
+        Map<UUID, String> taskHeaders = fetchTaskHeaders(lessonsIds);
 
         return schedule.stream()
                 .map(lesson -> TeacherScheduleMapper.toDTO(lesson, taskHeaders.getOrDefault(lesson.getId(), null)))
