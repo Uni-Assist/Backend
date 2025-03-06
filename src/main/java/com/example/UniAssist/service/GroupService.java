@@ -2,8 +2,8 @@ package com.example.UniAssist.service;
 
 import com.example.UniAssist.mapper.GroupMapper;
 import com.example.UniAssist.model.dto.GroupDTO;
-import com.example.UniAssist.repository.GroupRepository;
 import com.example.UniAssist.model.entity.Group;
+import com.example.UniAssist.repository.GroupRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 

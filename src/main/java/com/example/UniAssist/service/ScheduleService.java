@@ -1,11 +1,11 @@
 package com.example.UniAssist.service;
 
+import com.example.UniAssist.exception.ScheduleNotFound;
 import com.example.UniAssist.mapper.StudentScheduleMapper;
 import com.example.UniAssist.mapper.TeacherScheduleMapper;
 import com.example.UniAssist.model.dto.StudentScheduleDTO;
 import com.example.UniAssist.model.dto.TeacherScheduleDTO;
 import com.example.UniAssist.projection.TaskHeaderProjection;
-import com.example.UniAssist.exception.ScheduleNotFound;
 import com.example.UniAssist.repository.ScheduleRepository;
 import com.example.UniAssist.repository.StudentRepository;
 import com.example.UniAssist.repository.TaskRepository;
@@ -13,8 +13,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
-import java.util.Map;
 import java.util.List;
+import java.util.Map;
 import java.util.UUID;
 import java.util.stream.Collectors;
 
