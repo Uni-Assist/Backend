@@ -5,7 +5,7 @@
 -- Dumped from database version 16.6 (Ubuntu 16.6-0ubuntu0.24.04.1)
 -- Dumped by pg_dump version 16.6 (Ubuntu 16.6-0ubuntu0.24.04.1)
 
--- Started on 2025-02-04 22:41:55 +07
+-- Started on 2025-03-06 17:33:29 +07
 
 SET statement_timeout = 0;
 SET lock_timeout = 0;
@@ -36,29 +36,30 @@ COMMENT ON EXTENSION pgcrypto IS 'cryptographic functions';
 
 
 --
--- TOC entry 922 (class 1247 OID 17132)
+-- TOC entry 922 (class 1247 OID 17164)
 -- Name: Department; Type: TYPE; Schema: public; Owner: -
 --
 
 CREATE TYPE public."Department" AS ENUM (
-    'ИЭФ',
-    'АЭС',
-    'ИВТ',
-    'МТС',
-    'ЗО',
-    'МРМ',
-    'ГФ'
+    'EEF',
+    'ATC',
+    'CSE',
+    'MTS',
+    'DL',
+    'MRM',
+    'HF'
 );
 
 
 --
--- TOC entry 910 (class 1247 OID 16928)
+-- TOC entry 919 (class 1247 OID 17156)
 -- Name: LessonType; Type: TYPE; Schema: public; Owner: -
 --
 
 CREATE TYPE public."LessonType" AS ENUM (
     'LECTURE',
-    'SEMINAR'
+    'PRACTICE',
+    'LABORATORY'
 );
 
 
@@ -258,9 +259,9 @@ INSERT INTO public.databasechangeloglock VALUES (1, false, NULL, NULL);
 -- Data for Name: groups; Type: TABLE DATA; Schema: public; Owner: -
 --
 
-INSERT INTO public.groups VALUES ('42ebaa8f-d4c9-4b8e-8962-e2657871cc42', 'ИВ-223', 'ИВТ');
-INSERT INTO public.groups VALUES ('9f7706b2-ce24-4042-af4a-4302a23d521f', 'ИВ-221', 'ИВТ');
-INSERT INTO public.groups VALUES ('f4b6dabb-e19c-47d8-983d-0c0c482f1a36', 'ИВ-222', 'ИВТ');
+INSERT INTO public.groups VALUES ('42ebaa8f-d4c9-4b8e-8962-e2657871cc42', 'ИВ-223', 'CSE');
+INSERT INTO public.groups VALUES ('9f7706b2-ce24-4042-af4a-4302a23d521f', 'ИВ-221', 'CSE');
+INSERT INTO public.groups VALUES ('f4b6dabb-e19c-47d8-983d-0c0c482f1a36', 'ИВ-222', 'CSE');
 
 
 --
@@ -291,9 +292,9 @@ INSERT INTO public.responses VALUES ('d781c5a0-765e-4461-948a-30d5b1b42a9d', '20
 -- Data for Name: schedules; Type: TABLE DATA; Schema: public; Owner: -
 --
 
-INSERT INTO public.schedules VALUES ('67f0ffe0-3f40-4ad4-9610-3996dda5a81a', 'db8c7352-c723-4dbe-b37c-66edbcb9dcca', '42ebaa8f-d4c9-4b8e-8962-e2657871cc42', 'e4727d51-d25f-4e19-a6e7-dfd57334b594', 'SEMINAR');
-INSERT INTO public.schedules VALUES ('aaa15d2e-1b85-4ee1-999f-0dcd7ccfc5b5', '1743862a-7833-43e7-8321-2ac5eff2ee3e', '9f7706b2-ce24-4042-af4a-4302a23d521f', '39f4a254-0619-4a30-a7d1-d49c0e7ad394', 'SEMINAR');
-INSERT INTO public.schedules VALUES ('c709e770-4538-479f-8449-6d6de29754cd', 'b5edeadc-1026-42b9-9fc0-090e26f06e54', 'f4b6dabb-e19c-47d8-983d-0c0c482f1a36', 'cc5fa67e-2774-4fc9-a803-944d44f4019a', 'SEMINAR');
+INSERT INTO public.schedules VALUES ('67f0ffe0-3f40-4ad4-9610-3996dda5a81a', 'db8c7352-c723-4dbe-b37c-66edbcb9dcca', '42ebaa8f-d4c9-4b8e-8962-e2657871cc42', 'e4727d51-d25f-4e19-a6e7-dfd57334b594', 'PRACTICE');
+INSERT INTO public.schedules VALUES ('aaa15d2e-1b85-4ee1-999f-0dcd7ccfc5b5', '1743862a-7833-43e7-8321-2ac5eff2ee3e', '9f7706b2-ce24-4042-af4a-4302a23d521f', '39f4a254-0619-4a30-a7d1-d49c0e7ad394', 'PRACTICE');
+INSERT INTO public.schedules VALUES ('c709e770-4538-479f-8449-6d6de29754cd', 'b5edeadc-1026-42b9-9fc0-090e26f06e54', 'f4b6dabb-e19c-47d8-983d-0c0c482f1a36', 'cc5fa67e-2774-4fc9-a803-944d44f4019a', 'PRACTICE');
 
 
 --
@@ -335,9 +336,9 @@ INSERT INTO public.tasks VALUES ('eddbfa43-fe13-4e7e-b768-1b17194803dd', 'Лаб
 -- Data for Name: teachers; Type: TABLE DATA; Schema: public; Owner: -
 --
 
-INSERT INTO public.teachers VALUES ('39f4a254-0619-4a30-a7d1-d49c0e7ad394', 'Иванович', 'Петров', 'Иван', 'ivt-1', 'j83bHI7e', '+79136307529', 'ivan.petrov@mail.com', '1980-05-15', 'Преподаватель', 'ИВТ');
-INSERT INTO public.teachers VALUES ('cc5fa67e-2774-4fc9-a803-944d44f4019a', 'Сергеевна', 'Смирнова', 'Анна', 'ivt-2', '9JG7bn60', '89136402306', 'anna.smirnova@mail.com', '1985-07-20', 'Старший преподаватель', 'ИВТ');
-INSERT INTO public.teachers VALUES ('e4727d51-d25f-4e19-a6e7-dfd57334b594', 'Александрович', 'Кузнецов', 'Алексей', 'ivt-3', 'K86K1d7q', '89230907642', 'alexey.kuznetsov@mail.com', '1978-09-10', 'Младший преподаватель', 'ИВТ');
+INSERT INTO public.teachers VALUES ('39f4a254-0619-4a30-a7d1-d49c0e7ad394', 'Иванович', 'Петров', 'Иван', 'ivt-1', 'j83bHI7e', '+79136307529', 'ivan.petrov@mail.com', '1980-05-15', 'Преподаватель', 'CSE');
+INSERT INTO public.teachers VALUES ('cc5fa67e-2774-4fc9-a803-944d44f4019a', 'Сергеевна', 'Смирнова', 'Анна', 'ivt-2', '9JG7bn60', '89136402306', 'anna.smirnova@mail.com', '1985-07-20', 'Старший преподаватель', 'CSE');
+INSERT INTO public.teachers VALUES ('e4727d51-d25f-4e19-a6e7-dfd57334b594', 'Александрович', 'Кузнецов', 'Алексей', 'ivt-3', 'K86K1d7q', '89230907642', 'alexey.kuznetsov@mail.com', '1978-09-10', 'Младший преподаватель', 'CSE');
 
 
 --
@@ -511,7 +512,7 @@ ALTER TABLE ONLY public.tasks
     ADD CONSTRAINT tasks_teacher_id_fkey FOREIGN KEY (teacher_id) REFERENCES public.teachers(id) ON UPDATE CASCADE ON DELETE CASCADE;
 
 
--- Completed on 2025-02-04 22:41:55 +07
+-- Completed on 2025-03-06 17:33:29 +07
 
 --
 -- PostgreSQL database dump complete
