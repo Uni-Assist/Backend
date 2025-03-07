@@ -43,11 +43,11 @@ public class Student {
     @Column(name = "group_id", nullable = false)
     private UUID groupId;
 
-    public UUID getStudentId() {
+    public UUID getId() {
         return id;
     }
 
-    public void setStudentId(UUID studentId) {
+    public void setId(UUID studentId) {
         this.id = studentId;
     }
 
