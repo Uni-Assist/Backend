@@ -2,6 +2,7 @@ package com.example.UniAssist.model.entity;
 
 import com.example.UniAssist.type.ResponseType;
 import jakarta.persistence.*;
+import org.hibernate.annotations.GenericGenerator;
 
 import java.util.UUID;
 
@@ -10,6 +11,11 @@ import java.util.UUID;
 public class Response {
 
     @Id
+    @GeneratedValue(generator = "UUID")
+    @GenericGenerator(
+            name = "UUID",
+            strategy = "org.hibernate.id.UUIDGenerator"
+    )
     @Column(name = "id", updatable = false, nullable = false)
     private UUID id;
 

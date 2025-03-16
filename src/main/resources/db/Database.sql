@@ -152,7 +152,7 @@ CREATE TABLE public.responses (
     task_id uuid NOT NULL,
     body text,
     mark integer,
-    type public."ResponseType" NOT NULL,
+    type varchar NOT NULL,
     CONSTRAINT responses_mark_check CHECK (((mark >= 0) AND (mark <= 100)))
 );
 
