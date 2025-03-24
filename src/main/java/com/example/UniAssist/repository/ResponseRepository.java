@@ -19,7 +19,7 @@ public interface ResponseRepository extends JpaRepository<Response, UUID> {
             r.id, r.studentId, r.body, r.mark
         )
         FROM Response r
-        WHERE r.TaskId = :taskId
+        WHERE r.taskId = :taskId
     """)
     List<TeacherResponseDTO> findResponsesByTaskId(@Param("taskId") UUID taskId);
 
@@ -28,7 +28,7 @@ public interface ResponseRepository extends JpaRepository<Response, UUID> {
             r.id, r.studentId, r.body, r.mark
         )
         FROM Response r
-        WHERE r.TaskId = :taskId
+        WHERE r.taskId = :taskId
     """)
     StudentResponseDTO findResponseByTaskId(@Param("taskId") UUID taskId);
 }

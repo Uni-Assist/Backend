@@ -17,7 +17,7 @@ public class Response {
     private UUID studentId;
 
     @Column(name = "task_id", nullable = false)
-    private UUID TaskId;
+    private UUID taskId;
 
     @Column(name = "body")
     private String body;
@@ -46,11 +46,11 @@ public class Response {
     }
 
     public UUID getTaskId() {
-        return TaskId;
+        return taskId;
     }
 
     public void setTaskId(UUID taskId) {
-        TaskId = taskId;
+        this.taskId = taskId;
     }
 
     public String getBody() {

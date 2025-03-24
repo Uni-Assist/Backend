@@ -1,9 +1,6 @@
 package com.example.UniAssist.mapper;
 
 import com.example.UniAssist.model.dto.StudentScheduleDTO;
-import com.example.UniAssist.model.entity.Lesson;
-import com.example.UniAssist.model.entity.Schedule;
-import com.example.UniAssist.model.entity.Subject;
 
 public class StudentScheduleMapper {
     public static StudentScheduleDTO toDTO(StudentScheduleDTO entity, String taskHeader) {
