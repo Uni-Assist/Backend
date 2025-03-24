@@ -16,9 +16,9 @@ public interface StudentRepository extends JpaRepository<Student, UUID> {
     UUID findGroupIdByStudentId(@Param("studentId") UUID studentId);
 
     @Query("""
-        SELECT new com.example.UniAssist.model.dto.AuthDTO(s.id, s.password)
+        SELECT new com.example.UniAssist.model.dto.AuthDTO(s.id, s.password, s.groupId, null, s.middleName, s.lastName, s.firstName)
         FROM Student s
         WHERE s.login = :login
     """)
-    AuthDTO findIdAndPasswordByLogin(@Param("login") String login);
+    AuthDTO findAuthDataByLogin(@Param("login") String login);
 }
