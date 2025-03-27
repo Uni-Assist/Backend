@@ -28,7 +28,6 @@ dependencies {
 	implementation("io.jsonwebtoken:jjwt-jackson:0.12.6")
 	implementation("org.liquibase:liquibase-core")
 	implementation("org.postgresql:postgresql")
-	implementation ("org.hibernate.orm:hibernate-core:6.2.7.Final")
 	testImplementation("org.springframework.boot:spring-boot-starter-test")
 	testRuntimeOnly("org.junit.platform:junit-platform-launcher")
 	liquibaseRuntime("org.liquibase:liquibase-core")

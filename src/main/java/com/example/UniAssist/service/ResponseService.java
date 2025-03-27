@@ -1,9 +1,8 @@
 package com.example.UniAssist.service;
 
-import com.example.UniAssist.model.entity.Response;
-import com.example.UniAssist.mapper.ResponseMapper;
+import com.example.UniAssist.model.dto.StudentResponseRequest;
+import com.example.UniAssist.model.dto.UpdateMarkRequest;
 import com.example.UniAssist.repository.ResponseRepository;
-import com.example.UniAssist.type.ResponseType;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -19,22 +18,15 @@ public class ResponseService {
         this.responseRepository = responseRepository;
     }
 
-    public String processStudentResponse(UUID studentId, UUID taskId, String body, ResponseType type) {
-        Response response = new Response();
-        response.setStudentId(studentId);
-        response.setTaskId(taskId);
-        response.setBody(body);
-        response.setType(type);
+    public String processStudentResponse(UUID studentId, StudentResponseRequest request) {
+        responseRepository.saveResponse(studentId, request.getTaskId(), request.getBody(), request.getType());
 
-        responseRepository.save(response);
         return "";
     }
 
-    public String updateResponseMark(UUID id, Integer mark) {
-        return responseRepository.findById(id)
-                .map(response -> ResponseMapper.updateMark(response, mark))
-                .map(responseRepository::save)
-                .map(updated -> "")
-                .orElse("");
+    public String updateResponseMark(UpdateMarkRequest request) {
+        responseRepository.updateMark(request.getId(), request.getMark());
+
+        return "";
     }
 }

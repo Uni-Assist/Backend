@@ -25,19 +25,14 @@ public class ResponseController {
     public ResponseEntity<String> submitResponse(
             @RequestBody StudentResponseRequest request,
             @AuthenticationPrincipal String studentId) {
-        String result = responseService.processStudentResponse(
-                UUID.fromString(studentId),
-                request.getTaskId(),
-                request.getBody(),
-                request.getType()
-        );
+        String result = responseService.processStudentResponse(UUID.fromString(studentId), request);
         return ResponseEntity.ok(result);
     }
 
     @PatchMapping("/teacher")
     public ResponseEntity<String> updateResponseMark(
             @RequestBody UpdateMarkRequest request) {
-        String result = responseService.updateResponseMark(request.getId(), request.getMark());
+        String result = responseService.updateResponseMark(request);
         return ResponseEntity.ok(result);
     }
 }
