@@ -21,12 +21,12 @@ public class ResponseService {
     public String processStudentResponse(UUID studentId, StudentResponseRequest request) {
         responseRepository.saveResponse(studentId, request.getTaskId(), request.getBody(), request.getType());
 
-        return "";
+        return "Success";
     }
 
     public String updateResponseMark(UpdateMarkRequest request) {
         responseRepository.updateMark(request.getId(), request.getMark());
 
-        return "";
+        return "Success";
     }
 }

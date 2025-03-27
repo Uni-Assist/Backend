@@ -4,7 +4,7 @@ import java.util.UUID;
 
 public class UpdateMarkRequest {
     private UUID id;
-    private Integer mark;
+    private int mark;
 
     public UUID getId() {
         return id;
@@ -14,11 +14,11 @@ public class UpdateMarkRequest {
         this.id = id;
     }
 
-    public Integer getMark() {
+    public int getMark() {
         return mark;
     }
 
-    public void setMark(Integer mark) {
+    public void setMark(int mark) {
         this.mark = mark;
     }
 }
