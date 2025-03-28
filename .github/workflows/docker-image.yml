@@ -43,3 +43,7 @@ jobs:
           REPO_NAME=$(echo "${{ github.repository }}" | tr '[:upper:]' '[:lower:]')
           docker tag ghcr.io/$REPO_NAME/app:latest ghcr.io/$REPO_NAME/app:latest
           docker push ghcr.io/$REPO_NAME/app:latest
+
+      - name: Trigger deploy
+        run: |
+          curl -X POST ${{ secrets.RENDER_DEPLOY_HOOK }}
