@@ -43,12 +43,12 @@ public class Student {
     @Column(name = "group_id", nullable = false)
     private UUID groupId;
 
-    public UUID getStudentId() {
+    public UUID getId() {
         return id;
     }
 
-    public void setStudentId(UUID studentId) {
-        this.id = studentId;
+    public void setId(UUID id) {
+        this.id = id;
     }
 
     public String getMiddleName() {
