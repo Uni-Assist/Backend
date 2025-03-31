@@ -2,6 +2,7 @@ package com.example.UniAssist.service;
 
 import com.example.UniAssist.exception.LessonNotFound;
 import com.example.UniAssist.model.dto.*;
+import com.example.UniAssist.projection.FullNameProjection;
 import com.example.UniAssist.repository.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -17,6 +18,7 @@ public class LessonService {
     private final ResponseRepository responseRepository;
     private final TaskRepository taskRepository;
     private final StudentRepository studentRepository;
+    private final TeacherRepository teacherRepository;
 
     @Autowired
     public LessonService(
@@ -24,12 +26,14 @@ public class LessonService {
             LessonRepository lessonRepository,
             ResponseRepository responseRepository,
             TaskRepository taskRepository,
-            StudentRepository studentRepository) {
+            StudentRepository studentRepository,
+            TeacherRepository teacherRepository) {
         this.groupRepository = groupRepository;
         this.lessonRepository = lessonRepository;
         this.responseRepository = responseRepository;
         this.taskRepository = taskRepository;
         this.studentRepository = studentRepository;
+        this.teacherRepository = teacherRepository;
     }
 
     public TeacherLessonDTO getTeacherLesson(UUID teacherId, UUID lessonId) {
@@ -37,7 +41,7 @@ public class LessonService {
         if (lesson == null) {
             throw new LessonNotFound("Lesson not found");
         }
-        lesson.setName(groupRepository.findGroupNameById(lesson.getGroupId()));
+        lesson.setGroupName(groupRepository.findGroupNameById(lesson.getGroupId()));
         TeacherTaskDTO task = taskRepository.findTaskByLessonIdForTeacher(lessonId);
         if (task == null) {
             return lesson;
@@ -54,8 +58,8 @@ public class LessonService {
         if (lesson == null) {
             throw new LessonNotFound("Lesson not found");
         }
-        lesson.setName(groupRepository.findGroupNameById(groupId));
-        lesson.setGroupId(groupId);
+        FullNameProjection fullName = teacherRepository.findFullNameByTeacherId(lesson.getTeacherId());
+        lesson.setFullName(fullName.getLastName() + " " + fullName.getFirstName() + " " + fullName.getMiddleName());
         StudentTaskDTO task = taskRepository.findTaskByLessonIdForStudent(lessonId);
         if (task == null) {
             return lesson;

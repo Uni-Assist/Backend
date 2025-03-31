@@ -7,9 +7,9 @@ import java.time.LocalTime;
 import java.util.UUID;
 
 public class TeacherLessonDTO {
-    private String subject;
-    private String name;
+    private String subjectName;
     private UUID groupId;
+    private String groupName;
     private LocalTime startTime;
     private LocalTime endTime;
     private String classroom;
@@ -19,10 +19,10 @@ public class TeacherLessonDTO {
 
     public TeacherLessonDTO() {}
 
-    public TeacherLessonDTO(String subject, String name, UUID groupId, LocalTime startTime, LocalTime endTime, String classroom, LocalDate date, LessonType type, TeacherTaskDTO task) {
-        this.subject = subject;
-        this.name = name;
+    public TeacherLessonDTO(String subjectName, UUID groupId, String groupName, LocalTime startTime, LocalTime endTime, String classroom, LocalDate date, LessonType type, TeacherTaskDTO task) {
+        this.subjectName = subjectName;
         this.groupId = groupId;
+        this.groupName = groupName;
         this.startTime = startTime;
         this.endTime = endTime;
         this.classroom = classroom;
@@ -31,20 +31,12 @@ public class TeacherLessonDTO {
         this.task = task;
     }
 
-    public String getSubject() {
-        return subject;
+    public String getSubjectName() {
+        return subjectName;
     }
 
-    public void setSubject(String subject) {
-        this.subject = subject;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
+    public void setSubjectName(String subjectName) {
+        this.subjectName = subjectName;
     }
 
     public UUID getGroupId() {
@@ -53,6 +45,14 @@ public class TeacherLessonDTO {
 
     public void setGroupId(UUID groupId) {
         this.groupId = groupId;
+    }
+
+    public String getGroupName() {
+        return groupName;
+    }
+
+    public void setGroupName(String groupName) {
+        this.groupName = groupName;
     }
 
     public LocalTime getStartTime() {

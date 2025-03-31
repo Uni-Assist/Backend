@@ -7,9 +7,9 @@ import java.time.LocalTime;
 import java.util.UUID;
 
 public class StudentLessonDTO {
-    private String subject;
-    private String name;
-    private UUID groupId;
+    private String subjectName;
+    private UUID teacherId;
+    private String fullName;
     private LocalTime startTime;
     private LocalTime endTime;
     private String classroom;
@@ -19,10 +19,10 @@ public class StudentLessonDTO {
 
     public StudentLessonDTO() {}
 
-    public StudentLessonDTO(String subject, String name, UUID groupId, LocalTime startTime, LocalTime endTime, String classroom, LocalDate date, LessonType type, StudentTaskDTO task) {
-        this.subject = subject;
-        this.name = name;
-        this.groupId = groupId;
+    public StudentLessonDTO(String subjectName, UUID teacherId, String fullName, LocalTime startTime, LocalTime endTime, String classroom, LocalDate date, LessonType type, StudentTaskDTO task) {
+        this.subjectName = subjectName;
+        this.teacherId = teacherId;
+        this.fullName = fullName;
         this.startTime = startTime;
         this.endTime = endTime;
         this.classroom = classroom;
@@ -31,28 +31,28 @@ public class StudentLessonDTO {
         this.task = task;
     }
 
-    public String getSubject() {
-        return subject;
+    public String getSubjectName() {
+        return subjectName;
     }
 
-    public void setSubject(String subject) {
-        this.subject = subject;
+    public void setSubjectName(String subjectName) {
+        this.subjectName = subjectName;
     }
 
-    public String getName() {
-        return name;
+    public UUID getTeacherId() {
+        return teacherId;
     }
 
-    public void setName(String name) {
-        this.name = name;
+    public void setTeacherId(UUID teacherId) {
+        this.teacherId = teacherId;
     }
 
-    public UUID getGroupId() {
-        return groupId;
+    public String getFullName() {
+        return fullName;
     }
 
-    public void setGroupId(UUID groupId) {
-        this.groupId = groupId;
+    public void setFullName(String fullName) {
+        this.fullName = fullName;
     }
 
     public LocalTime getStartTime() {

@@ -15,4 +15,7 @@ public interface TeacherRepository extends JpaRepository<Teacher, UUID> {
 
     @Query("SELECT t.id AS id, t.lastName AS lastName, t.middleName AS middleName, t.firstName AS firstName FROM Teacher t WHERE t.id IN :teacherIds")
     List<FullNameProjection> findFullNamesByTeacherIds(@Param("teacherIds") List<UUID> teacherIds);
+
+    @Query("SELECT t.id AS id, t.lastName AS lastName, t.middleName AS middleName, t.firstName AS firstName FROM Teacher t WHERE t.id IN :teacherId")
+    FullNameProjection findFullNameByTeacherId(@Param("teacherId") UUID teacherId);
 }

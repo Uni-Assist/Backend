@@ -15,7 +15,7 @@ public interface LessonRepository extends JpaRepository<Lesson, UUID> {
 
     @Query("""
         SELECT new com.example.UniAssist.model.dto.TeacherLessonDTO(
-            sub.name, null, s.groupId, l.startTime, l.endTime, l.classroom, l.date, s.type, null
+            sub.name, s.groupId, null, l.startTime, l.endTime, l.classroom, l.date, s.type, null
         )
         FROM Lesson l
         JOIN Schedule s ON l.scheduleId = s.id
@@ -29,7 +29,7 @@ public interface LessonRepository extends JpaRepository<Lesson, UUID> {
 
     @Query("""
         SELECT new com.example.UniAssist.model.dto.StudentLessonDTO(
-            sub.name, null, null, l.startTime, l.endTime, l.classroom, l.date, s.type, null
+            sub.name, s.teacherId, null, l.startTime, l.endTime, l.classroom, l.date, s.type, null
         )
         FROM Lesson l
         JOIN Schedule s ON l.scheduleId = s.id
