@@ -7,25 +7,25 @@ import java.util.UUID;
 
 public class TeacherScheduleDTO {
     private UUID id;
-    private String name;
+    private String subjectName;
     private UUID groupId;
+    private String groupName;
     private LocalTime startTime;
     private LocalTime endTime;
     private String classroom;
-    private LocalDate date;
     private LessonType type;
     private String header;
 
     public TeacherScheduleDTO() {}
 
-    public TeacherScheduleDTO(UUID id, String name, UUID groupId, LocalTime startTime, LocalTime endTime, String classroom, LocalDate date, LessonType type, String header) {
+    public TeacherScheduleDTO(UUID id, String subjectName, UUID groupId, String groupName, LocalTime startTime, LocalTime endTime, String classroom, LessonType type, String header) {
         this.id = id;
-        this.name = name;
+        this.subjectName = subjectName;
         this.groupId = groupId;
+        this.groupName = groupName;
         this.startTime = startTime;
         this.endTime = endTime;
         this.classroom = classroom;
-        this.date = date;
         this.type = type;
         this.header = header;
     }
@@ -38,12 +38,12 @@ public class TeacherScheduleDTO {
         this.id = id;
     }
 
-    public String getName() {
-        return name;
+    public String getSubjectName() {
+        return subjectName;
     }
 
-    public void setName(String name) {
-        this.name = name;
+    public void setSubjectName(String subjectName) {
+        this.subjectName = subjectName;
     }
 
     public UUID getGroupId() {
@@ -52,6 +52,14 @@ public class TeacherScheduleDTO {
 
     public void setGroupId(UUID groupId) {
         this.groupId = groupId;
+    }
+
+    public String getGroupName() {
+        return groupName;
+    }
+
+    public void setGroupName(String groupName) {
+        this.groupName = groupName;
     }
 
     public LocalTime getStartTime() {
@@ -76,14 +84,6 @@ public class TeacherScheduleDTO {
 
     public void setClassroom(String classroom) {
         this.classroom = classroom;
-    }
-
-    public LocalDate getDate() {
-        return date;
-    }
-
-    public void setDate(LocalDate date) {
-        this.date = date;
     }
 
     public LessonType getType() {
