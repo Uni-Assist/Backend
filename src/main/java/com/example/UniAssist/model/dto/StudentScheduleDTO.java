@@ -1,31 +1,30 @@
 package com.example.UniAssist.model.dto;
 import com.example.UniAssist.type.LessonType;
 
-import java.time.LocalDate;
 import java.time.LocalTime;
 import java.util.UUID;
 
 public class StudentScheduleDTO {
     private UUID id;
-    private String name;
+    private String subjectName;
     private UUID teacherId;
+    private String fullName;
     private LocalTime startTime;
     private LocalTime endTime;
     private String classroom;
-    private LocalDate date;
     private LessonType type;
     private String header;
 
     public StudentScheduleDTO() {}
 
-    public StudentScheduleDTO(UUID id, String name, UUID teacherId, LocalTime startTime, LocalTime endTime, String classroom, LocalDate date, LessonType type, String header) {
+    public StudentScheduleDTO(UUID id, String subjectName, UUID teacherId, String fullName, LocalTime startTime, LocalTime endTime, String classroom, LessonType type, String header) {
         this.id = id;
-        this.name = name;
+        this.subjectName = subjectName;
         this.teacherId = teacherId;
+        this.fullName = fullName;
         this.startTime = startTime;
         this.endTime = endTime;
         this.classroom = classroom;
-        this.date = date;
         this.type = type;
         this.header = header;
     }
@@ -38,12 +37,12 @@ public class StudentScheduleDTO {
         this.id = id;
     }
 
-    public String getName() {
-        return name;
+    public String getSubjectName() {
+        return subjectName;
     }
 
-    public void setName(String name) {
-        this.name = name;
+    public void setSubjectName(String subjectName) {
+        this.subjectName = subjectName;
     }
 
     public UUID getTeacherId() {
@@ -52,6 +51,14 @@ public class StudentScheduleDTO {
 
     public void setTeacherId(UUID teacherId) {
         this.teacherId = teacherId;
+    }
+
+    public String getFullName() {
+        return fullName;
+    }
+
+    public void setFullName(String fullName) {
+        this.fullName = fullName;
     }
 
     public LocalTime getStartTime() {
@@ -76,14 +83,6 @@ public class StudentScheduleDTO {
 
     public void setClassroom(String classroom) {
         this.classroom = classroom;
-    }
-
-    public LocalDate getDate() {
-        return date;
-    }
-
-    public void setDate(LocalDate date) {
-        this.date = date;
     }
 
     public LessonType getType() {

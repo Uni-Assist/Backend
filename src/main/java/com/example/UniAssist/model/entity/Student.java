@@ -47,8 +47,8 @@ public class Student {
         return id;
     }
 
-    public void setId(UUID studentId) {
-        this.id = studentId;
+    public void setId(UUID id) {
+        this.id = id;
     }
 
     public String getMiddleName() {
