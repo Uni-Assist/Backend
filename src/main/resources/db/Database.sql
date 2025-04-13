@@ -2,10 +2,10 @@
 -- PostgreSQL database dump
 --
 
--- Dumped from database version 16.6 (Ubuntu 16.6-0ubuntu0.24.04.1)
--- Dumped by pg_dump version 16.6 (Ubuntu 16.6-0ubuntu0.24.04.1)
+-- Dumped from database version 16.8 (Ubuntu 16.8-0ubuntu0.24.04.1)
+-- Dumped by pg_dump version 16.8 (Ubuntu 16.8-0ubuntu0.24.04.1)
 
--- Started on 2025-03-06 17:33:29 +07
+-- Started on 2025-04-13 15:45:21 +07
 
 SET statement_timeout = 0;
 SET lock_timeout = 0;
@@ -19,7 +19,7 @@ SET client_min_messages = warning;
 SET row_security = off;
 
 --
--- TOC entry 2 (class 3079 OID 16884)
+-- TOC entry 2 (class 3079 OID 17837)
 -- Name: pgcrypto; Type: EXTENSION; Schema: -; Owner: -
 --
 
@@ -27,7 +27,7 @@ CREATE EXTENSION IF NOT EXISTS pgcrypto WITH SCHEMA public;
 
 
 --
--- TOC entry 3528 (class 0 OID 0)
+-- TOC entry 3548 (class 0 OID 0)
 -- Dependencies: 2
 -- Name: EXTENSION pgcrypto; Type: COMMENT; Schema: -; Owner: -
 --
@@ -36,7 +36,7 @@ COMMENT ON EXTENSION pgcrypto IS 'cryptographic functions';
 
 
 --
--- TOC entry 922 (class 1247 OID 17164)
+-- TOC entry 889 (class 1247 OID 17875)
 -- Name: Department; Type: TYPE; Schema: public; Owner: -
 --
 
@@ -48,11 +48,11 @@ CREATE TYPE public."Department" AS ENUM (
     'DL',
     'MRM',
     'HF'
-);
+    );
 
 
 --
--- TOC entry 919 (class 1247 OID 17156)
+-- TOC entry 892 (class 1247 OID 17890)
 -- Name: LessonType; Type: TYPE; Schema: public; Owner: -
 --
 
@@ -60,18 +60,52 @@ CREATE TYPE public."LessonType" AS ENUM (
     'LECTURE',
     'PRACTICE',
     'LABORATORY'
-);
+    );
 
 
 --
--- TOC entry 886 (class 1247 OID 16922)
+-- TOC entry 895 (class 1247 OID 17898)
 -- Name: ResponseType; Type: TYPE; Schema: public; Owner: -
 --
 
 CREATE TYPE public."ResponseType" AS ENUM (
     'TEXT',
     'FILE'
-);
+    );
+
+
+--
+-- TOC entry 264 (class 1255 OID 17903)
+-- Name: create_lesson_partition(); Type: FUNCTION; Schema: public; Owner: -
+--
+
+CREATE FUNCTION public.create_lesson_partition() RETURNS trigger
+    LANGUAGE plpgsql
+AS $$
+DECLARE
+    partition_name TEXT;
+    partition_start DATE;
+    partition_end DATE;
+BEGIN
+    partition_start := date_trunc('month', NEW.date)::DATE;
+    partition_end := (partition_start + INTERVAL '1 month')::DATE;
+    partition_name := 'lessons_' || to_char(partition_start, 'YYYY_MM');
+
+    IF NOT EXISTS (
+        SELECT 1 FROM pg_partitioned_table pt
+                          JOIN pg_class c ON pt.partrelid = c.oid
+                          JOIN pg_namespace n ON c.relnamespace = n.oid
+        WHERE c.relname = partition_name AND n.nspname = 'public'
+    ) THEN
+        EXECUTE format(
+                'CREATE TABLE %I PARTITION OF lessons FOR VALUES FROM (%L) TO (%L)',
+                partition_name, partition_start, partition_end
+                );
+    END IF;
+
+    RETURN NEW;
+END;
+$$;
 
 
 SET default_tablespace = '';
@@ -79,165 +113,212 @@ SET default_tablespace = '';
 SET default_table_access_method = heap;
 
 --
--- TOC entry 216 (class 1259 OID 16933)
+-- TOC entry 216 (class 1259 OID 17904)
 -- Name: databasechangelog; Type: TABLE; Schema: public; Owner: -
 --
 
 CREATE TABLE public.databasechangelog (
-    id character varying(255) NOT NULL,
-    author character varying(255) NOT NULL,
-    filename character varying(255) NOT NULL,
-    dateexecuted timestamp without time zone NOT NULL,
-    orderexecuted integer NOT NULL,
-    exectype character varying(10) NOT NULL,
-    md5sum character varying(35),
-    description character varying(255),
-    comments character varying(255),
-    tag character varying(255),
-    liquibase character varying(20),
-    contexts character varying(255),
-    labels character varying(255),
-    deployment_id character varying(10)
+                                          id character varying(255) NOT NULL,
+                                          author character varying(255) NOT NULL,
+                                          filename character varying(255) NOT NULL,
+                                          dateexecuted timestamp without time zone NOT NULL,
+                                          orderexecuted integer NOT NULL,
+                                          exectype character varying(10) NOT NULL,
+                                          md5sum character varying(35),
+                                          description character varying(255),
+                                          comments character varying(255),
+                                          tag character varying(255),
+                                          liquibase character varying(20),
+                                          contexts character varying(255),
+                                          labels character varying(255),
+                                          deployment_id character varying(10)
 );
 
 
 --
--- TOC entry 217 (class 1259 OID 16938)
+-- TOC entry 217 (class 1259 OID 17909)
 -- Name: databasechangeloglock; Type: TABLE; Schema: public; Owner: -
 --
 
 CREATE TABLE public.databasechangeloglock (
-    id integer NOT NULL,
-    locked boolean NOT NULL,
-    lockgranted timestamp without time zone,
-    lockedby character varying(255)
+                                              id integer NOT NULL,
+                                              locked boolean NOT NULL,
+                                              lockgranted timestamp without time zone,
+                                              lockedby character varying(255)
 );
 
 
 --
--- TOC entry 218 (class 1259 OID 16941)
+-- TOC entry 218 (class 1259 OID 17912)
 -- Name: groups; Type: TABLE; Schema: public; Owner: -
 --
 
 CREATE TABLE public.groups (
-    id uuid DEFAULT gen_random_uuid() NOT NULL,
-    name character varying(15) NOT NULL,
-    department public."Department" NOT NULL
+                               id uuid DEFAULT gen_random_uuid() NOT NULL,
+                               name character varying(15) NOT NULL,
+                               department public."Department" NOT NULL
 );
 
 
 --
--- TOC entry 225 (class 1259 OID 17048)
+-- TOC entry 219 (class 1259 OID 17916)
 -- Name: lessons; Type: TABLE; Schema: public; Owner: -
 --
 
 CREATE TABLE public.lessons (
-    id uuid DEFAULT gen_random_uuid() NOT NULL,
-    schedule_id uuid NOT NULL,
-    start_time time without time zone NOT NULL,
-    end_time time without time zone NOT NULL,
-    classroom character varying(10) NOT NULL,
-    date date NOT NULL
+                                id uuid DEFAULT gen_random_uuid() NOT NULL,
+                                schedule_id uuid NOT NULL,
+                                start_time time without time zone NOT NULL,
+                                end_time time without time zone NOT NULL,
+                                classroom character varying(10) NOT NULL,
+                                date date NOT NULL
+)
+    PARTITION BY RANGE (date);
+
+
+--
+-- TOC entry 220 (class 1259 OID 17920)
+-- Name: lessons_2024_12; Type: TABLE; Schema: public; Owner: -
+--
+
+CREATE TABLE public.lessons_2024_12 (
+                                        id uuid DEFAULT gen_random_uuid() NOT NULL,
+                                        schedule_id uuid NOT NULL,
+                                        start_time time without time zone NOT NULL,
+                                        end_time time without time zone NOT NULL,
+                                        classroom character varying(10) NOT NULL,
+                                        date date NOT NULL
 );
 
 
 --
--- TOC entry 219 (class 1259 OID 16945)
+-- TOC entry 221 (class 1259 OID 17924)
+-- Name: lessons_2025_03; Type: TABLE; Schema: public; Owner: -
+--
+
+CREATE TABLE public.lessons_2025_03 (
+                                        id uuid DEFAULT gen_random_uuid() NOT NULL,
+                                        schedule_id uuid NOT NULL,
+                                        start_time time without time zone NOT NULL,
+                                        end_time time without time zone NOT NULL,
+                                        classroom character varying(10) NOT NULL,
+                                        date date NOT NULL
+);
+
+
+--
+-- TOC entry 222 (class 1259 OID 17932)
 -- Name: responses; Type: TABLE; Schema: public; Owner: -
 --
 
 CREATE TABLE public.responses (
-    id uuid DEFAULT gen_random_uuid() NOT NULL,
-    student_id uuid NOT NULL,
-    task_id uuid NOT NULL,
-    body text,
-    mark integer,
-    type public."ResponseType" NOT NULL,
-    CONSTRAINT responses_mark_check CHECK (((mark >= 0) AND (mark <= 100)))
+                                  id uuid DEFAULT gen_random_uuid() NOT NULL,
+                                  student_id uuid NOT NULL,
+                                  task_id uuid NOT NULL,
+                                  body text,
+                                  mark integer,
+                                  type public."ResponseType" NOT NULL,
+                                  CONSTRAINT responses_mark_check CHECK (((mark >= 0) AND (mark <= 100)))
 );
 
 
 --
--- TOC entry 224 (class 1259 OID 17027)
+-- TOC entry 223 (class 1259 OID 17939)
 -- Name: schedules; Type: TABLE; Schema: public; Owner: -
 --
 
 CREATE TABLE public.schedules (
-    id uuid DEFAULT gen_random_uuid() NOT NULL,
-    subject_id uuid NOT NULL,
-    group_id uuid NOT NULL,
-    teacher_id uuid NOT NULL,
-    type public."LessonType" NOT NULL
+                                  id uuid DEFAULT gen_random_uuid() NOT NULL,
+                                  subject_id uuid NOT NULL,
+                                  group_id uuid NOT NULL,
+                                  teacher_id uuid NOT NULL,
+                                  type public."LessonType" NOT NULL
 );
 
 
 --
--- TOC entry 220 (class 1259 OID 16952)
+-- TOC entry 224 (class 1259 OID 17943)
 -- Name: students; Type: TABLE; Schema: public; Owner: -
 --
 
 CREATE TABLE public.students (
-    id uuid DEFAULT gen_random_uuid() NOT NULL,
-    middle_name character varying(15),
-    last_name character varying(15),
-    first_name character varying(15) NOT NULL,
-    login character varying(15) NOT NULL,
-    password character varying(15) NOT NULL,
-    phone character varying(20) NOT NULL,
-    email character varying(30) NOT NULL,
-    birthdate date NOT NULL,
-    group_id uuid NOT NULL
+                                 id uuid DEFAULT gen_random_uuid() NOT NULL,
+                                 middle_name character varying(15),
+                                 last_name character varying(15),
+                                 first_name character varying(15) NOT NULL,
+                                 login character varying(15) NOT NULL,
+                                 password character varying(15) NOT NULL,
+                                 phone character varying(20) NOT NULL,
+                                 email character varying(30) NOT NULL,
+                                 birthdate date NOT NULL,
+                                 group_id uuid NOT NULL
 );
 
 
 --
--- TOC entry 223 (class 1259 OID 17021)
+-- TOC entry 225 (class 1259 OID 17947)
 -- Name: subjects; Type: TABLE; Schema: public; Owner: -
 --
 
 CREATE TABLE public.subjects (
-    id uuid DEFAULT gen_random_uuid() NOT NULL,
-    name character varying(40) NOT NULL
+                                 id uuid DEFAULT gen_random_uuid() NOT NULL,
+                                 name character varying(40) NOT NULL
 );
 
 
 --
--- TOC entry 221 (class 1259 OID 16960)
+-- TOC entry 226 (class 1259 OID 17951)
 -- Name: tasks; Type: TABLE; Schema: public; Owner: -
 --
 
 CREATE TABLE public.tasks (
-    id uuid DEFAULT gen_random_uuid() NOT NULL,
-    header character varying(40) NOT NULL,
-    body text NOT NULL,
-    due_time timestamp without time zone NOT NULL,
-    teacher_id uuid,
-    lesson_id uuid
+                              id uuid DEFAULT gen_random_uuid() NOT NULL,
+                              header character varying(40) NOT NULL,
+                              body text NOT NULL,
+                              due_time timestamp without time zone NOT NULL,
+                              teacher_id uuid,
+                              lesson_id uuid
 );
 
 
 --
--- TOC entry 222 (class 1259 OID 16966)
+-- TOC entry 227 (class 1259 OID 17957)
 -- Name: teachers; Type: TABLE; Schema: public; Owner: -
 --
 
 CREATE TABLE public.teachers (
-    id uuid DEFAULT gen_random_uuid() NOT NULL,
-    middle_name character varying(15),
-    last_name character varying(15),
-    first_name character varying(15) NOT NULL,
-    login character varying(15) NOT NULL,
-    password character varying(15) NOT NULL,
-    phone character varying(20) NOT NULL,
-    email character varying(30) NOT NULL,
-    birthdate date NOT NULL,
-    job_title character varying(40) NOT NULL,
-    department public."Department" NOT NULL
+                                 id uuid DEFAULT gen_random_uuid() NOT NULL,
+                                 middle_name character varying(15),
+                                 last_name character varying(15),
+                                 first_name character varying(15) NOT NULL,
+                                 login character varying(15) NOT NULL,
+                                 password character varying(15) NOT NULL,
+                                 phone character varying(20) NOT NULL,
+                                 email character varying(30) NOT NULL,
+                                 birthdate date NOT NULL,
+                                 job_title character varying(40) NOT NULL,
+                                 department public."Department" NOT NULL
 );
 
 
 --
--- TOC entry 3513 (class 0 OID 16933)
+-- TOC entry 3341 (class 0 OID 0)
+-- Name: lessons_2024_12; Type: TABLE ATTACH; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.lessons ATTACH PARTITION public.lessons_2024_12 FOR VALUES FROM ('2024-12-01') TO ('2025-01-01');
+
+
+--
+-- TOC entry 3342 (class 0 OID 0)
+-- Name: lessons_2025_03; Type: TABLE ATTACH; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.lessons ATTACH PARTITION public.lessons_2025_03 FOR VALUES FROM ('2025-03-01') TO ('2025-04-01');
+
+
+--
+-- TOC entry 3532 (class 0 OID 17904)
 -- Dependencies: 216
 -- Data for Name: databasechangelog; Type: TABLE DATA; Schema: public; Owner: -
 --
@@ -245,7 +326,7 @@ CREATE TABLE public.teachers (
 
 
 --
--- TOC entry 3514 (class 0 OID 16938)
+-- TOC entry 3533 (class 0 OID 17909)
 -- Dependencies: 217
 -- Data for Name: databasechangeloglock; Type: TABLE DATA; Schema: public; Owner: -
 --
@@ -254,7 +335,7 @@ INSERT INTO public.databasechangeloglock VALUES (1, false, NULL, NULL);
 
 
 --
--- TOC entry 3515 (class 0 OID 16941)
+-- TOC entry 3534 (class 0 OID 17912)
 -- Dependencies: 218
 -- Data for Name: groups; Type: TABLE DATA; Schema: public; Owner: -
 --
@@ -265,19 +346,27 @@ INSERT INTO public.groups VALUES ('f4b6dabb-e19c-47d8-983d-0c0c482f1a36', 'ИВ-
 
 
 --
--- TOC entry 3522 (class 0 OID 17048)
--- Dependencies: 225
--- Data for Name: lessons; Type: TABLE DATA; Schema: public; Owner: -
+-- TOC entry 3535 (class 0 OID 17920)
+-- Dependencies: 220
+-- Data for Name: lessons_2024_12; Type: TABLE DATA; Schema: public; Owner: -
 --
 
-INSERT INTO public.lessons VALUES ('fd2942a4-abc3-4790-ba44-79a6c511a5c1', '67f0ffe0-3f40-4ad4-9610-3996dda5a81a', '09:00:00', '10:30:00', '303', '2024-12-12');
-INSERT INTO public.lessons VALUES ('afc81c75-0dfa-4576-a563-f572bbb8ab33', 'c709e770-4538-479f-8449-6d6de29754cd', '12:00:00', '13:30:00', '202', '2024-12-11');
-INSERT INTO public.lessons VALUES ('e01733c0-61f3-4d71-9713-15d874c2cd10', 'aaa15d2e-1b85-4ee1-999f-0dcd7ccfc5b5', '10:00:00', '11:30:00', '101', '2024-12-10');
+INSERT INTO public.lessons_2024_12 VALUES ('fd2942a4-abc3-4790-ba44-79a6c511a5c1', '67f0ffe0-3f40-4ad4-9610-3996dda5a81a', '09:00:00', '10:30:00', '303', '2024-12-12');
+INSERT INTO public.lessons_2024_12 VALUES ('afc81c75-0dfa-4576-a563-f572bbb8ab33', 'c709e770-4538-479f-8449-6d6de29754cd', '12:00:00', '13:30:00', '202', '2024-12-11');
+INSERT INTO public.lessons_2024_12 VALUES ('e01733c0-61f3-4d71-9713-15d874c2cd10', 'aaa15d2e-1b85-4ee1-999f-0dcd7ccfc5b5', '10:00:00', '11:30:00', '101', '2024-12-10');
 
 
 --
--- TOC entry 3516 (class 0 OID 16945)
--- Dependencies: 219
+-- TOC entry 3536 (class 0 OID 17924)
+-- Dependencies: 221
+-- Data for Name: lessons_2025_03; Type: TABLE DATA; Schema: public; Owner: -
+--
+
+
+
+--
+-- TOC entry 3537 (class 0 OID 17932)
+-- Dependencies: 222
 -- Data for Name: responses; Type: TABLE DATA; Schema: public; Owner: -
 --
 
@@ -287,8 +376,8 @@ INSERT INTO public.responses VALUES ('d781c5a0-765e-4461-948a-30d5b1b42a9d', '20
 
 
 --
--- TOC entry 3521 (class 0 OID 17027)
--- Dependencies: 224
+-- TOC entry 3538 (class 0 OID 17939)
+-- Dependencies: 223
 -- Data for Name: schedules; Type: TABLE DATA; Schema: public; Owner: -
 --
 
@@ -298,8 +387,8 @@ INSERT INTO public.schedules VALUES ('c709e770-4538-479f-8449-6d6de29754cd', 'b5
 
 
 --
--- TOC entry 3517 (class 0 OID 16952)
--- Dependencies: 220
+-- TOC entry 3539 (class 0 OID 17943)
+-- Dependencies: 224
 -- Data for Name: students; Type: TABLE DATA; Schema: public; Owner: -
 --
 
@@ -309,8 +398,8 @@ INSERT INTO public.students VALUES ('cfc4bf68-50b7-48d3-8321-992d5de83c74', 'И�
 
 
 --
--- TOC entry 3520 (class 0 OID 17021)
--- Dependencies: 223
+-- TOC entry 3540 (class 0 OID 17947)
+-- Dependencies: 225
 -- Data for Name: subjects; Type: TABLE DATA; Schema: public; Owner: -
 --
 
@@ -320,8 +409,8 @@ INSERT INTO public.subjects VALUES ('db8c7352-c723-4dbe-b37c-66edbcb9dcca', 'С�
 
 
 --
--- TOC entry 3518 (class 0 OID 16960)
--- Dependencies: 221
+-- TOC entry 3541 (class 0 OID 17951)
+-- Dependencies: 226
 -- Data for Name: tasks; Type: TABLE DATA; Schema: public; Owner: -
 --
 
@@ -331,8 +420,8 @@ INSERT INTO public.tasks VALUES ('eddbfa43-fe13-4e7e-b768-1b17194803dd', 'Лаб
 
 
 --
--- TOC entry 3519 (class 0 OID 16966)
--- Dependencies: 222
+-- TOC entry 3542 (class 0 OID 17957)
+-- Dependencies: 227
 -- Data for Name: teachers; Type: TABLE DATA; Schema: public; Owner: -
 --
 
@@ -342,7 +431,7 @@ INSERT INTO public.teachers VALUES ('e4727d51-d25f-4e19-a6e7-dfd57334b594', 'А�
 
 
 --
--- TOC entry 3342 (class 2606 OID 16971)
+-- TOC entry 3355 (class 2606 OID 17962)
 -- Name: databasechangeloglock databasechangeloglock_pkey; Type: CONSTRAINT; Schema: public; Owner: -
 --
 
@@ -351,7 +440,7 @@ ALTER TABLE ONLY public.databasechangeloglock
 
 
 --
--- TOC entry 3344 (class 2606 OID 16973)
+-- TOC entry 3357 (class 2606 OID 17964)
 -- Name: groups groups_pkey; Type: CONSTRAINT; Schema: public; Owner: -
 --
 
@@ -360,16 +449,34 @@ ALTER TABLE ONLY public.groups
 
 
 --
--- TOC entry 3360 (class 2606 OID 17053)
+-- TOC entry 3359 (class 2606 OID 17966)
 -- Name: lessons lessons_pkey; Type: CONSTRAINT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY public.lessons
-    ADD CONSTRAINT lessons_pkey PRIMARY KEY (id);
+    ADD CONSTRAINT lessons_pkey PRIMARY KEY (id, date);
 
 
 --
--- TOC entry 3346 (class 2606 OID 16975)
+-- TOC entry 3361 (class 2606 OID 17968)
+-- Name: lessons_2024_12 lessons_2024_12_pkey; Type: CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.lessons_2024_12
+    ADD CONSTRAINT lessons_2024_12_pkey PRIMARY KEY (id, date);
+
+
+--
+-- TOC entry 3363 (class 2606 OID 17970)
+-- Name: lessons_2025_03 lessons_2025_03_pkey; Type: CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.lessons_2025_03
+    ADD CONSTRAINT lessons_2025_03_pkey PRIMARY KEY (id, date);
+
+
+--
+-- TOC entry 3365 (class 2606 OID 17974)
 -- Name: responses responses_pkey; Type: CONSTRAINT; Schema: public; Owner: -
 --
 
@@ -378,7 +485,7 @@ ALTER TABLE ONLY public.responses
 
 
 --
--- TOC entry 3358 (class 2606 OID 17032)
+-- TOC entry 3367 (class 2606 OID 17976)
 -- Name: schedules schedules_pkey; Type: CONSTRAINT; Schema: public; Owner: -
 --
 
@@ -387,7 +494,7 @@ ALTER TABLE ONLY public.schedules
 
 
 --
--- TOC entry 3348 (class 2606 OID 16977)
+-- TOC entry 3369 (class 2606 OID 17978)
 -- Name: students students_pkey; Type: CONSTRAINT; Schema: public; Owner: -
 --
 
@@ -396,7 +503,7 @@ ALTER TABLE ONLY public.students
 
 
 --
--- TOC entry 3356 (class 2606 OID 17026)
+-- TOC entry 3371 (class 2606 OID 17980)
 -- Name: subjects subjects_pkey; Type: CONSTRAINT; Schema: public; Owner: -
 --
 
@@ -405,7 +512,7 @@ ALTER TABLE ONLY public.subjects
 
 
 --
--- TOC entry 3350 (class 2606 OID 16981)
+-- TOC entry 3373 (class 2606 OID 17982)
 -- Name: tasks tasks_lesson_id_key; Type: CONSTRAINT; Schema: public; Owner: -
 --
 
@@ -414,7 +521,7 @@ ALTER TABLE ONLY public.tasks
 
 
 --
--- TOC entry 3352 (class 2606 OID 16983)
+-- TOC entry 3375 (class 2606 OID 17984)
 -- Name: tasks tasks_pkey; Type: CONSTRAINT; Schema: public; Owner: -
 --
 
@@ -423,7 +530,7 @@ ALTER TABLE ONLY public.tasks
 
 
 --
--- TOC entry 3354 (class 2606 OID 16985)
+-- TOC entry 3377 (class 2606 OID 17986)
 -- Name: teachers teachers_pkey; Type: CONSTRAINT; Schema: public; Owner: -
 --
 
@@ -432,16 +539,40 @@ ALTER TABLE ONLY public.teachers
 
 
 --
--- TOC entry 3369 (class 2606 OID 17054)
+-- TOC entry 3378 (class 0 OID 0)
+-- Name: lessons_2024_12_pkey; Type: INDEX ATTACH; Schema: public; Owner: -
+--
+
+ALTER INDEX public.lessons_pkey ATTACH PARTITION public.lessons_2024_12_pkey;
+
+
+--
+-- TOC entry 3379 (class 0 OID 0)
+-- Name: lessons_2025_03_pkey; Type: INDEX ATTACH; Schema: public; Owner: -
+--
+
+ALTER INDEX public.lessons_pkey ATTACH PARTITION public.lessons_2025_03_pkey;
+
+
+--
+-- TOC entry 3388 (class 2620 OID 17987)
+-- Name: lessons lessons_partition_trigger; Type: TRIGGER; Schema: public; Owner: -
+--
+
+CREATE TRIGGER lessons_partition_trigger BEFORE INSERT ON public.lessons FOR EACH ROW EXECUTE FUNCTION public.create_lesson_partition();
+
+
+--
+-- TOC entry 3380 (class 2606 OID 17990)
 -- Name: lessons lessons_schedule_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
-ALTER TABLE ONLY public.lessons
+ALTER TABLE public.lessons
     ADD CONSTRAINT lessons_schedule_id_fkey FOREIGN KEY (schedule_id) REFERENCES public.schedules(id) ON UPDATE CASCADE ON DELETE CASCADE;
 
 
 --
--- TOC entry 3361 (class 2606 OID 17069)
+-- TOC entry 3381 (class 2606 OID 18001)
 -- Name: responses responses_student_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
@@ -450,7 +581,7 @@ ALTER TABLE ONLY public.responses
 
 
 --
--- TOC entry 3362 (class 2606 OID 17074)
+-- TOC entry 3382 (class 2606 OID 18006)
 -- Name: responses responses_task_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
@@ -459,7 +590,7 @@ ALTER TABLE ONLY public.responses
 
 
 --
--- TOC entry 3366 (class 2606 OID 17079)
+-- TOC entry 3383 (class 2606 OID 18011)
 -- Name: schedules schedules_group_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
@@ -468,7 +599,7 @@ ALTER TABLE ONLY public.schedules
 
 
 --
--- TOC entry 3367 (class 2606 OID 17033)
+-- TOC entry 3384 (class 2606 OID 18016)
 -- Name: schedules schedules_subject_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
@@ -477,7 +608,7 @@ ALTER TABLE ONLY public.schedules
 
 
 --
--- TOC entry 3368 (class 2606 OID 17084)
+-- TOC entry 3385 (class 2606 OID 18021)
 -- Name: schedules schedules_teacher_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
@@ -486,7 +617,7 @@ ALTER TABLE ONLY public.schedules
 
 
 --
--- TOC entry 3363 (class 2606 OID 17089)
+-- TOC entry 3386 (class 2606 OID 18026)
 -- Name: students students_group_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
@@ -495,16 +626,7 @@ ALTER TABLE ONLY public.students
 
 
 --
--- TOC entry 3364 (class 2606 OID 17064)
--- Name: tasks tasks_lesson_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: -
---
-
-ALTER TABLE ONLY public.tasks
-    ADD CONSTRAINT tasks_lesson_id_fkey FOREIGN KEY (lesson_id) REFERENCES public.lessons(id) ON UPDATE CASCADE ON DELETE CASCADE;
-
-
---
--- TOC entry 3365 (class 2606 OID 17094)
+-- TOC entry 3387 (class 2606 OID 18031)
 -- Name: tasks tasks_teacher_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
@@ -512,9 +634,8 @@ ALTER TABLE ONLY public.tasks
     ADD CONSTRAINT tasks_teacher_id_fkey FOREIGN KEY (teacher_id) REFERENCES public.teachers(id) ON UPDATE CASCADE ON DELETE CASCADE;
 
 
--- Completed on 2025-03-06 17:33:29 +07
+-- Completed on 2025-04-13 15:45:21 +07
 
 --
 -- PostgreSQL database dump complete
 --
-
