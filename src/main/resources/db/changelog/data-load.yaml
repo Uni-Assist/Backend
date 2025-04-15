@@ -1,0 +1,88 @@
+databaseChangeLog:
+  - changeSet:
+      id: load-groups
+      author: artem
+      runOnChange: true
+      changes:
+        - loadData:
+            file: classpath:db/changelog/data/groups.csv
+            tableName: groups
+            encoding: UTF-8
+            separator: ","
+
+  - changeSet:
+      id: load-teachers
+      author: artem
+      runOnChange: true
+      changes:
+        - loadData:
+            file: classpath:db/changelog/data/teachers.csv
+            tableName: teachers
+            encoding: UTF-8
+            separator: ","
+
+  - changeSet:
+      id: load-subjects
+      author: artem
+      runOnChange: true
+      changes:
+        - loadData:
+            file: classpath:db/changelog/data/subjects.csv
+            tableName: subjects
+            encoding: UTF-8
+            separator: ","
+
+  - changeSet:
+      id: load-students
+      author: artem
+      runOnChange: true
+      changes:
+        - loadData:
+            file: classpath:db/changelog/data/students.csv
+            tableName: students
+            encoding: UTF-8
+            separator: ","
+
+  - changeSet:
+      id: load-tasks
+      author: artem
+      runOnChange: true
+      changes:
+        - loadData:
+            file: classpath:db/changelog/data/tasks.csv
+            tableName: tasks
+            encoding: UTF-8
+            separator: ","
+
+  - changeSet:
+      id: load-schedules
+      author: artem
+      runOnChange: true
+      changes:
+        - loadData:
+            file: classpath:db/changelog/data/schedules.csv
+            tableName: schedules
+            encoding: UTF-8
+            separator: ","
+
+  - changeSet:
+      id: load-lessons
+      author: artem
+      runOnChange: true
+      changes:
+        - loadData:
+            file: classpath:db/changelog/data/lessons.csv
+            tableName: lessons
+            encoding: UTF-8
+            separator: ","
+
+  - changeSet:
+      id: load-responses
+      author: artem
+      runOnChange: true
+      changes:
+        - loadData:
+            file: classpath:db/changelog/data/responses.csv
+            tableName: responses
+            encoding: UTF-8
+            separator: ","
