@@ -1,7 +1,7 @@
 package com.example.UniAssist.model.dto;
+
 import com.example.UniAssist.type.LessonType;
 
-import java.time.LocalDate;
 import java.time.LocalTime;
 import java.util.UUID;
 

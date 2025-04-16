@@ -8,7 +8,7 @@ public class StudentScheduleDTO {
     private UUID id;
     private String subjectName;
     private UUID teacherId;
-    private String fullName;
+    private FullNameDTO fullName;
     private LocalTime startTime;
     private LocalTime endTime;
     private String classroom;
@@ -17,7 +17,7 @@ public class StudentScheduleDTO {
 
     public StudentScheduleDTO() {}
 
-    public StudentScheduleDTO(UUID id, String subjectName, UUID teacherId, String fullName, LocalTime startTime, LocalTime endTime, String classroom, LessonType type, String header) {
+    public StudentScheduleDTO(UUID id, String subjectName, UUID teacherId, FullNameDTO fullName, LocalTime startTime, LocalTime endTime, String classroom, LessonType type, String header) {
         this.id = id;
         this.subjectName = subjectName;
         this.teacherId = teacherId;
@@ -53,11 +53,11 @@ public class StudentScheduleDTO {
         this.teacherId = teacherId;
     }
 
-    public String getFullName() {
+    public FullNameDTO getFullName() {
         return fullName;
     }
 
-    public void setFullName(String fullName) {
+    public void setFullName(FullNameDTO fullName) {
         this.fullName = fullName;
     }
 

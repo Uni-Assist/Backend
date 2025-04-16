@@ -17,7 +17,7 @@ public interface ScheduleRepository extends JpaRepository<Schedule, UUID> {
 
     @Query("""
         SELECT new com.example.UniAssist.model.dto.StudentScheduleDTO(
-            l.id, sub.name, s.teacherId, '', l.startTime, l.endTime, l.classroom, s.type, ''
+            l.id, sub.name, s.teacherId, null, l.startTime, l.endTime, l.classroom, s.type, ''
         )
         FROM Schedule s
         JOIN Lesson l ON s.id = l.scheduleId

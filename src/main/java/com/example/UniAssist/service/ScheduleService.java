@@ -1,8 +1,10 @@
 package com.example.UniAssist.service;
 
 import com.example.UniAssist.exception.ScheduleNotFound;
+import com.example.UniAssist.mapper.FullNameMapper;
 import com.example.UniAssist.mapper.StudentScheduleMapper;
 import com.example.UniAssist.mapper.TeacherScheduleMapper;
+import com.example.UniAssist.model.dto.FullNameDTO;
 import com.example.UniAssist.model.dto.StudentScheduleDTO;
 import com.example.UniAssist.model.dto.TeacherScheduleDTO;
 import com.example.UniAssist.projection.FullNameProjection;
@@ -52,7 +54,7 @@ public class ScheduleService {
         Map<UUID, String> taskHeaders = fetchTaskHeaders(lessonsIds);
 
         List<UUID> teacherIds = schedule.stream().map(StudentScheduleDTO::getTeacherId).collect(Collectors.toList());
-        Map<UUID, String> fullNames = fetchFullNames(teacherIds);
+        Map<UUID, FullNameDTO> fullNames = fetchFullNames(teacherIds);
 
         return schedule.stream()
                 .map(lesson -> StudentScheduleMapper.toDTO(lesson,
@@ -85,11 +87,16 @@ public class ScheduleService {
                 .collect(Collectors.toMap(TaskHeaderProjection::getLessonId, TaskHeaderProjection::getHeader));
     }
 
-    private Map<UUID, String> fetchFullNames(List<UUID> userIds) {
+    private Map<UUID, FullNameDTO> fetchFullNames(List<UUID> userIds) {
         List<FullNameProjection> rawFullNames = teacherRepository.findFullNamesByTeacherIds(userIds);
         return rawFullNames.stream().collect(Collectors.toMap(
-                FullNameProjection::getId, fullName -> fullName.getLastName() + " " + fullName.getFirstName() + " " + fullName.getMiddleName())
-        );
+                FullNameProjection::getId,
+                projection -> FullNameMapper.toDTO(
+                        projection.getLastName(),
+                        projection.getFirstName(),
+                        projection.getMiddleName()
+                )
+        ));
     }
 
     private Map<UUID, String> fetchGroupNames(List<UUID> groupIds) {
