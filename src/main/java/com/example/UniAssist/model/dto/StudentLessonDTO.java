@@ -9,7 +9,7 @@ import java.util.UUID;
 public class StudentLessonDTO {
     private String subjectName;
     private UUID teacherId;
-    private String fullName;
+    private FullNameDTO fullName;
     private LocalTime startTime;
     private LocalTime endTime;
     private String classroom;
@@ -19,7 +19,7 @@ public class StudentLessonDTO {
 
     public StudentLessonDTO() {}
 
-    public StudentLessonDTO(String subjectName, UUID teacherId, String fullName, LocalTime startTime, LocalTime endTime, String classroom, LocalDate date, LessonType type, StudentTaskDTO task) {
+    public StudentLessonDTO(String subjectName, UUID teacherId, FullNameDTO fullName, LocalTime startTime, LocalTime endTime, String classroom, LocalDate date, LessonType type, StudentTaskDTO task) {
         this.subjectName = subjectName;
         this.teacherId = teacherId;
         this.fullName = fullName;
@@ -47,11 +47,11 @@ public class StudentLessonDTO {
         this.teacherId = teacherId;
     }
 
-    public String getFullName() {
+    public FullNameDTO getFullName() {
         return fullName;
     }
 
-    public void setFullName(String fullName) {
+    public void setFullName(FullNameDTO fullName) {
         this.fullName = fullName;
     }
 

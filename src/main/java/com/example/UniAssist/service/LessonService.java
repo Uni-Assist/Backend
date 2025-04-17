@@ -1,6 +1,7 @@
 package com.example.UniAssist.service;
 
 import com.example.UniAssist.exception.LessonNotFound;
+import com.example.UniAssist.mapper.FullNameMapper;
 import com.example.UniAssist.model.dto.*;
 import com.example.UniAssist.projection.FullNameProjection;
 import com.example.UniAssist.repository.*;
@@ -59,7 +60,7 @@ public class LessonService {
             throw new LessonNotFound("Lesson not found");
         }
         FullNameProjection fullName = teacherRepository.findFullNameByTeacherId(lesson.getTeacherId());
-        lesson.setFullName(fullName.getLastName() + " " + fullName.getFirstName() + " " + fullName.getMiddleName());
+        lesson.setFullName(FullNameMapper.toDTO(fullName.getLastName(), fullName.getFirstName(), fullName.getMiddleName()));
         StudentTaskDTO task = taskRepository.findTaskByLessonIdForStudent(lessonId);
         if (task == null) {
             return lesson;
