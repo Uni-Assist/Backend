@@ -1,6 +1,7 @@
 package com.example.UniAssist.service;
 
 import com.example.UniAssist.component.JwtProvider;
+import com.example.UniAssist.mapper.FullNameMapper;
 import com.example.UniAssist.model.dto.AuthDTO;
 import com.example.UniAssist.model.dto.JwtRequest;
 import com.example.UniAssist.model.dto.JwtResponse;
@@ -45,7 +46,7 @@ public class AuthService {
         if (userAuth.getPassword().equals(authRequest.getPassword())) {
             final String token = jwtProvider.generateToken(userAuth.getId());
             jwtResponse.setToken(token);
-            jwtResponse.setFullName(userAuth.getLastName() + " " + userAuth.getFirstName() + " " + userAuth.getMiddleName());
+            jwtResponse.setFullName(FullNameMapper.toDTO(userAuth.getLastName(), userAuth.getFirstName(), userAuth.getMiddleName()));
             return jwtResponse;
         } else {
             throw new AuthException("Invalid password");
