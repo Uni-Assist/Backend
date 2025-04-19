@@ -8,25 +8,25 @@ import com.example.UniAssist.type.ResponseType;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.boot.test.mock.mockito.MockBean;
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.InjectMocks;
+import org.mockito.Mock;
+import org.mockito.junit.jupiter.MockitoExtension;
 
 import java.util.UUID;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
-import static org.mockito.Mockito.doThrow;
-import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.*;
 
 @DisplayName("Тесты для ResponseService")
-@SpringBootTest
+@ExtendWith(MockitoExtension.class)
 public class ResponseServiceTest {
 
-    @MockBean
+    @Mock
     private ResponseRepository responseRepository;
 
-    @Autowired
+    @InjectMocks
     private ResponseService responseService;
 
     private UUID studentId;
@@ -51,7 +51,7 @@ public class ResponseServiceTest {
         String result = responseService.processStudentResponse(studentId, request);
 
         verify(responseRepository).saveResponse(studentId, taskId, "Ответ студента", ResponseType.TEXT);
-        assertThat(result).isEqualTo("Успешно");
+        assertThat(result).isEqualTo("Success");
     }
 
     @Test
@@ -63,7 +63,8 @@ public class ResponseServiceTest {
         request.setType(ResponseType.TEXT);
 
         doThrow(new RuntimeException("Ошибка БД"))
-                .when(responseRepository).saveResponse(studentId, taskId, "Ответ студента", ResponseType.TEXT);
+                .when(responseRepository)
+                .saveResponse(studentId, taskId, "Ответ студента", ResponseType.TEXT);
 
         assertThatThrownBy(() -> responseService.processStudentResponse(studentId, request))
                 .isInstanceOf(RuntimeException.class)
@@ -80,7 +81,7 @@ public class ResponseServiceTest {
         String result = responseService.updateResponseMark(request);
 
         verify(responseRepository).updateMark(responseId, 85);
-        assertThat(result).isEqualTo("Успешно");
+        assertThat(result).isEqualTo("Success");
     }
 
     @Test
@@ -91,7 +92,8 @@ public class ResponseServiceTest {
         request.setMark(90);
 
         doThrow(new RuntimeException("Ошибка обновления"))
-                .when(responseRepository).updateMark(responseId, 90);
+                .when(responseRepository)
+                .updateMark(responseId, 90);
 
         assertThatThrownBy(() -> responseService.updateResponseMark(request))
                 .isInstanceOf(RuntimeException.class)

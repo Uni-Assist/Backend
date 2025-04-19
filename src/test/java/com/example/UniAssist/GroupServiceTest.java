@@ -8,10 +8,10 @@ import com.example.UniAssist.type.Department;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.boot.test.mock.mockito.MockBean;
-
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.InjectMocks;
+import org.mockito.Mock;
+import org.mockito.junit.jupiter.MockitoExtension;
 import java.util.Collections;
 import java.util.List;
 import java.util.UUID;
@@ -21,12 +21,13 @@ import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.mockito.Mockito.when;
 
 @DisplayName("Тесты для GroupServiceImpl")
-@SpringBootTest
+@ExtendWith(MockitoExtension.class)
 public class GroupServiceTest {
-    @MockBean
+
+    @Mock
     private GroupRepository groupRepository;
 
-    @Autowired
+    @InjectMocks
     private GroupService groupService;
 
     private List<Group> testGroups;
