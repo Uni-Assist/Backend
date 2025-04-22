@@ -6,15 +6,15 @@ public class StudentTaskDTO {
     private UUID id;
     private String header;
     private String body;
-    private StudentResponseDTO response;
+    private StudentSolutionDTO solution;
 
     public StudentTaskDTO() {}
 
-    public StudentTaskDTO(UUID id, String header, String body, StudentResponseDTO response) {
+    public StudentTaskDTO(UUID id, String header, String body, StudentSolutionDTO solution) {
         this.id = id;
         this.header = header;
         this.body = body;
-        this.response = response;
+        this.solution = solution;
     }
 
     public UUID getId() {
@@ -41,11 +41,11 @@ public class StudentTaskDTO {
         this.body = body;
     }
 
-    public StudentResponseDTO getResponse() {
-        return response;
+    public StudentSolutionDTO getSolution() {
+        return solution;
     }
 
-    public void setResponse(StudentResponseDTO response) {
-        this.response = response;
+    public void setSolution(StudentSolutionDTO solution) {
+        this.solution = solution;
     }
 }

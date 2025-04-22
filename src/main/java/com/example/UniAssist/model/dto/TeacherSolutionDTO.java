@@ -2,15 +2,15 @@ package com.example.UniAssist.model.dto;
 
 import java.util.UUID;
 
-public class TeacherResponseDTO {
+public class TeacherSolutionDTO {
     private UUID id;
     private UUID studentId;
     private String body;
     private Integer mark;
 
-    public TeacherResponseDTO() {}
+    public TeacherSolutionDTO() {}
 
-    public TeacherResponseDTO(UUID id, UUID studentId, String body, Integer mark) {
+    public TeacherSolutionDTO(UUID id, UUID studentId, String body, Integer mark) {
         this.id = id;
         this.studentId = studentId;
         this.body = body;

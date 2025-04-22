@@ -1,6 +1,6 @@
 package com.example.UniAssist.type;
 
-public enum ResponseType {
+public enum SolutionType {
     TEXT,
     FILE
 }

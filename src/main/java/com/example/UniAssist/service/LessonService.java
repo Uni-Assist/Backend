@@ -16,7 +16,7 @@ public class LessonService {
 
     private final GroupRepository groupRepository;
     private final LessonRepository lessonRepository;
-    private final ResponseRepository responseRepository;
+    private final SolutionRepository solutionRepository;
     private final TaskRepository taskRepository;
     private final StudentRepository studentRepository;
     private final TeacherRepository teacherRepository;
@@ -25,13 +25,13 @@ public class LessonService {
     public LessonService(
             GroupRepository groupRepository,
             LessonRepository lessonRepository,
-            ResponseRepository responseRepository,
+            SolutionRepository solutionRepository,
             TaskRepository taskRepository,
             StudentRepository studentRepository,
             TeacherRepository teacherRepository) {
         this.groupRepository = groupRepository;
         this.lessonRepository = lessonRepository;
-        this.responseRepository = responseRepository;
+        this.solutionRepository = solutionRepository;
         this.taskRepository = taskRepository;
         this.studentRepository = studentRepository;
         this.teacherRepository = teacherRepository;
@@ -47,8 +47,8 @@ public class LessonService {
         if (task == null) {
             return lesson;
         }
-        List<TeacherResponseDTO> responses = responseRepository.findResponsesByTaskId(task.getId());
-        task.setResponses(responses);
+        List<TeacherSolutionDTO> solutions = solutionRepository.findSolutionsByTaskId(task.getId());
+        task.setSolutions(solutions);
         lesson.setTask(task);
         return lesson;
     }
@@ -65,8 +65,8 @@ public class LessonService {
         if (task == null) {
             return lesson;
         }
-        StudentResponseDTO response = responseRepository.findResponseByTaskId(task.getId());
-        task.setResponse(response);
+        StudentSolutionDTO solution = solutionRepository.findSolutionByTaskId(task.getId());
+        task.setSolution(solution);
         lesson.setTask(task);
         return lesson;
     }

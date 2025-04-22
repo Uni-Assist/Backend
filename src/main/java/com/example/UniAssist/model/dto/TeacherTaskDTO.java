@@ -7,15 +7,15 @@ public class TeacherTaskDTO {
     private UUID id;
     private String header;
     private String body;
-    private List<TeacherResponseDTO> responses;
+    private List<TeacherSolutionDTO> solutions;
 
     public TeacherTaskDTO() {}
 
-    public TeacherTaskDTO(UUID id, String header, String body, List<TeacherResponseDTO> responses) {
+    public TeacherTaskDTO(UUID id, String header, String body, List<TeacherSolutionDTO> solutions) {
         this.id = id;
         this.header = header;
         this.body = body;
-        this.responses = responses;
+        this.solutions = solutions;
     }
 
     public UUID getId() {
@@ -42,11 +42,11 @@ public class TeacherTaskDTO {
         this.body = body;
     }
 
-    public List<TeacherResponseDTO> getResponses() {
-        return responses;
+    public List<TeacherSolutionDTO> getSolutions() {
+        return solutions;
     }
 
-    public void setResponses(List<TeacherResponseDTO> responses) {
-        this.responses = responses;
+    public void setSolutions(List<TeacherSolutionDTO> solutions) {
+        this.solutions = solutions;
     }
 }

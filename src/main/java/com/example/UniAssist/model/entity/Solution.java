@@ -1,13 +1,13 @@
 package com.example.UniAssist.model.entity;
 
-import com.example.UniAssist.type.ResponseType;
+import com.example.UniAssist.type.SolutionType;
 import jakarta.persistence.*;
 
 import java.util.UUID;
 
 @Entity
-@Table(name = "responses")
-public class Response {
+@Table(name = "solutions")
+public class Solution {
 
     @Id
     @Column(name = "id", updatable = false, nullable = false)
@@ -27,7 +27,7 @@ public class Response {
 
     @Enumerated(EnumType.STRING)
     @Column(name = "type", nullable = false)
-    private ResponseType type;
+    private SolutionType type;
 
     public UUID getId() {
         return id;
@@ -69,11 +69,11 @@ public class Response {
         this.mark = mark;
     }
 
-    public ResponseType getType() {
+    public SolutionType getType() {
         return type;
     }
 
-    public void setType(ResponseType type) {
+    public void setType(SolutionType type) {
         this.type = type;
     }
 }
