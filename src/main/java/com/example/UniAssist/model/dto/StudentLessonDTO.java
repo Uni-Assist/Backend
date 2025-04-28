@@ -15,11 +15,10 @@ public class StudentLessonDTO {
     private String classroom;
     private LocalDate date;
     private LessonType type;
-    private StudentTaskDTO task;
 
     public StudentLessonDTO() {}
 
-    public StudentLessonDTO(String subjectName, UUID teacherId, FullNameDTO fullName, LocalTime startTime, LocalTime endTime, String classroom, LocalDate date, LessonType type, StudentTaskDTO task) {
+    public StudentLessonDTO(String subjectName, UUID teacherId, FullNameDTO fullName, LocalTime startTime, LocalTime endTime, String classroom, LocalDate date, LessonType type) {
         this.subjectName = subjectName;
         this.teacherId = teacherId;
         this.fullName = fullName;
@@ -28,7 +27,6 @@ public class StudentLessonDTO {
         this.classroom = classroom;
         this.date = date;
         this.type = type;
-        this.task = task;
     }
 
     public String getSubjectName() {
@@ -93,13 +91,5 @@ public class StudentLessonDTO {
 
     public void setType(LessonType type) {
         this.type = type;
-    }
-
-    public StudentTaskDTO getTask() {
-        return task;
-    }
-
-    public void setTask(StudentTaskDTO task) {
-        this.task = task;
     }
 }

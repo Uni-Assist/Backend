@@ -1,9 +1,8 @@
 package com.example.UniAssist.repository;
 
-import com.example.UniAssist.model.dto.StudentTaskDTO;
-import com.example.UniAssist.model.dto.TeacherTaskDTO;
+import com.example.UniAssist.model.dto.TaskDTO;
 import com.example.UniAssist.model.entity.Task;
-import com.example.UniAssist.projection.TaskHeaderProjection;
+import com.example.UniAssist.model.projection.TaskHeaderProjection;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
@@ -19,18 +18,10 @@ public interface TaskRepository extends JpaRepository<Task, UUID> {
     List<TaskHeaderProjection> findTaskHeadersByLessonIds(@Param("lessonIds") List<UUID> lessonIds);
 
     @Query("""
-        SELECT new com.example.UniAssist.model.dto.TeacherTaskDTO(
-            t.id, t.header, t.body, null
+        SELECT new com.example.UniAssist.model.dto.TaskDTO(
+            t.id, t.header, t.body
         )
         FROM Task t WHERE t.lessonId = :lessonId
     """)
-    TeacherTaskDTO findTaskByLessonIdForTeacher(@Param("lessonId") UUID lessonId);
-
-    @Query("""
-        SELECT new com.example.UniAssist.model.dto.StudentTaskDTO(
-            t.id, t.header, t.body, null
-        )
-        FROM Task t WHERE t.lessonId = :lessonId
-    """)
-    StudentTaskDTO findTaskByLessonIdForStudent(@Param("lessonId") UUID lessonId);
+    TaskDTO findTaskByLessonId(@Param("lessonId") UUID lessonId);
 }

@@ -1,7 +1,7 @@
 package com.example.UniAssist.controller;
 
-import com.example.UniAssist.model.dto.StudentLessonDTO;
-import com.example.UniAssist.model.dto.TeacherLessonDTO;
+import com.example.UniAssist.model.dto.StudentLessonResponse;
+import com.example.UniAssist.model.dto.TeacherLessonResponse;
 import com.example.UniAssist.service.LessonService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -22,14 +22,14 @@ public class LessonController {
     public LessonController(LessonService lessonService) {this.lessonService = lessonService;}
 
     @GetMapping("/teacher")
-    public ResponseEntity<TeacherLessonDTO> getTeacherLesson(
+    public ResponseEntity<TeacherLessonResponse> getTeacherLesson(
             @RequestParam("teacher_id") UUID teacherId,
             @RequestParam("lesson_id") UUID lessonId) {
         return ResponseEntity.ok(lessonService.getTeacherLesson(teacherId, lessonId));
     }
 
     @GetMapping("/student")
-    public ResponseEntity<StudentLessonDTO> getStudentLesson(
+    public ResponseEntity<StudentLessonResponse> getStudentLesson(
             @RequestParam("student_id") UUID studentId,
             @RequestParam("lesson_id") UUID lessonId) {
         return ResponseEntity.ok(lessonService.getStudentLesson(studentId, lessonId));

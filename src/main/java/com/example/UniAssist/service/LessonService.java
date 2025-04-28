@@ -3,7 +3,7 @@ package com.example.UniAssist.service;
 import com.example.UniAssist.exception.LessonNotFound;
 import com.example.UniAssist.mapper.FullNameMapper;
 import com.example.UniAssist.model.dto.*;
-import com.example.UniAssist.projection.FullNameProjection;
+import com.example.UniAssist.model.projection.FullNameProjection;
 import com.example.UniAssist.repository.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -37,23 +37,24 @@ public class LessonService {
         this.teacherRepository = teacherRepository;
     }
 
-    public TeacherLessonDTO getTeacherLesson(UUID teacherId, UUID lessonId) {
+    public TeacherLessonResponse getTeacherLesson(UUID teacherId, UUID lessonId) {
         TeacherLessonDTO lesson = lessonRepository.findLessonByTeacherAndId(teacherId, lessonId);
         if (lesson == null) {
             throw new LessonNotFound("Lesson not found");
         }
         lesson.setGroupName(groupRepository.findGroupNameById(lesson.getGroupId()));
-        TeacherTaskDTO task = taskRepository.findTaskByLessonIdForTeacher(lessonId);
+        TeacherLessonResponse response = new TeacherLessonResponse(lesson, null, null);
+        TaskDTO task = taskRepository.findTaskByLessonId(lessonId);
         if (task == null) {
-            return lesson;
+            return response;
         }
-        List<TeacherSolutionDTO> solutions = solutionRepository.findSolutionsByTaskId(task.getId());
-        task.setSolutions(solutions);
-        lesson.setTask(task);
-        return lesson;
+        List<SolutionDTO> solutions = solutionRepository.findSolutionsByTaskId(task.getId());
+        response.setTask(task);
+        response.setSolutions(solutions);
+        return response;
     }
 
-    public StudentLessonDTO getStudentLesson(UUID studentId, UUID lessonId) {
+    public StudentLessonResponse getStudentLesson(UUID studentId, UUID lessonId) {
         UUID groupId = studentRepository.findGroupIdByStudentId(studentId);
         StudentLessonDTO lesson = lessonRepository.findLessonByGroupAndId(groupId, lessonId);
         if (lesson == null) {
@@ -61,13 +62,14 @@ public class LessonService {
         }
         FullNameProjection fullName = teacherRepository.findFullNameByTeacherId(lesson.getTeacherId());
         lesson.setFullName(FullNameMapper.toDTO(fullName.getLastName(), fullName.getFirstName(), fullName.getMiddleName()));
-        StudentTaskDTO task = taskRepository.findTaskByLessonIdForStudent(lessonId);
+        StudentLessonResponse response = new StudentLessonResponse(lesson, null, null);
+        TaskDTO task = taskRepository.findTaskByLessonId(lessonId);
         if (task == null) {
-            return lesson;
+            return response;
         }
-        StudentSolutionDTO solution = solutionRepository.findSolutionByTaskId(task.getId());
-        task.setSolution(solution);
-        lesson.setTask(task);
-        return lesson;
+        SolutionDTO solution = solutionRepository.findSolutionByTaskId(task.getId());
+        response.setTask(task);
+        response.setSolution(solution);
+        return response;
     }
 }

@@ -2,19 +2,17 @@ package com.example.UniAssist.model.dto;
 
 import java.util.UUID;
 
-public class StudentTaskDTO {
+public class TaskDTO {
     private UUID id;
     private String header;
     private String body;
-    private StudentSolutionDTO solution;
 
-    public StudentTaskDTO() {}
+    public TaskDTO() {}
 
-    public StudentTaskDTO(UUID id, String header, String body, StudentSolutionDTO solution) {
+    public TaskDTO(UUID id, String header, String body) {
         this.id = id;
         this.header = header;
         this.body = body;
-        this.solution = solution;
     }
 
     public UUID getId() {
@@ -39,13 +37,5 @@ public class StudentTaskDTO {
 
     public void setBody(String body) {
         this.body = body;
-    }
-
-    public StudentSolutionDTO getSolution() {
-        return solution;
-    }
-
-    public void setSolution(StudentSolutionDTO solution) {
-        this.solution = solution;
     }
 }
