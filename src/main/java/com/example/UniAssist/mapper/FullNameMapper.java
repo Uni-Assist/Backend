@@ -1,13 +1,12 @@
 package com.example.UniAssist.mapper;
 
 import com.example.UniAssist.model.dto.FullNameDTO;
+import com.example.UniAssist.model.projection.FullNameProjection;
+import org.mapstruct.Mapper;
+import org.mapstruct.MappingConstants;
 
-public class FullNameMapper {
-    public static FullNameDTO toDTO(String lastName, String firstName, String middleName) {
-        FullNameDTO dto = new FullNameDTO();
-        dto.setLastName(lastName);
-        dto.setFirstName(firstName);
-        dto.setMiddleName(middleName);
-        return dto;
-    }
+@Mapper(componentModel = MappingConstants.ComponentModel.SPRING)
+public interface FullNameMapper {
+    FullNameDTO toDTO(String lastName, String firstName, String middleName);
+    FullNameDTO toDTO(FullNameProjection projection);
 }

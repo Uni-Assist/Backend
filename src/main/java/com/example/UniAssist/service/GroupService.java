@@ -14,16 +14,18 @@ import java.util.stream.Collectors;
 public class GroupService {
 
     private final GroupRepository groupRepository;
+    private final GroupMapper groupMapper;
 
     @Autowired
-    public GroupService(GroupRepository groupRepository) {
+    public GroupService(GroupRepository groupRepository, GroupMapper groupMapper) {
         this.groupRepository = groupRepository;
+        this.groupMapper = groupMapper;
     }
 
     public List<GroupDTO> getAllGroups() {
         List<Group> groups = groupRepository.findAll();
         return groups.stream()
-                .map(GroupMapper::toDTO)
+                .map(groupMapper::toDTO)
                 .collect(Collectors.toList());
     }
 }

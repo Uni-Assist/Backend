@@ -4,11 +4,9 @@ import com.example.UniAssist.type.LessonType;
 
 import java.time.LocalDate;
 import java.time.LocalTime;
-import java.util.UUID;
 
 public class TeacherLessonDTO {
     private String subjectName;
-    private UUID groupId;
     private String groupName;
     private LocalTime startTime;
     private LocalTime endTime;
@@ -18,9 +16,8 @@ public class TeacherLessonDTO {
 
     public TeacherLessonDTO() {}
 
-    public TeacherLessonDTO(String subjectName, UUID groupId, String groupName, LocalTime startTime, LocalTime endTime, String classroom, LocalDate date, LessonType type) {
+    public TeacherLessonDTO(String subjectName, String groupName, LocalTime startTime, LocalTime endTime, String classroom, LocalDate date, LessonType type) {
         this.subjectName = subjectName;
-        this.groupId = groupId;
         this.groupName = groupName;
         this.startTime = startTime;
         this.endTime = endTime;
@@ -35,14 +32,6 @@ public class TeacherLessonDTO {
 
     public void setSubjectName(String subjectName) {
         this.subjectName = subjectName;
-    }
-
-    public UUID getGroupId() {
-        return groupId;
-    }
-
-    public void setGroupId(UUID groupId) {
-        this.groupId = groupId;
     }
 
     public String getGroupName() {

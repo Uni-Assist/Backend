@@ -1,8 +1,7 @@
 package com.example.UniAssist.repository;
 
-import com.example.UniAssist.model.dto.StudentLessonDTO;
-import com.example.UniAssist.model.dto.TeacherLessonDTO;
 import com.example.UniAssist.model.entity.Lesson;
+import com.example.UniAssist.model.projection.LessonProjection;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
@@ -14,30 +13,19 @@ import java.util.UUID;
 public interface LessonRepository extends JpaRepository<Lesson, UUID> {
 
     @Query("""
-        SELECT new com.example.UniAssist.model.dto.TeacherLessonDTO(
-            sub.name, s.groupId, null, l.startTime, l.endTime, l.classroom, l.date, s.type
-        )
+        SELECT
+            sub.name as subjectName,
+            s.groupId as groupId,
+            s.teacherId as teacherId,
+            l.startTime as startTime,
+            l.endTime as endTime,
+            l.classroom as classroom,
+            l.date as date,
+            s.type as type
         FROM Lesson l
         JOIN Schedule s ON l.scheduleId = s.id
         JOIN Subject sub ON s.subjectId = sub.id
-        WHERE s.teacherId = :teacherId AND l.id = :lessonId
+        WHERE l.id = :lessonId
     """)
-    TeacherLessonDTO findLessonByTeacherAndId(
-            @Param("teacherId") UUID teacherId,
-            @Param("lessonId") UUID lessonId
-    );
-
-    @Query("""
-        SELECT new com.example.UniAssist.model.dto.StudentLessonDTO(
-            sub.name, s.teacherId, null, l.startTime, l.endTime, l.classroom, l.date, s.type
-        )
-        FROM Lesson l
-        JOIN Schedule s ON l.scheduleId = s.id
-        JOIN Subject sub ON s.subjectId = sub.id
-        WHERE s.groupId = :groupId AND l.id = :lessonId
-    """)
-    StudentLessonDTO findLessonByGroupAndId(
-            @Param("groupId") UUID groupId,
-            @Param("lessonId") UUID lessonId
-    );
+    LessonProjection findLessonProjectionById(@Param("lessonId") UUID lessonId);
 }

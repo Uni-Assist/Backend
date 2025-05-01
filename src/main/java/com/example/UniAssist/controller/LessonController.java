@@ -22,16 +22,12 @@ public class LessonController {
     public LessonController(LessonService lessonService) {this.lessonService = lessonService;}
 
     @GetMapping("/teacher")
-    public ResponseEntity<TeacherLessonResponse> getTeacherLesson(
-            @RequestParam("teacher_id") UUID teacherId,
-            @RequestParam("lesson_id") UUID lessonId) {
-        return ResponseEntity.ok(lessonService.getTeacherLesson(teacherId, lessonId));
+    public ResponseEntity<TeacherLessonResponse> getTeacherLesson(@RequestParam("lesson_id") UUID lessonId) {
+        return ResponseEntity.ok(lessonService.getTeacherLesson(lessonId));
     }
 
     @GetMapping("/student")
-    public ResponseEntity<StudentLessonResponse> getStudentLesson(
-            @RequestParam("student_id") UUID studentId,
-            @RequestParam("lesson_id") UUID lessonId) {
-        return ResponseEntity.ok(lessonService.getStudentLesson(studentId, lessonId));
+    public ResponseEntity<StudentLessonResponse> getStudentLesson(@RequestParam("lesson_id") UUID lessonId) {
+        return ResponseEntity.ok(lessonService.getStudentLesson(lessonId));
     }
 }

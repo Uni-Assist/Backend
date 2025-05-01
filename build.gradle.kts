@@ -23,11 +23,13 @@ dependencies {
 	implementation("org.springframework.boot:spring-boot-starter-data-jpa")
 	implementation("org.liquibase:liquibase-core")
 	implementation("org.postgresql:postgresql")
+	implementation("org.mapstruct:mapstruct:1.6.3")
 	testImplementation("org.springframework.boot:spring-boot-starter-test")
 	testRuntimeOnly("org.junit.platform:junit-platform-launcher")
 	liquibaseRuntime("org.liquibase:liquibase-core")
 	liquibaseRuntime("org.postgresql:postgresql")
 	liquibaseRuntime("info.picocli:picocli:4.6.3")
+	annotationProcessor("org.mapstruct:mapstruct-processor:1.6.3")
 }
 
 tasks.withType<Test> {

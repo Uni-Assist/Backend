@@ -1,9 +1,14 @@
 package com.example.UniAssist.service;
 
 import com.example.UniAssist.exception.LessonNotFound;
-import com.example.UniAssist.mapper.FullNameMapper;
+import com.example.UniAssist.mapper.LessonMapper;
+import com.example.UniAssist.mapper.SolutionMapper;
+import com.example.UniAssist.mapper.TaskMapper;
 import com.example.UniAssist.model.dto.*;
+import com.example.UniAssist.model.entity.Solution;
+import com.example.UniAssist.model.entity.Task;
 import com.example.UniAssist.model.projection.FullNameProjection;
+import com.example.UniAssist.model.projection.LessonProjection;
 import com.example.UniAssist.repository.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -18,8 +23,10 @@ public class LessonService {
     private final LessonRepository lessonRepository;
     private final SolutionRepository solutionRepository;
     private final TaskRepository taskRepository;
-    private final StudentRepository studentRepository;
     private final TeacherRepository teacherRepository;
+    private final LessonMapper lessonMapper;
+    private final TaskMapper taskMapper;
+    private final SolutionMapper solutionMapper;
 
     @Autowired
     public LessonService(
@@ -27,47 +34,55 @@ public class LessonService {
             LessonRepository lessonRepository,
             SolutionRepository solutionRepository,
             TaskRepository taskRepository,
-            StudentRepository studentRepository,
-            TeacherRepository teacherRepository) {
+            TeacherRepository teacherRepository,
+            LessonMapper lessonMapper,
+            TaskMapper taskMapper,
+            SolutionMapper solutionMapper) {
         this.groupRepository = groupRepository;
         this.lessonRepository = lessonRepository;
         this.solutionRepository = solutionRepository;
         this.taskRepository = taskRepository;
-        this.studentRepository = studentRepository;
         this.teacherRepository = teacherRepository;
+        this.lessonMapper = lessonMapper;
+        this.taskMapper = taskMapper;
+        this.solutionMapper = solutionMapper;
     }
 
-    public TeacherLessonResponse getTeacherLesson(UUID teacherId, UUID lessonId) {
-        TeacherLessonDTO lesson = lessonRepository.findLessonByTeacherAndId(teacherId, lessonId);
-        if (lesson == null) {
+    public TeacherLessonResponse getTeacherLesson(UUID lessonId) {
+        LessonProjection lessonProjection = lessonRepository.findLessonProjectionById(lessonId);
+        if (lessonProjection == null) {
             throw new LessonNotFound("Lesson not found");
         }
-        lesson.setGroupName(groupRepository.findGroupNameById(lesson.getGroupId()));
+        String groupName = groupRepository.findGroupNameById(lessonProjection.getGroupId());
+        TeacherLessonDTO lesson = lessonMapper.toDTO(lessonProjection, groupName);
         TeacherLessonResponse response = new TeacherLessonResponse(lesson, null, null);
-        TaskDTO task = taskRepository.findTaskByLessonId(lessonId);
-        if (task == null) {
+        Task rawTask = taskRepository.findTaskByLessonId(lessonId);
+        if (rawTask == null) {
             return response;
         }
-        List<SolutionDTO> solutions = solutionRepository.findSolutionsByTaskId(task.getId());
+        TaskDTO task = taskMapper.toDTO(rawTask);
+        List<Solution> rawSolutions = solutionRepository.findSolutionsByTaskId(task.getId());
+        List<SolutionDTO> solutions = solutionMapper.toDto(rawSolutions);
         response.setTask(task);
         response.setSolutions(solutions);
         return response;
     }
 
-    public StudentLessonResponse getStudentLesson(UUID studentId, UUID lessonId) {
-        UUID groupId = studentRepository.findGroupIdByStudentId(studentId);
-        StudentLessonDTO lesson = lessonRepository.findLessonByGroupAndId(groupId, lessonId);
-        if (lesson == null) {
+    public StudentLessonResponse getStudentLesson(UUID lessonId) {
+        LessonProjection lessonProjection = lessonRepository.findLessonProjectionById(lessonId);
+        if (lessonProjection == null) {
             throw new LessonNotFound("Lesson not found");
         }
-        FullNameProjection fullName = teacherRepository.findFullNameByTeacherId(lesson.getTeacherId());
-        lesson.setFullName(FullNameMapper.toDTO(fullName.getLastName(), fullName.getFirstName(), fullName.getMiddleName()));
+        FullNameProjection fullName = teacherRepository.findFullNameByTeacherId(lessonProjection.getTeacherId());
+        StudentLessonDTO lesson = lessonMapper.toDTO(lessonProjection, fullName);
         StudentLessonResponse response = new StudentLessonResponse(lesson, null, null);
-        TaskDTO task = taskRepository.findTaskByLessonId(lessonId);
-        if (task == null) {
+        Task rawTask = taskRepository.findTaskByLessonId(lessonId);
+        if (rawTask == null) {
             return response;
         }
-        SolutionDTO solution = solutionRepository.findSolutionByTaskId(task.getId());
+        TaskDTO task = taskMapper.toDTO(rawTask);
+        Solution rawSolution = solutionRepository.findSolutionByTaskId(task.getId());
+        SolutionDTO solution = solutionMapper.toDto(rawSolution);
         response.setTask(task);
         response.setSolution(solution);
         return response;

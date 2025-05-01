@@ -4,15 +4,13 @@ import java.util.UUID;
 
 public class SolutionDTO {
     private UUID id;
-    private UUID studentId;
     private String body;
     private Integer mark;
 
     public SolutionDTO() {}
 
-    public SolutionDTO(UUID id, UUID studentId, String body, Integer mark) {
+    public SolutionDTO(UUID id, String body, Integer mark) {
         this.id = id;
-        this.studentId = studentId;
         this.body = body;
         this.mark = mark;
     }
@@ -23,14 +21,6 @@ public class SolutionDTO {
 
     public void setId(UUID id) {
         this.id = id;
-    }
-
-    public UUID getStudentId() {
-        return studentId;
-    }
-
-    public void setStudentId(UUID studentId) {
-        this.studentId = studentId;
     }
 
     public String getBody() {
