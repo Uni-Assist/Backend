@@ -3,7 +3,7 @@ package com.example.UniAssist.controller;
 import com.example.UniAssist.model.dto.JwtRequest;
 import com.example.UniAssist.model.dto.JwtResponse;
 import com.example.UniAssist.service.AuthService;
-import jakarta.security.auth.message.AuthException;
+import com.example.UniAssist.exception.AuthenticationException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -23,7 +23,7 @@ public class AuthController {
     }
 
     @PostMapping("/login")
-    public ResponseEntity<JwtResponse> login(@RequestBody JwtRequest jwtRequest) throws AuthException {
+    public ResponseEntity<JwtResponse> login(@RequestBody JwtRequest jwtRequest) throws AuthenticationException {
         final JwtResponse jwtResponse = authService.login(jwtRequest);
         return ResponseEntity.ok(jwtResponse);
     }

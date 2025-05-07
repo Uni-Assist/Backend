@@ -12,7 +12,8 @@ import com.example.UniAssist.repository.GroupRepository;
 import com.example.UniAssist.repository.StudentRepository;
 import com.example.UniAssist.repository.TeacherRepository;
 import com.example.UniAssist.type.Role;
-import jakarta.security.auth.message.AuthException;
+import com.example.UniAssist.exception.AuthenticationException;
+// import jakarta.security.auth.message.AuthException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -46,7 +47,7 @@ public class AuthService {
         this.fullNameMapper = fullNameMapper;
     }
 
-    public JwtResponse login(JwtRequest authRequest) throws AuthException {
+    public JwtResponse login(JwtRequest authRequest) throws AuthenticationException {
         Teacher rawTeacherAuth = teacherRepository.findTeacherByLogin(authRequest.getLogin());
         JwtResponse jwtResponse = new JwtResponse();
         AuthDTO userAuth;
@@ -61,7 +62,7 @@ public class AuthService {
             jwtResponse.setRole(Role.TEACHER);
         }
         if (userAuth == null) {
-            throw new AuthException("Invalid login");
+            throw new AuthenticationException("Invalid login");
         }
         if (passwordEncoder.matches(authRequest.getPassword(), userAuth.getPassword())) {
             final String token = jwtProvider.generateToken(userAuth.getId());
@@ -69,7 +70,7 @@ public class AuthService {
             jwtResponse.setFullName(fullNameMapper.toDTO(userAuth.getLastName(), userAuth.getFirstName(), userAuth.getMiddleName()));
             return jwtResponse;
         } else {
-            throw new AuthException("Invalid password");
+            throw new AuthenticationException("Invalid password");
         }
     }
 }
