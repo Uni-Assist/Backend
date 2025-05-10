@@ -1,5 +1,6 @@
 package com.example.UniAssist;
 
+import com.example.UniAssist.mapper.GroupMapper;
 import com.example.UniAssist.model.dto.GroupDTO;
 import com.example.UniAssist.model.entity.Group;
 import com.example.UniAssist.repository.GroupRepository;
@@ -18,6 +19,7 @@ import java.util.UUID;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
+import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.when;
 
 @DisplayName("Тесты для GroupServiceImpl")
@@ -26,6 +28,9 @@ public class GroupServiceTest {
 
     @Mock
     private GroupRepository groupRepository;
+
+    @Mock
+    private GroupMapper groupMapper;
 
     @InjectMocks
     private GroupService groupService;
@@ -57,6 +62,7 @@ public class GroupServiceTest {
     @DisplayName("Получение всех групп при наличии данных")
     void getAllGroups_WhenGroupsExist_ShouldReturnGroupList() {
         when(groupRepository.findAll()).thenReturn(testGroups);
+        setupGroupMapperMock();
 
         List<GroupDTO> result = groupService.getAllGroups();
 
@@ -81,6 +87,7 @@ public class GroupServiceTest {
     void getAllGroups_ShouldReturnCorrectDTOStructure() {
         Group testGroup = testGroups.get(0);
         when(groupRepository.findAll()).thenReturn(List.of(testGroup));
+        setupGroupMapperMock();
 
         GroupDTO result = groupService.getAllGroups().get(0);
 
@@ -103,5 +110,16 @@ public class GroupServiceTest {
         assertThatThrownBy(() -> groupService.getAllGroups())
                 .isInstanceOf(RuntimeException.class)
                 .hasMessageContaining("Ошибка БД");
+    }
+
+    private void setupGroupMapperMock() {
+        when(groupMapper.toDTO(any(Group.class)))
+                .thenAnswer(invocation -> {
+                    Group g = invocation.getArgument(0);
+                    GroupDTO dto = new GroupDTO();
+                    dto.setId(g.getId());
+                    dto.setName(g.getName());
+                    return dto;
+                });
     }
 }

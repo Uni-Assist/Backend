@@ -2,9 +2,10 @@ package com.example.UniAssist;
 
 import com.example.UniAssist.model.dto.StudentResponseRequest;
 import com.example.UniAssist.model.dto.UpdateMarkRequest;
+import com.example.UniAssist.model.entity.Solution;
 import com.example.UniAssist.repository.ResponseRepository;
 import com.example.UniAssist.service.ResponseService;
-import com.example.UniAssist.type.ResponseType;
+import com.example.UniAssist.type.SolutionType;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -46,11 +47,11 @@ public class ResponseServiceTest {
         StudentResponseRequest request = new StudentResponseRequest();
         request.setTaskId(taskId);
         request.setBody("Ответ студента");
-        request.setType(ResponseType.TEXT);
+        request.setType(SolutionType.TEXT);
 
         String result = responseService.processStudentResponse(studentId, request);
 
-        verify(responseRepository).saveResponse(studentId, taskId, "Ответ студента", ResponseType.TEXT);
+        verify(responseRepository).saveResponse(studentId, taskId, "Ответ студента", SolutionType.TEXT);
         assertThat(result).isEqualTo("Success");
     }
 
@@ -60,11 +61,11 @@ public class ResponseServiceTest {
         StudentResponseRequest request = new StudentResponseRequest();
         request.setTaskId(taskId);
         request.setBody("Ответ студента");
-        request.setType(ResponseType.TEXT);
+        request.setType(SolutionType.TEXT);
 
         doThrow(new RuntimeException("Ошибка БД"))
                 .when(responseRepository)
-                .saveResponse(studentId, taskId, "Ответ студента", ResponseType.TEXT);
+                .saveResponse(studentId, taskId, "Ответ студента", SolutionType.TEXT);
 
         assertThatThrownBy(() -> responseService.processStudentResponse(studentId, request))
                 .isInstanceOf(RuntimeException.class)
