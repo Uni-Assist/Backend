@@ -14,6 +14,7 @@ import com.example.UniAssist.repository.TeacherRepository;
 import com.example.UniAssist.type.Role;
 import jakarta.security.auth.message.AuthException;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -24,6 +25,7 @@ public class AuthService {
     private final GroupRepository groupRepository;
     private final JwtProvider jwtProvider;
     private final AuthMapper authMapper;
+    private final PasswordEncoder passwordEncoder;
 
     @Autowired
     public AuthService(
@@ -31,12 +33,14 @@ public class AuthService {
             StudentRepository studentRepository,
             GroupRepository groupRepository,
             JwtProvider jwtProvider,
-            AuthMapper authMapper) {
+            AuthMapper authMapper,
+            PasswordEncoder passwordEncoder) {
         this.teacherRepository = teacherRepository;
         this.studentRepository = studentRepository;
         this.groupRepository = groupRepository;
         this.jwtProvider = jwtProvider;
         this.authMapper = authMapper;
+        this.passwordEncoder = passwordEncoder;
     }
 
     public JwtResponse login(JwtRequest authRequest) throws AuthException {
@@ -56,7 +60,7 @@ public class AuthService {
         if (userAuth == null) {
             throw new AuthException("Invalid login");
         }
-        if (userAuth.getPassword().equals(authRequest.getPassword())) {
+        if (passwordEncoder.matches(authRequest.getPassword(), userAuth.getPassword())) {
             final String token = jwtProvider.generateToken(userAuth.getId());
             jwtResponse.setToken(token);
             jwtResponse.setFullName(FullNameMapper.toDTO(userAuth.getLastName(), userAuth.getFirstName(), userAuth.getMiddleName()));
