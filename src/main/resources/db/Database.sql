@@ -2,10 +2,10 @@
 -- PostgreSQL database dump
 --
 
--- Dumped from database version 16.6 (Ubuntu 16.6-0ubuntu0.24.04.1)
--- Dumped by pg_dump version 16.6 (Ubuntu 16.6-0ubuntu0.24.04.1)
+-- Dumped from database version 16.8 (Ubuntu 16.8-0ubuntu0.24.04.1)
+-- Dumped by pg_dump version 16.8 (Ubuntu 16.8-0ubuntu0.24.04.1)
 
--- Started on 2025-03-06 17:33:29 +07
+-- Started on 2025-05-10 13:52:35 +07
 
 SET statement_timeout = 0;
 SET lock_timeout = 0;
@@ -19,7 +19,7 @@ SET client_min_messages = warning;
 SET row_security = off;
 
 --
--- TOC entry 2 (class 3079 OID 16884)
+-- TOC entry 2 (class 3079 OID 18448)
 -- Name: pgcrypto; Type: EXTENSION; Schema: -; Owner: -
 --
 
@@ -36,7 +36,7 @@ COMMENT ON EXTENSION pgcrypto IS 'cryptographic functions';
 
 
 --
--- TOC entry 922 (class 1247 OID 17164)
+-- TOC entry 886 (class 1247 OID 18486)
 -- Name: Department; Type: TYPE; Schema: public; Owner: -
 --
 
@@ -52,7 +52,7 @@ CREATE TYPE public."Department" AS ENUM (
 
 
 --
--- TOC entry 919 (class 1247 OID 17156)
+-- TOC entry 889 (class 1247 OID 18502)
 -- Name: LessonType; Type: TYPE; Schema: public; Owner: -
 --
 
@@ -64,7 +64,7 @@ CREATE TYPE public."LessonType" AS ENUM (
 
 
 --
--- TOC entry 886 (class 1247 OID 16922)
+-- TOC entry 892 (class 1247 OID 18510)
 -- Name: ResponseType; Type: TYPE; Schema: public; Owner: -
 --
 
@@ -79,7 +79,7 @@ SET default_tablespace = '';
 SET default_table_access_method = heap;
 
 --
--- TOC entry 216 (class 1259 OID 16933)
+-- TOC entry 216 (class 1259 OID 18515)
 -- Name: databasechangelog; Type: TABLE; Schema: public; Owner: -
 --
 
@@ -102,7 +102,7 @@ CREATE TABLE public.databasechangelog (
 
 
 --
--- TOC entry 217 (class 1259 OID 16938)
+-- TOC entry 217 (class 1259 OID 18520)
 -- Name: databasechangeloglock; Type: TABLE; Schema: public; Owner: -
 --
 
@@ -115,7 +115,7 @@ CREATE TABLE public.databasechangeloglock (
 
 
 --
--- TOC entry 218 (class 1259 OID 16941)
+-- TOC entry 218 (class 1259 OID 18523)
 -- Name: groups; Type: TABLE; Schema: public; Owner: -
 --
 
@@ -127,7 +127,7 @@ CREATE TABLE public.groups (
 
 
 --
--- TOC entry 225 (class 1259 OID 17048)
+-- TOC entry 219 (class 1259 OID 18527)
 -- Name: lessons; Type: TABLE; Schema: public; Owner: -
 --
 
@@ -142,7 +142,7 @@ CREATE TABLE public.lessons (
 
 
 --
--- TOC entry 219 (class 1259 OID 16945)
+-- TOC entry 220 (class 1259 OID 18531)
 -- Name: responses; Type: TABLE; Schema: public; Owner: -
 --
 
@@ -158,7 +158,7 @@ CREATE TABLE public.responses (
 
 
 --
--- TOC entry 224 (class 1259 OID 17027)
+-- TOC entry 221 (class 1259 OID 18538)
 -- Name: schedules; Type: TABLE; Schema: public; Owner: -
 --
 
@@ -172,7 +172,7 @@ CREATE TABLE public.schedules (
 
 
 --
--- TOC entry 220 (class 1259 OID 16952)
+-- TOC entry 222 (class 1259 OID 18542)
 -- Name: students; Type: TABLE; Schema: public; Owner: -
 --
 
@@ -182,7 +182,7 @@ CREATE TABLE public.students (
     last_name character varying(15),
     first_name character varying(15) NOT NULL,
     login character varying(15) NOT NULL,
-    password character varying(15) NOT NULL,
+    password character varying(60) NOT NULL,
     phone character varying(20) NOT NULL,
     email character varying(30) NOT NULL,
     birthdate date NOT NULL,
@@ -191,7 +191,7 @@ CREATE TABLE public.students (
 
 
 --
--- TOC entry 223 (class 1259 OID 17021)
+-- TOC entry 223 (class 1259 OID 18546)
 -- Name: subjects; Type: TABLE; Schema: public; Owner: -
 --
 
@@ -202,7 +202,7 @@ CREATE TABLE public.subjects (
 
 
 --
--- TOC entry 221 (class 1259 OID 16960)
+-- TOC entry 224 (class 1259 OID 18550)
 -- Name: tasks; Type: TABLE; Schema: public; Owner: -
 --
 
@@ -217,7 +217,7 @@ CREATE TABLE public.tasks (
 
 
 --
--- TOC entry 222 (class 1259 OID 16966)
+-- TOC entry 225 (class 1259 OID 18556)
 -- Name: teachers; Type: TABLE; Schema: public; Owner: -
 --
 
@@ -227,7 +227,7 @@ CREATE TABLE public.teachers (
     last_name character varying(15),
     first_name character varying(15) NOT NULL,
     login character varying(15) NOT NULL,
-    password character varying(15) NOT NULL,
+    password character varying(60) NOT NULL,
     phone character varying(20) NOT NULL,
     email character varying(30) NOT NULL,
     birthdate date NOT NULL,
@@ -237,7 +237,7 @@ CREATE TABLE public.teachers (
 
 
 --
--- TOC entry 3513 (class 0 OID 16933)
+-- TOC entry 3513 (class 0 OID 18515)
 -- Dependencies: 216
 -- Data for Name: databasechangelog; Type: TABLE DATA; Schema: public; Owner: -
 --
@@ -245,7 +245,7 @@ CREATE TABLE public.teachers (
 
 
 --
--- TOC entry 3514 (class 0 OID 16938)
+-- TOC entry 3514 (class 0 OID 18520)
 -- Dependencies: 217
 -- Data for Name: databasechangeloglock; Type: TABLE DATA; Schema: public; Owner: -
 --
@@ -254,7 +254,7 @@ INSERT INTO public.databasechangeloglock VALUES (1, false, NULL, NULL);
 
 
 --
--- TOC entry 3515 (class 0 OID 16941)
+-- TOC entry 3515 (class 0 OID 18523)
 -- Dependencies: 218
 -- Data for Name: groups; Type: TABLE DATA; Schema: public; Owner: -
 --
@@ -265,8 +265,8 @@ INSERT INTO public.groups VALUES ('f4b6dabb-e19c-47d8-983d-0c0c482f1a36', 'ИВ-
 
 
 --
--- TOC entry 3522 (class 0 OID 17048)
--- Dependencies: 225
+-- TOC entry 3516 (class 0 OID 18527)
+-- Dependencies: 219
 -- Data for Name: lessons; Type: TABLE DATA; Schema: public; Owner: -
 --
 
@@ -276,8 +276,8 @@ INSERT INTO public.lessons VALUES ('e01733c0-61f3-4d71-9713-15d874c2cd10', 'aaa1
 
 
 --
--- TOC entry 3516 (class 0 OID 16945)
--- Dependencies: 219
+-- TOC entry 3517 (class 0 OID 18531)
+-- Dependencies: 220
 -- Data for Name: responses; Type: TABLE DATA; Schema: public; Owner: -
 --
 
@@ -287,8 +287,8 @@ INSERT INTO public.responses VALUES ('d781c5a0-765e-4461-948a-30d5b1b42a9d', '20
 
 
 --
--- TOC entry 3521 (class 0 OID 17027)
--- Dependencies: 224
+-- TOC entry 3518 (class 0 OID 18538)
+-- Dependencies: 221
 -- Data for Name: schedules; Type: TABLE DATA; Schema: public; Owner: -
 --
 
@@ -298,18 +298,18 @@ INSERT INTO public.schedules VALUES ('c709e770-4538-479f-8449-6d6de29754cd', 'b5
 
 
 --
--- TOC entry 3517 (class 0 OID 16952)
--- Dependencies: 220
+-- TOC entry 3519 (class 0 OID 18542)
+-- Dependencies: 222
 -- Data for Name: students; Type: TABLE DATA; Schema: public; Owner: -
 --
 
-INSERT INTO public.students VALUES ('120ce5a6-d320-4c18-b8ff-f3c8ae962a5f', 'Петрович', 'Иванов', 'Сергей', 'iv221s1', 'hl832jUE', '89139324782', 'sergey.ivanov@mail.com', '2003-03-15', '9f7706b2-ce24-4042-af4a-4302a23d521f');
-INSERT INTO public.students VALUES ('20dc0a83-a114-4908-bba6-9f1a22817213', 'Михайлович', 'Орлов', 'Дмитрий', 'iv223s1', '9Kpo32jd', '+79134572674', 'dmitry.orlov@mail.com', '2003-06-25', '42ebaa8f-d4c9-4b8e-8962-e2657871cc42');
-INSERT INTO public.students VALUES ('cfc4bf68-50b7-48d3-8321-992d5de83c74', 'Игоревна', 'Сидорова', 'Елена', 'iv222s1', '3jYE7oPE', '89239348275', 'elena.sidorova@mail.com', '2002-12-10', 'f4b6dabb-e19c-47d8-983d-0c0c482f1a36');
+INSERT INTO public.students VALUES ('120ce5a6-d320-4c18-b8ff-f3c8ae962a5f', 'Петрович', 'Иванов', 'Сергей', 'iv221s1', '$2a$10$Ya/hiEzymCKoFQXzp6Ykgu5UUyOGQkILnotpTFKwbmlfsydFGBbuO', '89139324782', 'sergey.ivanov@mail.com', '2003-03-15', '9f7706b2-ce24-4042-af4a-4302a23d521f');
+INSERT INTO public.students VALUES ('20dc0a83-a114-4908-bba6-9f1a22817213', 'Михайлович', 'Орлов', 'Дмитрий', 'iv223s1', '$2a$10$VKxYNel1BWwbvGCD.nrklueFallu1dq8A0cEooy/GDuVRefNXtXJm', '+79134572674', 'dmitry.orlov@mail.com', '2003-06-25', '42ebaa8f-d4c9-4b8e-8962-e2657871cc42');
+INSERT INTO public.students VALUES ('cfc4bf68-50b7-48d3-8321-992d5de83c74', 'Игоревна', 'Сидорова', 'Елена', 'iv222s1', '$2a$10$1WPN7FIpJ2Zk1F7Ou0GEaOqwMgl8McqnG0SEAtxJmuLB25zLbuVre', '89239348275', 'elena.sidorova@mail.com', '2002-12-10', 'f4b6dabb-e19c-47d8-983d-0c0c482f1a36');
 
 
 --
--- TOC entry 3520 (class 0 OID 17021)
+-- TOC entry 3520 (class 0 OID 18546)
 -- Dependencies: 223
 -- Data for Name: subjects; Type: TABLE DATA; Schema: public; Owner: -
 --
@@ -320,8 +320,8 @@ INSERT INTO public.subjects VALUES ('db8c7352-c723-4dbe-b37c-66edbcb9dcca', 'С�
 
 
 --
--- TOC entry 3518 (class 0 OID 16960)
--- Dependencies: 221
+-- TOC entry 3521 (class 0 OID 18550)
+-- Dependencies: 224
 -- Data for Name: tasks; Type: TABLE DATA; Schema: public; Owner: -
 --
 
@@ -331,18 +331,18 @@ INSERT INTO public.tasks VALUES ('eddbfa43-fe13-4e7e-b768-1b17194803dd', 'Лаб
 
 
 --
--- TOC entry 3519 (class 0 OID 16966)
--- Dependencies: 222
+-- TOC entry 3522 (class 0 OID 18556)
+-- Dependencies: 225
 -- Data for Name: teachers; Type: TABLE DATA; Schema: public; Owner: -
 --
 
-INSERT INTO public.teachers VALUES ('39f4a254-0619-4a30-a7d1-d49c0e7ad394', 'Иванович', 'Петров', 'Иван', 'ivt-1', 'j83bHI7e', '+79136307529', 'ivan.petrov@mail.com', '1980-05-15', 'Преподаватель', 'CSE');
-INSERT INTO public.teachers VALUES ('cc5fa67e-2774-4fc9-a803-944d44f4019a', 'Сергеевна', 'Смирнова', 'Анна', 'ivt-2', '9JG7bn60', '89136402306', 'anna.smirnova@mail.com', '1985-07-20', 'Старший преподаватель', 'CSE');
-INSERT INTO public.teachers VALUES ('e4727d51-d25f-4e19-a6e7-dfd57334b594', 'Александрович', 'Кузнецов', 'Алексей', 'ivt-3', 'K86K1d7q', '89230907642', 'alexey.kuznetsov@mail.com', '1978-09-10', 'Младший преподаватель', 'CSE');
+INSERT INTO public.teachers VALUES ('39f4a254-0619-4a30-a7d1-d49c0e7ad394', 'Иванович', 'Петров', 'Иван', 'ivt-1', '$2a$10$aL3agzrDHLAurzH.7dRFy.UDJcD65.VX.4bB.l/JaSMFB76wkfoI.', '+79136307529', 'ivan.petrov@mail.com', '1980-05-15', 'Преподаватель', 'CSE');
+INSERT INTO public.teachers VALUES ('cc5fa67e-2774-4fc9-a803-944d44f4019a', 'Сергеевна', 'Смирнова', 'Анна', 'ivt-2', '$2a$10$jHxjW.x9ATIERCm9WWyElO6wfEgLRZ6V.ZbAGpUqgFUaApU2n2/Ua', '89136402306', 'anna.smirnova@mail.com', '1985-07-20', 'Старший преподаватель', 'CSE');
+INSERT INTO public.teachers VALUES ('e4727d51-d25f-4e19-a6e7-dfd57334b594', 'Александрович', 'Кузнецов', 'Алексей', 'ivt-3', '$2a$10$Wdw7xvXsAl7reO0p452cfuUg2bVgOHOVn.zfRr6/GKcof190lkzhW', '89230907642', 'alexey.kuznetsov@mail.com', '1978-09-10', 'Младший преподаватель', 'CSE');
 
 
 --
--- TOC entry 3342 (class 2606 OID 16971)
+-- TOC entry 3342 (class 2606 OID 18561)
 -- Name: databasechangeloglock databasechangeloglock_pkey; Type: CONSTRAINT; Schema: public; Owner: -
 --
 
@@ -351,7 +351,7 @@ ALTER TABLE ONLY public.databasechangeloglock
 
 
 --
--- TOC entry 3344 (class 2606 OID 16973)
+-- TOC entry 3344 (class 2606 OID 18563)
 -- Name: groups groups_pkey; Type: CONSTRAINT; Schema: public; Owner: -
 --
 
@@ -360,7 +360,7 @@ ALTER TABLE ONLY public.groups
 
 
 --
--- TOC entry 3360 (class 2606 OID 17053)
+-- TOC entry 3346 (class 2606 OID 18565)
 -- Name: lessons lessons_pkey; Type: CONSTRAINT; Schema: public; Owner: -
 --
 
@@ -369,7 +369,7 @@ ALTER TABLE ONLY public.lessons
 
 
 --
--- TOC entry 3346 (class 2606 OID 16975)
+-- TOC entry 3348 (class 2606 OID 18567)
 -- Name: responses responses_pkey; Type: CONSTRAINT; Schema: public; Owner: -
 --
 
@@ -378,7 +378,7 @@ ALTER TABLE ONLY public.responses
 
 
 --
--- TOC entry 3358 (class 2606 OID 17032)
+-- TOC entry 3350 (class 2606 OID 18569)
 -- Name: schedules schedules_pkey; Type: CONSTRAINT; Schema: public; Owner: -
 --
 
@@ -387,7 +387,7 @@ ALTER TABLE ONLY public.schedules
 
 
 --
--- TOC entry 3348 (class 2606 OID 16977)
+-- TOC entry 3352 (class 2606 OID 18571)
 -- Name: students students_pkey; Type: CONSTRAINT; Schema: public; Owner: -
 --
 
@@ -396,7 +396,7 @@ ALTER TABLE ONLY public.students
 
 
 --
--- TOC entry 3356 (class 2606 OID 17026)
+-- TOC entry 3354 (class 2606 OID 18573)
 -- Name: subjects subjects_pkey; Type: CONSTRAINT; Schema: public; Owner: -
 --
 
@@ -405,7 +405,7 @@ ALTER TABLE ONLY public.subjects
 
 
 --
--- TOC entry 3350 (class 2606 OID 16981)
+-- TOC entry 3356 (class 2606 OID 18575)
 -- Name: tasks tasks_lesson_id_key; Type: CONSTRAINT; Schema: public; Owner: -
 --
 
@@ -414,7 +414,7 @@ ALTER TABLE ONLY public.tasks
 
 
 --
--- TOC entry 3352 (class 2606 OID 16983)
+-- TOC entry 3358 (class 2606 OID 18577)
 -- Name: tasks tasks_pkey; Type: CONSTRAINT; Schema: public; Owner: -
 --
 
@@ -423,7 +423,7 @@ ALTER TABLE ONLY public.tasks
 
 
 --
--- TOC entry 3354 (class 2606 OID 16985)
+-- TOC entry 3360 (class 2606 OID 18579)
 -- Name: teachers teachers_pkey; Type: CONSTRAINT; Schema: public; Owner: -
 --
 
@@ -432,7 +432,7 @@ ALTER TABLE ONLY public.teachers
 
 
 --
--- TOC entry 3369 (class 2606 OID 17054)
+-- TOC entry 3361 (class 2606 OID 18580)
 -- Name: lessons lessons_schedule_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
@@ -441,7 +441,7 @@ ALTER TABLE ONLY public.lessons
 
 
 --
--- TOC entry 3361 (class 2606 OID 17069)
+-- TOC entry 3362 (class 2606 OID 18585)
 -- Name: responses responses_student_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
@@ -450,7 +450,7 @@ ALTER TABLE ONLY public.responses
 
 
 --
--- TOC entry 3362 (class 2606 OID 17074)
+-- TOC entry 3363 (class 2606 OID 18590)
 -- Name: responses responses_task_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
@@ -459,7 +459,7 @@ ALTER TABLE ONLY public.responses
 
 
 --
--- TOC entry 3366 (class 2606 OID 17079)
+-- TOC entry 3364 (class 2606 OID 18595)
 -- Name: schedules schedules_group_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
@@ -468,7 +468,7 @@ ALTER TABLE ONLY public.schedules
 
 
 --
--- TOC entry 3367 (class 2606 OID 17033)
+-- TOC entry 3365 (class 2606 OID 18600)
 -- Name: schedules schedules_subject_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
@@ -477,7 +477,7 @@ ALTER TABLE ONLY public.schedules
 
 
 --
--- TOC entry 3368 (class 2606 OID 17084)
+-- TOC entry 3366 (class 2606 OID 18605)
 -- Name: schedules schedules_teacher_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
@@ -486,7 +486,7 @@ ALTER TABLE ONLY public.schedules
 
 
 --
--- TOC entry 3363 (class 2606 OID 17089)
+-- TOC entry 3367 (class 2606 OID 18610)
 -- Name: students students_group_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
@@ -495,7 +495,7 @@ ALTER TABLE ONLY public.students
 
 
 --
--- TOC entry 3364 (class 2606 OID 17064)
+-- TOC entry 3368 (class 2606 OID 18615)
 -- Name: tasks tasks_lesson_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
@@ -504,7 +504,7 @@ ALTER TABLE ONLY public.tasks
 
 
 --
--- TOC entry 3365 (class 2606 OID 17094)
+-- TOC entry 3369 (class 2606 OID 18620)
 -- Name: tasks tasks_teacher_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
@@ -512,7 +512,7 @@ ALTER TABLE ONLY public.tasks
     ADD CONSTRAINT tasks_teacher_id_fkey FOREIGN KEY (teacher_id) REFERENCES public.teachers(id) ON UPDATE CASCADE ON DELETE CASCADE;
 
 
--- Completed on 2025-03-06 17:33:29 +07
+-- Completed on 2025-05-10 13:52:35 +07
 
 --
 -- PostgreSQL database dump complete
