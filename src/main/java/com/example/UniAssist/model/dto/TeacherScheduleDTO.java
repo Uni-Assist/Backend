@@ -8,7 +8,6 @@ import java.util.UUID;
 public class TeacherScheduleDTO {
     private UUID id;
     private String subjectName;
-    private UUID groupId;
     private String groupName;
     private LocalTime startTime;
     private LocalTime endTime;
@@ -18,10 +17,9 @@ public class TeacherScheduleDTO {
 
     public TeacherScheduleDTO() {}
 
-    public TeacherScheduleDTO(UUID id, String subjectName, UUID groupId, String groupName, LocalTime startTime, LocalTime endTime, String classroom, LessonType type, String header) {
+    public TeacherScheduleDTO(UUID id, String subjectName, String groupName, LocalTime startTime, LocalTime endTime, String classroom, LessonType type, String header) {
         this.id = id;
         this.subjectName = subjectName;
-        this.groupId = groupId;
         this.groupName = groupName;
         this.startTime = startTime;
         this.endTime = endTime;
@@ -44,14 +42,6 @@ public class TeacherScheduleDTO {
 
     public void setSubjectName(String subjectName) {
         this.subjectName = subjectName;
-    }
-
-    public UUID getGroupId() {
-        return groupId;
-    }
-
-    public void setGroupId(UUID groupId) {
-        this.groupId = groupId;
     }
 
     public String getGroupName() {

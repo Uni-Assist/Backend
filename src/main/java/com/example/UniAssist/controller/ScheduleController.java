@@ -5,6 +5,7 @@ import com.example.UniAssist.model.dto.TeacherScheduleDTO;
 import com.example.UniAssist.service.ScheduleService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -28,16 +29,16 @@ public class ScheduleController {
     @GetMapping("/student")
     public ResponseEntity<List<StudentScheduleDTO>> getStudentSchedule(
             @RequestParam("date") String date,
-            @RequestParam("student_id") UUID studentId) {
-        List<StudentScheduleDTO> schedule = scheduleService.getStudentSchedule(studentId, LocalDate.parse(date));
+            @AuthenticationPrincipal String studentId) {
+        List<StudentScheduleDTO> schedule = scheduleService.getStudentSchedule(UUID.fromString(studentId), LocalDate.parse(date));
         return ResponseEntity.ok(schedule);
     }
 
     @GetMapping("/teacher")
     public ResponseEntity<List<TeacherScheduleDTO>> getTeacherSchedule(
             @RequestParam("date") String date,
-            @RequestParam("teacher_id") UUID teacherId) {
-        List<TeacherScheduleDTO> schedule = scheduleService.getTeacherSchedule(teacherId, LocalDate.parse(date));
+            @AuthenticationPrincipal String teacherId) {
+        List<TeacherScheduleDTO> schedule = scheduleService.getTeacherSchedule(UUID.fromString(teacherId), LocalDate.parse(date));
         return ResponseEntity.ok(schedule);
     }
 }
