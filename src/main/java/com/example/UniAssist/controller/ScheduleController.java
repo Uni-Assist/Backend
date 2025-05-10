@@ -29,16 +29,16 @@ public class ScheduleController {
     @GetMapping("/student")
     public ResponseEntity<List<StudentScheduleDTO>> getStudentSchedule(
             @RequestParam("date") String date,
-            @AuthenticationPrincipal String studentId) {
-        List<StudentScheduleDTO> schedule = scheduleService.getStudentSchedule(UUID.fromString(studentId), LocalDate.parse(date));
+            @AuthenticationPrincipal UUID studentId) {
+        List<StudentScheduleDTO> schedule = scheduleService.getStudentSchedule(studentId, LocalDate.parse(date));
         return ResponseEntity.ok(schedule);
     }
 
     @GetMapping("/teacher")
     public ResponseEntity<List<TeacherScheduleDTO>> getTeacherSchedule(
             @RequestParam("date") String date,
-            @AuthenticationPrincipal String teacherId) {
-        List<TeacherScheduleDTO> schedule = scheduleService.getTeacherSchedule(UUID.fromString(teacherId), LocalDate.parse(date));
+            @AuthenticationPrincipal UUID teacherId) {
+        List<TeacherScheduleDTO> schedule = scheduleService.getTeacherSchedule(teacherId, LocalDate.parse(date));
         return ResponseEntity.ok(schedule);
     }
 }
