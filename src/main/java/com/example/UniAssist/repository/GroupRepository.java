@@ -13,4 +13,7 @@ public interface GroupRepository extends JpaRepository<Group, UUID> {
 
     @Query("SELECT g.id AS groupId, g.name AS groupName FROM Group g WHERE g.id IN :Ids")
     List<GroupNameProjection> findGroupNamesByIds(@Param("Ids") List<UUID> Ids);
+
+    @Query("SELECT g.name FROM Group g WHERE g.id = :groupId")
+    String findGroupNameById(@Param("groupId") UUID groupId);
 }
