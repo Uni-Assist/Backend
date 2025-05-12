@@ -2,6 +2,8 @@ package com.example.UniAssist.model.entity;
 
 import com.example.UniAssist.type.ResponseType;
 import jakarta.persistence.*;
+import org.hibernate.annotations.JdbcTypeCode;
+import org.hibernate.type.SqlTypes;
 
 import java.util.UUID;
 
@@ -10,6 +12,7 @@ import java.util.UUID;
 public class Response {
 
     @Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
     @Column(name = "id", updatable = false, nullable = false)
     private UUID id;
 
@@ -27,6 +30,7 @@ public class Response {
 
     @Enumerated(EnumType.STRING)
     @Column(name = "type", nullable = false)
+    @JdbcTypeCode(SqlTypes.NAMED_ENUM)
     private ResponseType type;
 
     public UUID getId() {

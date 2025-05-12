@@ -2,6 +2,8 @@ package com.example.UniAssist.model.entity;
 
 import com.example.UniAssist.type.Department;
 import jakarta.persistence.*;
+import org.hibernate.annotations.JdbcTypeCode;
+import org.hibernate.type.SqlTypes;
 
 import java.util.UUID;
 
@@ -18,6 +20,7 @@ public class Group {
 
     @Enumerated(EnumType.STRING)
     @Column(name = "department", nullable = false)
+    @JdbcTypeCode(SqlTypes.NAMED_ENUM)
     private Department department;
 
     public UUID getId() {
