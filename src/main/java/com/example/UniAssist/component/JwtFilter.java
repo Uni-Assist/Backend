@@ -18,6 +18,7 @@ import org.springframework.web.servlet.HandlerExceptionResolver;
 
 import java.io.IOException;
 import java.util.List;
+import java.util.UUID;
 
 @Component
 public class JwtFilter extends OncePerRequestFilter {
@@ -37,7 +38,7 @@ public class JwtFilter extends OncePerRequestFilter {
             if (token != null && jwtProvider.validateToken(token)) {
                 String userId = jwtProvider.getSubject(token);
 
-                UsernamePasswordAuthenticationToken authentication = new UsernamePasswordAuthenticationToken(userId, null, List.of());
+                UsernamePasswordAuthenticationToken authentication = new UsernamePasswordAuthenticationToken(UUID.fromString(userId), null, List.of());
                 SecurityContextHolder.getContext().setAuthentication(authentication);
             }
             fc.doFilter(request, response);

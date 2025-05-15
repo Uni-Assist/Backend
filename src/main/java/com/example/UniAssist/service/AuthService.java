@@ -26,6 +26,7 @@ public class AuthService {
     private final JwtProvider jwtProvider;
     private final AuthMapper authMapper;
     private final PasswordEncoder passwordEncoder;
+    private final FullNameMapper fullNameMapper;
 
     @Autowired
     public AuthService(
@@ -34,13 +35,15 @@ public class AuthService {
             GroupRepository groupRepository,
             JwtProvider jwtProvider,
             AuthMapper authMapper,
-            PasswordEncoder passwordEncoder) {
+            PasswordEncoder passwordEncoder,
+            FullNameMapper fullNameMapper) {
         this.teacherRepository = teacherRepository;
         this.studentRepository = studentRepository;
         this.groupRepository = groupRepository;
         this.jwtProvider = jwtProvider;
         this.authMapper = authMapper;
         this.passwordEncoder = passwordEncoder;
+        this.fullNameMapper = fullNameMapper;
     }
 
     public JwtResponse login(JwtRequest authRequest) throws AuthException {
@@ -63,7 +66,7 @@ public class AuthService {
         if (passwordEncoder.matches(authRequest.getPassword(), userAuth.getPassword())) {
             final String token = jwtProvider.generateToken(userAuth.getId());
             jwtResponse.setToken(token);
-            jwtResponse.setFullName(FullNameMapper.toDTO(userAuth.getLastName(), userAuth.getFirstName(), userAuth.getMiddleName()));
+            jwtResponse.setFullName(fullNameMapper.toDTO(userAuth.getLastName(), userAuth.getFirstName(), userAuth.getMiddleName()));
             return jwtResponse;
         } else {
             throw new AuthException("Invalid password");
