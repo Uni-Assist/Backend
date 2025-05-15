@@ -1,7 +1,7 @@
 package com.example.UniAssist.repository;
 
 import com.example.UniAssist.model.entity.Group;
-import com.example.UniAssist.projection.GroupNameProjection;
+import com.example.UniAssist.model.projection.GroupNameProjection;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;

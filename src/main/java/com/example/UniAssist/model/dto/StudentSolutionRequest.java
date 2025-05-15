@@ -1,12 +1,13 @@
 package com.example.UniAssist.model.dto;
 
-import com.example.UniAssist.type.ResponseType;
+import com.example.UniAssist.type.SolutionType;
+
 import java.util.UUID;
 
-public class StudentResponseRequest {
+public class StudentSolutionRequest {
     private UUID taskId;
     private String body;
-    private ResponseType type;
+    private SolutionType type;
 
     public UUID getTaskId() {
         return taskId;
@@ -24,11 +25,11 @@ public class StudentResponseRequest {
         this.body = body;
     }
 
-    public ResponseType getType() {
+    public SolutionType getType() {
         return type;
     }
 
-    public void setType(ResponseType type) {
+    public void setType(SolutionType type) {
         this.type = type;
     }
 }

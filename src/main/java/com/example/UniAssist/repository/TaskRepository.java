@@ -1,7 +1,7 @@
 package com.example.UniAssist.repository;
 
 import com.example.UniAssist.model.entity.Task;
-import com.example.UniAssist.projection.TaskHeaderProjection;
+import com.example.UniAssist.model.projection.TaskHeaderProjection;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
@@ -15,4 +15,6 @@ public interface TaskRepository extends JpaRepository<Task, UUID> {
 
     @Query("SELECT t.lessonId AS lessonId, t.header AS header FROM Task t WHERE t.lessonId IN :lessonIds")
     List<TaskHeaderProjection> findTaskHeadersByLessonIds(@Param("lessonIds") List<UUID> lessonIds);
+
+    Task findTaskByLessonId(UUID lessonId);
 }

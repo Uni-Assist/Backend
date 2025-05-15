@@ -1,38 +1,38 @@
 package com.example.UniAssist.controller;
 
-import com.example.UniAssist.model.dto.StudentResponseRequest;
+import com.example.UniAssist.model.dto.StudentSolutionRequest;
 import com.example.UniAssist.model.dto.UpdateMarkRequest;
-import com.example.UniAssist.service.ResponseService;
+import com.example.UniAssist.service.SolutionService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.*;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.UUID;
 
 @RestController
 @RequestMapping("/api/v1/response")
-public class ResponseController {
+public class SolutionController {
 
-    private final ResponseService responseService;
+    private final SolutionService solutionService;
 
     @Autowired
-    public ResponseController(ResponseService responseService) {
-        this.responseService = responseService;
+    public SolutionController(SolutionService solutionService) {
+        this.solutionService = solutionService;
     }
 
     @PostMapping("/student")
     public ResponseEntity<String> submitResponse(
-            @RequestBody StudentResponseRequest request,
-            @AuthenticationPrincipal String studentId) {
-        String result = responseService.processStudentResponse(UUID.fromString(studentId), request);
+            @RequestBody StudentSolutionRequest request,
+            @AuthenticationPrincipal UUID studentId) {
+        String result = solutionService.handleStudentSolution(studentId, request);
         return ResponseEntity.ok(result);
     }
 
     @PatchMapping("/teacher")
     public ResponseEntity<String> updateResponseMark(
             @RequestBody UpdateMarkRequest request) {
-        String result = responseService.updateResponseMark(request);
+        String result = solutionService.updateResponseMark(request);
         return ResponseEntity.ok(result);
     }
 }

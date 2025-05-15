@@ -12,6 +12,7 @@ import java.util.UUID;
 public class Schedule {
 
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id", updatable = false, nullable = false)
     private UUID id;
 

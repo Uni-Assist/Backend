@@ -1,4 +1,4 @@
-package com.example.UniAssist.projection;
+package com.example.UniAssist.model.projection;
 
 import java.util.UUID;
 
