@@ -35,3 +35,6 @@ out/
 
 ### VS Code ###
 .vscode/
+
+### Dokcer ###
+./src/main/resources/*.jar

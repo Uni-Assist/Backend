@@ -2,6 +2,8 @@ package com.example.UniAssist.service;
 
 import com.example.UniAssist.mapper.SolutionMapper;
 import com.example.UniAssist.model.dto.SolutionDTO;
+import com.example.UniAssist.model.dto.StudentSolutionRequest;
+import com.example.UniAssist.model.dto.UpdateMarkRequest;
 import com.example.UniAssist.model.entity.Solution;
 import com.example.UniAssist.repository.SolutionRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,7 +19,9 @@ public class SolutionService {
     private final SolutionMapper solutionMapper;
 
     @Autowired
-    public SolutionService(SolutionRepository solutionRepository, SolutionMapper solutionMapper) {
+    public SolutionService(
+            SolutionRepository solutionRepository,
+            SolutionMapper solutionMapper) {
         this.solutionRepository = solutionRepository;
         this.solutionMapper = solutionMapper;
     }
@@ -30,5 +34,18 @@ public class SolutionService {
     public SolutionDTO getSolutionByTaskId(UUID taskId) {
         Solution solutionEntity = solutionRepository.findSolutionByTaskId(taskId);
         return solutionMapper.toDto(solutionEntity);
+    }
+
+    public String handleStudentSolution(UUID studentId, StudentSolutionRequest request) {
+        Solution solutionEntity = solutionMapper.toEntity(request, studentId);
+        solutionRepository.save(solutionEntity);
+
+        return "Success";
+    }
+
+    public String updateResponseMark(UpdateMarkRequest request) {
+        solutionRepository.updateMark(request.getId(), request.getMark());
+
+        return "Success";
     }
 }

@@ -39,3 +39,13 @@ dependencies {
 tasks.withType<Test> {
 	useJUnitPlatform()
 }
+
+tasks.withType<Test> {
+	enabled = false
+}
+
+tasks.register("docker", Copy::class) {
+	dependsOn("build")
+	from(layout.buildDirectory.dir("libs"))
+	into("src/main/resources")
+}

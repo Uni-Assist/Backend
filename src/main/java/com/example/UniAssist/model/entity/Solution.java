@@ -2,6 +2,8 @@ package com.example.UniAssist.model.entity;
 
 import com.example.UniAssist.type.SolutionType;
 import jakarta.persistence.*;
+import org.hibernate.annotations.JdbcTypeCode;
+import org.hibernate.type.SqlTypes;
 
 import java.util.UUID;
 
@@ -10,6 +12,7 @@ import java.util.UUID;
 public class Solution {
 
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id", updatable = false, nullable = false)
     private UUID id;
 
@@ -27,6 +30,7 @@ public class Solution {
 
     @Enumerated(EnumType.STRING)
     @Column(name = "type", nullable = false)
+    @JdbcTypeCode(SqlTypes.NAMED_ENUM)
     private SolutionType type;
 
     public UUID getId() {
