@@ -13,11 +13,10 @@ public class StudentScheduleDTO {
     private LocalTime endTime;
     private String classroom;
     private LessonType type;
-    private String header;
 
     public StudentScheduleDTO() {}
 
-    public StudentScheduleDTO(UUID id, String subjectName, FullNameDTO fullName, LocalTime startTime, LocalTime endTime, String classroom, LessonType type, String header) {
+    public StudentScheduleDTO(UUID id, String subjectName, FullNameDTO fullName, LocalTime startTime, LocalTime endTime, String classroom, LessonType type) {
         this.id = id;
         this.subjectName = subjectName;
         this.fullName = fullName;
@@ -25,7 +24,6 @@ public class StudentScheduleDTO {
         this.endTime = endTime;
         this.classroom = classroom;
         this.type = type;
-        this.header = header;
     }
 
     public UUID getId() {
@@ -82,13 +80,5 @@ public class StudentScheduleDTO {
 
     public void setType(LessonType type) {
         this.type = type;
-    }
-
-    public String getHeader() {
-        return header;
-    }
-
-    public void setHeader(String header) {
-        this.header = header;
     }
 }
