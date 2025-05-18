@@ -57,7 +57,7 @@ public class LessonService {
         return response;
     }
 
-    public StudentLessonResponse getStudentLesson(UUID lessonId) {
+    public StudentLessonResponse getStudentLesson(UUID lessonId, UUID studentId) {
         LessonProjection lessonProjection = getLessonProjectionById(lessonId);
         FullNameProjection fullName = teacherRepository.findFullNameByTeacherId(lessonProjection.getTeacherId());
         StudentLessonDTO lesson = lessonMapper.toDTO(lessonProjection, fullName);
@@ -68,7 +68,7 @@ public class LessonService {
             return response;
         }
 
-        SolutionDTO solution = solutionService.getSolutionByTaskId(taskDTO.getId());
+        SolutionDTO solution = solutionService.getSolutionByTaskId(taskDTO.getId(), studentId);
         response.setTask(taskDTO);
         response.setSolution(solution);
         return response;

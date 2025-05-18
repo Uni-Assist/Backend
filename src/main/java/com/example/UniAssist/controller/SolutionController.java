@@ -11,7 +11,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.UUID;
 
 @RestController
-@RequestMapping("/api/v1/response")
+@RequestMapping("/api/v1/solution")
 public class SolutionController {
 
     private final SolutionService solutionService;

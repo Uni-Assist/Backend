@@ -15,7 +15,9 @@ import java.util.UUID;
 public interface SolutionRepository extends JpaRepository<Solution, UUID> {
     List<Solution> findSolutionsByTaskId(UUID taskId);
 
-    Solution findSolutionByTaskId(UUID taskId);
+    Solution findSolutionByTaskIdAndStudentId(UUID taskId, UUID studentId);
+
+    boolean existsByStudentIdAndTaskId(UUID studentId, UUID taskId);
 
     @Modifying
     @Transactional

@@ -3,22 +3,29 @@ package com.example.UniAssist.model.dto;
 import java.util.UUID;
 
 public class UpdateMarkRequest {
-    private UUID id;
-    private int mark;
+    private UUID solutionId;
+    private Integer mark;
 
-    public UUID getId() {
-        return id;
+    public UpdateMarkRequest() {}
+
+    public UpdateMarkRequest(UUID solutionId, Integer mark) {
+        this.solutionId = solutionId;
+        this.mark = mark;
     }
 
-    public void setId(UUID id) {
-        this.id = id;
+    public UUID getSolutionId() {
+        return solutionId;
+    }
+
+    public void setSolutionId(UUID solutionId) {
+        this.solutionId = solutionId;
     }
 
     public int getMark() {
         return mark;
     }
 
-    public void setMark(int mark) {
+    public void setMark(Integer mark) {
         this.mark = mark;
     }
 }

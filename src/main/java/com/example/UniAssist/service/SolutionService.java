@@ -31,12 +31,15 @@ public class SolutionService {
         return solutionMapper.toDto(solutionEntities);
     }
 
-    public SolutionDTO getSolutionByTaskId(UUID taskId) {
-        Solution solutionEntity = solutionRepository.findSolutionByTaskId(taskId);
+    public SolutionDTO getSolutionByTaskId(UUID taskId, UUID studentId) {
+        Solution solutionEntity = solutionRepository.findSolutionByTaskIdAndStudentId(taskId, studentId);
         return solutionMapper.toDto(solutionEntity);
     }
 
     public String handleStudentSolution(UUID studentId, StudentSolutionRequest request) {
+        if (solutionRepository.existsByStudentIdAndTaskId(studentId, request.getTaskId())) {
+            return "Solution already exists";
+        }
         Solution solutionEntity = solutionMapper.toEntity(request, studentId);
         solutionRepository.save(solutionEntity);
 
@@ -44,7 +47,7 @@ public class SolutionService {
     }
 
     public String updateResponseMark(UpdateMarkRequest request) {
-        solutionRepository.updateMark(request.getId(), request.getMark());
+        solutionRepository.updateMark(request.getSolutionId(), request.getMark());
 
         return "Success";
     }
