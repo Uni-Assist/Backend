@@ -2,7 +2,6 @@ package com.example.UniAssist.model.dto;
 
 import com.example.UniAssist.type.LessonType;
 
-import java.time.LocalDate;
 import java.time.LocalTime;
 
 public class TeacherLessonDTO {
@@ -11,18 +10,16 @@ public class TeacherLessonDTO {
     private LocalTime startTime;
     private LocalTime endTime;
     private String classroom;
-    private LocalDate date;
     private LessonType type;
 
     public TeacherLessonDTO() {}
 
-    public TeacherLessonDTO(String subjectName, String groupName, LocalTime startTime, LocalTime endTime, String classroom, LocalDate date, LessonType type) {
+    public TeacherLessonDTO(String subjectName, String groupName, LocalTime startTime, LocalTime endTime, String classroom, LessonType type) {
         this.subjectName = subjectName;
         this.groupName = groupName;
         this.startTime = startTime;
         this.endTime = endTime;
         this.classroom = classroom;
-        this.date = date;
         this.type = type;
     }
 
@@ -64,14 +61,6 @@ public class TeacherLessonDTO {
 
     public void setClassroom(String classroom) {
         this.classroom = classroom;
-    }
-
-    public LocalDate getDate() {
-        return date;
-    }
-
-    public void setDate(LocalDate date) {
-        this.date = date;
     }
 
     public LessonType getType() {

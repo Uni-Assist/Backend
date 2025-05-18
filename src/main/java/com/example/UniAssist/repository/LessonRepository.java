@@ -20,7 +20,6 @@ public interface LessonRepository extends JpaRepository<Lesson, UUID> {
             l.startTime as startTime,
             l.endTime as endTime,
             l.classroom as classroom,
-            l.date as date,
             s.type as type
         FROM Lesson l
         JOIN Schedule s ON l.scheduleId = s.id

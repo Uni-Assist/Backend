@@ -9,7 +9,10 @@ import com.example.UniAssist.model.dto.TeacherScheduleDTO;
 import com.example.UniAssist.model.projection.FullNameProjection;
 import com.example.UniAssist.model.projection.GroupNameProjection;
 import com.example.UniAssist.model.projection.ScheduleProjection;
-import com.example.UniAssist.repository.*;
+import com.example.UniAssist.repository.GroupRepository;
+import com.example.UniAssist.repository.ScheduleRepository;
+import com.example.UniAssist.repository.StudentRepository;
+import com.example.UniAssist.repository.TeacherRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
