@@ -1,0 +1,941 @@
+openapi: 3.0.3
+info:
+  title: Приложение для обучения
+  description: "Приложение созданное для упрощения жизни студентам и улучшения образовательного процесса, позволяет просматривать расписание занятий, общаться со студентами и преподавателями, получать уникальный qr для прохода через турникеты в университет, выкладывать домашние задания для студентов и отправлять преподавателю ответы на задания"
+  version: 0.0.1
+servers:
+  - url: https://localhost:8080/api/v1/
+    description: Dev server
+paths:
+  /login/teacher:
+    post:
+      summary: Аутентификация преподавателя
+      tags:
+        - Login
+      description: Аутентификация преподавателя по логину и паролю, выданным университетом.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                login:
+                  type: string
+                  example: "teacher123"
+                password:
+                  type: string
+                  example: "password123"
+              required:
+                - login
+                - password
+      responses:
+        '200':
+          description: Успешная аутентификация
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Teacher'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '404':
+          $ref: '#/components/responses/NotFound'
+        '500':
+          $ref: '#/components/responses/InternalServerError'
+        '503':
+          $ref: '#/components/responses/ServiceUnavailable'
+  /login/student:
+    post:
+      summary: Аутентификация студента
+      tags:
+        - Login
+      description: Аутентификация студента по логину и паролю, выданным университетом.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                login:
+                  type: string
+                  example: "student456"
+                password:
+                  type: string
+                  example: "password456"
+              required:
+                - login
+                - password
+      responses:
+        '200':
+          description: Успешная аутентификация
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Student'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '404':
+          $ref: '#/components/responses/NotFound'
+        '500':
+          $ref: '#/components/responses/InternalServerError'
+        '503':
+          $ref: '#/components/responses/ServiceUnavailable'
+  /students:
+    get:
+      summary: Получить список всех студентов
+      tags:
+        - Students
+      operationId: getStudents
+      responses:
+        '200':
+          description: Успешно возвращён список студентов.
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Student'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '500':
+          $ref: '#/components/responses/InternalServerError'
+        '503':
+          $ref: '#/components/responses/ServiceUnavailable'
+  /students/{student_id}:
+    get:
+      summary: Получить информацию о студенте
+      tags:
+        - Student
+      operationId: getStudentId
+      parameters:
+        - name: student_id
+          in: path
+          required: true
+          description: Идентификатор студента (UUID).
+          schema:
+            type: string
+            format: uuid
+      responses:
+        '200':
+          description: Успешно возвращены данные о студенте.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Student'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '404':
+          $ref: '#/components/responses/NotFound'
+        '500':
+          $ref: '#/components/responses/InternalServerError'
+        '503':
+          $ref: '#/components/responses/ServiceUnavailable'
+  /teachers:
+    get:
+      summary: Получить список всех учителей
+      tags:
+        - Teachers
+      operationId: getTeachers
+      responses:
+        '200':
+          description: Успешно возвращён список учителей.
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Teacher'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '500':
+          $ref: '#/components/responses/InternalServerError'
+        '503':
+          $ref: '#/components/responses/ServiceUnavailable'
+  /teachers/{teacher_id}:
+    get:
+      summary: Получить информацию о учителе
+      tags:
+        - Teacher
+      operationId: getTeacherId
+      parameters:
+        - name: teacher_id
+          in: path
+          required: true
+          description: Идентификатор учителя (UUID).
+          schema:
+            type: string
+            format: uuid
+      responses:
+        '200':
+          description: Успешно возвращены данные о учителе.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Teacher'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '404':
+          $ref: '#/components/responses/NotFound'
+        '500':
+          $ref: '#/components/responses/InternalServerError'
+        '503':
+          $ref: '#/components/responses/ServiceUnavailable'
+  /groups:
+    get:
+      summary: Получить список групп
+      tags:
+        - Groups
+      operationId: getGroups
+      responses:
+        '200':
+          description: Успешно возвращён список групп.
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Group'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '500':
+          $ref: '#/components/responses/InternalServerError'
+        '503':
+          $ref: '#/components/responses/ServiceUnavailable'
+  /groups/{group_id}:
+    get:
+      summary: Получить информацию о группе
+      tags:
+        - Group
+      operationId: getGroupId
+      parameters:
+        - name: group_id
+          in: path
+          required: true
+          description: Идентификатор группы (UUID).
+          schema:
+            type: string
+            format: uuid
+      responses:
+        '200':
+          description: Успешно возвращены данные о группе.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Group'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '404':
+          $ref: '#/components/responses/NotFound'
+        '500':
+          $ref: '#/components/responses/InternalServerError'
+        '503':
+          $ref: '#/components/responses/ServiceUnavailable'
+  /classes:
+    get:
+      summary: Получить список занятий
+      tags:
+        - Classes
+      operationId: getClasses
+      parameters:
+        - name: groupId
+          in: query
+          required: false
+          description: Фильтр по идентификатору группы.
+          schema:
+            type: string
+            format: uuid
+        - name: teacherId
+          in: query
+          required: false
+          description: Фильтр по идентификатору преподавателя.
+          schema:
+            type: string
+            format: uuid
+      responses:
+        '200':
+          description: Успешно возвращён список занятий.
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Class'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '404':
+          $ref: '#/components/responses/NotFound'
+        '500':
+          $ref: '#/components/responses/InternalServerError'
+        '503':
+          $ref: '#/components/responses/ServiceUnavailable'
+  /classes/{class_id}:
+    get:
+      summary: Получение информации о занятии
+      tags:
+        - Class
+      description: Возвращает данные о занятии, включая информацию о группе, времени, месте проведения и связанных заданиях.
+      parameters:
+        - name: class_id
+          in: path
+          required: true
+          description: Идентификатор занятия (UUID).
+          schema:
+            type: string
+            format: uuid
+      responses:
+        '200':
+          description: Успешное получение данных о занятии
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Class'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '500':
+          $ref: '#/components/responses/InternalServerError'
+        '503':
+          $ref: '#/components/responses/ServiceUnavailable'
+  /tasks:
+    get:
+      summary: Получить список заданий
+      tags:
+        - Tasks
+      operationId: getTasks
+      responses:
+        '200':
+          description: Успешно возвращёны все задания.
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Task'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '404':
+          $ref: '#/components/responses/NotFound'
+        '500':
+          $ref: '#/components/responses/InternalServerError'
+        '503':
+          $ref: '#/components/responses/ServiceUnavailable'
+  /tasks/{task_id}:
+    get:
+      summary: Получить информацию о задании
+      tags:
+        - Task
+      operationId: getTaskId
+      parameters:
+        - name: task_id
+          in: path
+          required: true
+          description: Идентификатор задания (UUID).
+          schema:
+            type: string
+            format: uuid
+      responses:
+        '200':
+          description: Успешно возвращены данные о группе.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Task'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '404':
+          $ref: '#/components/responses/NotFound'
+        '500':
+          $ref: '#/components/responses/InternalServerError'
+        '503':
+          $ref: '#/components/responses/ServiceUnavailable'
+  /response/student:
+    post:
+      summary: Отправка ответа на задание
+      description: Метод для отправки ответа на задание.
+      operationId: postStudentResponseById
+      tags:
+        - Response
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                task_id:
+                  type: string
+                  format: uuid
+                  example: "42abcd2b-8b9c-4af9-88f7-0bc180cf74b4"
+                  description: ID задания
+                response_type:
+                  type: string
+                  description: Тип ответа (текст или файл)
+                  enum:
+                    - text
+                    - file
+                body:
+                  type: string
+                  description: Текст ответа или ссылка на файл
+                  example: "Ответ на задание"
+              required:
+                - task_id
+                - response_type
+                - body
+      responses:
+        '200':
+          description: Успешная отправка ответа
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: Ответ успешно отправлен
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '404':
+          $ref: '#/components/responses/NotFound'
+        '500':
+          $ref: '#/components/responses/InternalServerError'
+        '503':
+          $ref: '#/components/responses/ServiceUnavailable'
+  /response/teacher:
+    patch:
+      summary: Оценка ответа студента
+      description: Метод для оценки ответа студента на задание. Преподаватель может поставить оценку за выполненное задание.
+      operationId: patchTeacherResponseById
+      tags:
+        - Response
+      parameters:
+        - name: id
+          in: query
+          required: true
+          description: ID занятия
+          schema:
+            type: string
+            format: uuid
+          example: 42abcd2b-8b9c-4af9-88f7-0bc180cf74b4
+        - name: student_id
+          in: query
+          required: true
+          description: ID студента
+          schema:
+            type: string
+            format: uuid
+          example: 42abcd2b-8b9c-4af9-88f7-0bc180cf74b4
+        - name: mark
+          in: query
+          required: true
+          description: Оценка за выполненное задание
+          schema:
+            type: integer
+          example: 4
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Response'
+      responses:
+        '200':
+          description: Успешная отправка оценки
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: "Оценка успешно отправлена"
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '404':
+          $ref: '#/components/responses/NotFound'
+        '500':
+          $ref: '#/components/responses/InternalServerError'
+        '503':
+          $ref: '#/components/responses/ServiceUnavailable'
+  /schedule/student:
+    get:
+      summary: Получение списка занятий
+      description: Возвращает список занятий для указанной группы и даты.
+      operationId: getStudentSchedule
+      tags:
+        - Schedules
+      parameters:
+        - name: date
+          in: query
+          required: true
+          description: Дата занятий
+          schema:
+            type: string
+            format: date
+          example: 2024-11-19
+        - name: group
+          in: query
+          required: true
+          description: Группа студента
+          schema:
+            type: string
+            example: ИВ-222
+      responses:
+        '200':
+          description: Успешное получение списка занятий
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/Class"
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '500':
+          $ref: '#/components/responses/InternalServerError'
+        '503':
+          $ref: '#/components/responses/ServiceUnavailable'
+  /schedule/teacher:
+    get:
+      summary: Получение расписания преподавателя на текущую дату
+      description: Возвращает список занятий преподавателя на заданную дату. Для каждого занятия отображаются основные данные, такие как название предмета, группа, время начала и окончания, тип занятия и аудитория.
+      operationId: getTeacherSchedule
+      tags:
+        - Schedules
+      parameters:
+        - name: date
+          in: query
+          required: true
+          description: Дата для получения расписания (формат YYYY-MM-DD)
+          schema:
+            type: string
+            format: date
+          example: 2024-11-19
+        - name: teacher_id
+          in: query
+          required: true
+          description: ID преподавателя
+          schema:
+            type: string
+            format: uuid
+          example: 42abcd2b-8b9c-4af9-88f7-0bc180cf74b4
+      responses:
+        '200':
+          description: Успешное получение расписания преподавателя
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  classes:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/Class'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '500':
+          $ref: '#/components/responses/InternalServerError'
+        '503':
+          $ref: '#/components/responses/ServiceUnavailable'
+  /electronic_pass:
+    get:
+      summary: Получение электронного пропуска в виде QR-кода
+      description: Возвращает уникальный QR код для студента или преподавателя, который обновляется ежедневно. QR код генерируется на основе student_id или teacher_id и используется для прохода через турникеты.
+      operationId: getElectronicPass
+      tags:
+        - Pass
+      parameters:
+        - name: user_id
+          in: query
+          required: true
+          description: ID студента или преподавателя
+          schema:
+            type: string
+            format: uuid
+          example: 42abcd2b-8b9c-4af9-88f7-0bc180cf74b4
+        - name: user_type
+          in: query
+          required: true
+          description: Тип пользователя (student или teacher)
+          schema:
+            type: string
+            enum:
+              - student
+              - teacher
+          example: student
+      responses:
+        '200':
+          description: Успешное получение QR-кода
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  qr_code:
+                    type: string
+                    description: Строка, представляющая QR код
+                    example: "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAUA..."
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '500':
+          $ref: '#/components/responses/InternalServerError'
+        '503':
+          $ref: '#/components/responses/ServiceUnavailable'
+components:
+  schemas:
+    Student:
+      type: object
+      properties:
+        student_id:
+          type: string
+          format: uuid
+          description: ID студента
+          example: 42abcd2b-8b9c-4af9-88f7-0bc180cf74b4
+        fathername:
+          type: string
+          format: varchar
+          description: Отчество студента
+          example: Иванович
+        surname:
+          type: string
+          format: varchar
+          description: Фамилия студента
+          example: Иванов
+        name:
+          type: string
+          format: varchar
+          description: Имя студента
+          example: Иван
+        login:
+          type: string
+          format: varchar
+          description: Логин студента
+          example: Geri223
+        password:
+          description: Пароль студента, от 8 до 64 символов. Только латинские буквы, цифры и знаки '!?'. Обязательно наличие минимум 1 буквы верхнего и нижнего регистра, цифры и знака
+          type: string
+          format: varchar
+          pattern: '^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[!?])[A-Za-z\d!?]{8,64}$'
+          example: Fafwsgsd!322
+        email:
+          type: string
+          format: varchar
+          description: Электронная почта студента
+          example: Az222@gmail.com
+        phone:
+          type: integer
+          description: Номер телефона студента, состоит из 11 цифр, начинается с 8
+          example: 89137772223
+          pattern: '^8\d{10}$'
+        birthdate:
+          description: День рождения студента
+          type: string
+          format: date
+          example: "2017-01-01"
+          pattern: "YYYY-MM-DD"
+          minLength: 0
+          maxLength: 10
+        group_id:
+          type: string
+          format: uuid
+          description: ID группы студента 
+          example: 42abcd2b-8b9c-4af9-88f7-0bc180cf74b4
+    Teacher:
+      type: object
+      properties:
+        teacher_id:
+          type: string
+          format: uuid
+          description: ID учителя
+          example: 42abcd2b-8b9c-4af9-88f7-0bc180cf74b4
+        fathername:
+          type: string
+          format: varchar
+          description: Отчество учителя
+          example: Иванович
+        surname:
+          type: string
+          format: varchar
+          description: Фамилия учителя
+          example: Иванов
+        name:
+          type: string
+          format: varchar
+          description: Имя учителя
+          example: Иван
+        login:
+          type: string
+          format: varchar
+          description: Логин учителя
+          example: Geri223
+        password:
+          description: Пароль учителя, от 8 до 64 символов. Только латинские буквы, цифры и знаки '!?'. Обязательно наличие минимум 1 буквы верхнего и нижнего регистра, цифры и знака
+          type: string
+          format: varchar
+          pattern: '^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[!?])[A-Za-z\d!?]{8,64}$'
+          example: Fafwsgsd!322
+        email:
+          type: string
+          format: varchar
+          description: Электронная почта учителя
+          example: Az222@gmail.com
+        phone:
+          type: number
+          format: int
+          description: Номер телефона учителя, состоит из 11 цифр, начинается с 8
+          example: 89137772223
+          pattern: '^8\d{10}$'
+        birthdate:
+          description: День рождения учителя
+          type: string
+          format: date
+          example: "2017-01-01"
+          pattern: "YYYY-MM-DD"
+          minLength: 0
+          maxLength: 10
+        department:
+          type: string
+          enum:
+            - AVTF
+            - OCT
+            - SAB
+          description: Кафедра
+          example: Кафедра вычислительных систем
+        job_title:
+          type: string
+          format: varchar
+          example: Старший преподаватель
+    Group:
+      type: object
+      properties:
+        group_id:
+          type: string
+          format: uuid
+          description: ID группы
+          example: 42abcd2b-8b9c-4af9-88f7-0bc180cf74b4
+        name:
+          type: string
+          format: varchar
+          description: Название группы
+          example: Iv222
+    Class:
+      type: object
+      properties:
+        class_id:
+          type: string
+          format: uuid
+          description: ID занятия
+          example: 42abcd2b-8b9c-4af9-88f7-0bc180cf74b4
+        subject:
+          type: string
+          format: varchar
+          description: Предмет
+          example: СТП
+        start_time:
+          type: string
+          format: timestamp
+          description: Время начала занятия
+          example: 08:00
+        end_time:
+          type: string
+          format: timestamp
+          description: Время окончания занятия
+          example: 09:35
+        teacher_id:
+          type: string
+          format: uuid
+          description: Преподаватель который ведет предмет
+          example: 42abcd2b-8b9c-4af9-88f7-0bc180cf74b4
+        group_id:
+          type: string
+          format: uuid
+          description: Группа у которой проходит занятие
+          example: 42abcd2b-8b9c-4af9-88f7-0bc180cf74b4
+        type:
+          type: string
+          description: Характеристика занятия по его формату
+          enum:
+            - lecture
+            - practical
+          example: Лекция
+        classroom:
+          type: string
+          description: Номер аудитории
+          example: 202
+        date:
+          type: string
+          format: date
+          description: Дата занятия
+          example: "2017-01-01"
+          pattern: "YYYY-MM-DD"
+          minLength: 0
+          maxLength: 10
+    Response:
+      type: object
+      properties:
+        responce_id:
+          type: string
+          format: uuid
+          description: ID ответа
+          example: 42abcd2b-8b9c-4af9-88f7-0bc180cf74b4
+        student_id:
+          type: string
+          format: uuid
+          description: ID студента
+          example: 42abcd2b-8b9c-4af9-88f7-0bc180cf74b4
+        task_id:
+          type: string
+          format: uuid
+          description: ID задания
+          example: 42abcd2b-8b9c-4af9-88f7-0bc180cf74b4
+        response_type:
+          type: string
+          description: Тип ответа
+          enum:
+            - text
+            - file
+        body:
+          type: string
+          description: Текст ответа или ссылка на файл
+        mark:
+          type: number
+          format: int
+          description: Оценка за задание
+          example: 4
+    Task:
+      type: object
+      properties:
+        task_id:
+          type: string
+          format: uuid
+          description: ID задания
+          example: 42abcd2b-8b9c-4af9-88f7-0bc180cf74b4
+        header:
+          type: string
+          format: varchar
+          description: Заголовок задания
+          example: Лабораторная №2
+        body:
+          type: string
+          format: text
+          description: Формулировка задания
+          example: Выполните...
+        due_time:
+          type: string
+          format: date
+          description: Дата окончания выполнения
+          example: "2017-01-01"
+          pattern: "YYYY-MM-DD"
+          minLength: 0
+          maxLength: 10
+        teacher_id:
+          type: string
+          format: uuid
+          description: ID преподавателя
+          example: 42abcd2b-8b9c-4af9-88f7-0bc180cf74b4
+        class_id:
+          type: string
+          format: uuid
+          description: ID списка занятий
+          example: 42abcd2b-8b9c-4af9-88f7-0bc180cf74b4
+    Error:
+      type: object
+      required:
+        - code
+        - massege
+      properties:
+        code:
+          type: integer
+          description: Код ошибки
+          example: 501
+        massege:
+          type: string
+          description: Сообщение ошибки
+          example: Ошибка ответа сервера
+  responses:
+    BadRequest:
+      description: Некорректный запрос
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+          examples:
+            invalid-request:
+              value:
+                code: 400
+                message: Некорректный запрос
+    Forbidden:
+      description: Отказано в доступе.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+          examples:
+            forbidden:
+              value:
+                code: 403
+                message: Отказано в доступе
+    NotFound:
+      description: Пользователь не найден
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+          examples:
+            user-not-found:
+              value:
+                code: 404
+                message: Пользователь не найден
+    InternalServerError:
+      description: Внутренняя ошибка сервера
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+          examples:
+            internal-server-error:
+              value:
+                code: 500
+                message: Внутренняя ошибка сервера
+    ServiceUnavailable:
+      description: Сервис недоступен.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+          examples:
+            service-unavailable:
+              value:
+                code: 503
+                message: Сервис недоступен
