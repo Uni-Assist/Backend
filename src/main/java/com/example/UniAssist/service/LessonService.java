@@ -82,7 +82,7 @@ public class LessonService {
     private LessonProjection getLessonProjectionById(UUID lessonId) {
         LessonProjection projection = lessonRepository.findLessonProjectionById(lessonId);
         if (projection == null) {
-            throw new LessonNotFound("Lesson not found");
+            throw new LessonNotFound();
         }
         return projection;
     }

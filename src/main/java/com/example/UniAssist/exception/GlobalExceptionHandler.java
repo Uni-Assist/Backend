@@ -33,6 +33,21 @@ public class GlobalExceptionHandler {
         return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(ex.getMessage());
     }
 
+    @ExceptionHandler(SolutionAlreadyExists.class)
+    public ResponseEntity<String> handleSolutionAlreadyExists(SolutionAlreadyExists ex) {
+        return ResponseEntity.status(HttpStatus.CONFLICT).body(ex.getMessage());
+    }
+
+    @ExceptionHandler(SolutionNotFound.class)
+    public ResponseEntity<String> handleSolutionNotFound(SolutionNotFound ex) {
+        return ResponseEntity.status(HttpStatus.NOT_FOUND).body(ex.getMessage());
+    }
+
+    @ExceptionHandler(UpdateMarkFailed.class)
+    public ResponseEntity<String> handleUpdateMarkFailed(UpdateMarkFailed ex) {
+        return ResponseEntity.status(HttpStatus.CONFLICT).body(ex.getMessage());
+    }
+
     @ExceptionHandler(ExpiredJwtException.class)
     public ResponseEntity<String> handleExpiredJwtException() {
         return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Token expired");

@@ -22,6 +22,6 @@ public interface SolutionRepository extends JpaRepository<Solution, UUID> {
     @Modifying
     @Transactional
     @Query("UPDATE Solution s SET s.mark=:mark WHERE s.id=:id")
-    void updateMark(@Param("id") UUID id, @Param("mark") Integer mark);
+    Integer updateMark(@Param("id") UUID id, @Param("mark") Integer mark);
 
 }

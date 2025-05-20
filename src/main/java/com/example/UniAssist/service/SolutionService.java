@@ -1,5 +1,8 @@
 package com.example.UniAssist.service;
 
+import com.example.UniAssist.exception.SolutionAlreadyExists;
+import com.example.UniAssist.exception.SolutionNotFound;
+import com.example.UniAssist.exception.UpdateMarkFailed;
 import com.example.UniAssist.mapper.SolutionMapper;
 import com.example.UniAssist.model.dto.SolutionDTO;
 import com.example.UniAssist.model.dto.StudentSolutionRequest;
@@ -36,19 +39,22 @@ public class SolutionService {
         return solutionMapper.toDto(solutionEntity);
     }
 
-    public String handleStudentSolution(UUID studentId, StudentSolutionRequest request) {
+    public void handleStudentSolution(UUID studentId, StudentSolutionRequest request) {
         if (solutionRepository.existsByStudentIdAndTaskId(studentId, request.getTaskId())) {
-            return "Solution already exists";
+            throw new SolutionAlreadyExists();
         }
         Solution solutionEntity = solutionMapper.toEntity(request, studentId);
         solutionRepository.save(solutionEntity);
 
-        return "Success";
     }
 
-    public String updateResponseMark(UpdateMarkRequest request) {
-        solutionRepository.updateMark(request.getSolutionId(), request.getMark());
+    public void updateResponseMark(UpdateMarkRequest request) {
+        if (!solutionRepository.existsById(request.getSolutionId())) {
+            throw new SolutionNotFound();
+        }
 
-        return "Success";
+        if (solutionRepository.updateMark(request.getSolutionId(), request.getMark()) != 1) {
+            throw new UpdateMarkFailed();
+        }
     }
 }

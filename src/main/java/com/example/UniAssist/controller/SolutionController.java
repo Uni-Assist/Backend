@@ -26,17 +26,17 @@ public class SolutionController {
     }
 
     @PostMapping("/student")
-    public ResponseEntity<String> submitResponse(
+    public ResponseEntity<Void> submitResponse(
             @RequestBody StudentSolutionRequest request,
             @AuthenticationPrincipal UUID studentId) {
-        String result = solutionService.handleStudentSolution(studentId, request);
-        return ResponseEntity.ok(result);
+        solutionService.handleStudentSolution(studentId, request);
+        return ResponseEntity.ok().build();
     }
 
     @PatchMapping("/teacher")
-    public ResponseEntity<String> updateResponseMark(
+    public ResponseEntity<Void> updateResponseMark(
             @RequestBody UpdateMarkRequest request) {
-        String result = solutionService.updateResponseMark(request);
-        return ResponseEntity.ok(result);
+        solutionService.updateResponseMark(request);
+        return ResponseEntity.ok().build();
     }
 }

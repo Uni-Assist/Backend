@@ -52,7 +52,7 @@ public class ScheduleService {
         UUID groupId = studentRepository.findGroupIdByStudentId(studentId);
         List<ScheduleProjection> schedule = scheduleRepository.findScheduleByGroupAndDate(groupId, date);
         if (schedule.isEmpty()) {
-            throw new ScheduleNotFound("No lessons found");
+            throw new ScheduleNotFound();
         }
 
         List<UUID> teacherIds = schedule.stream().map(ScheduleProjection::getTeacherId).collect(Collectors.toList());
@@ -68,7 +68,7 @@ public class ScheduleService {
     public List<TeacherScheduleDTO> getTeacherSchedule(UUID teacherId, LocalDate date) {
         List<ScheduleProjection> schedule = scheduleRepository.findScheduleByTeacherAndDate(teacherId, date);
         if (schedule.isEmpty()) {
-            throw new ScheduleNotFound("No lessons found");
+            throw new ScheduleNotFound();
         }
 
         List<UUID> groupIds = schedule.stream().map(ScheduleProjection::getGroupId).collect(Collectors.toList());
