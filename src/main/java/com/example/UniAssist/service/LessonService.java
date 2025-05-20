@@ -2,7 +2,12 @@ package com.example.UniAssist.service;
 
 import com.example.UniAssist.exception.LessonNotFound;
 import com.example.UniAssist.mapper.LessonMapper;
-import com.example.UniAssist.model.dto.*;
+import com.example.UniAssist.model.dto.SolutionDTO;
+import com.example.UniAssist.model.dto.StudentLessonDTO;
+import com.example.UniAssist.model.dto.StudentLessonResponse;
+import com.example.UniAssist.model.dto.TaskDTO;
+import com.example.UniAssist.model.dto.TeacherLessonDTO;
+import com.example.UniAssist.model.dto.TeacherLessonResponse;
 import com.example.UniAssist.model.projection.FullNameProjection;
 import com.example.UniAssist.model.projection.LessonProjection;
 import com.example.UniAssist.repository.GroupRepository;
