@@ -16,7 +16,9 @@ import com.example.UniAssist.repository.TeacherRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.Collections;
 import java.util.List;
+import java.util.Optional;
 import java.util.UUID;
 
 @Service
@@ -49,16 +51,16 @@ public class LessonService {
         LessonProjection lessonProjection = getLessonProjectionById(lessonId);
         String groupName = groupRepository.findGroupNameById(lessonProjection.getGroupId());
         TeacherLessonDTO lesson = lessonMapper.toDTO(lessonProjection, groupName);
-        TeacherLessonResponse response = new TeacherLessonResponse(lesson, null, null);
+        TeacherLessonResponse response = new TeacherLessonResponse(lesson, null, Collections.emptyList());
 
-        TaskDTO taskDTO = taskService.getTaskByLessonId(lessonId);
-        if (taskDTO == null) {
-            return response;
+        Optional<TaskDTO> optionalTask = taskService.getTaskByLessonId(lessonId);
+        if (optionalTask.isPresent()) {
+            TaskDTO taskDTO = optionalTask.get();
+            List<SolutionDTO> solutions = solutionService.getSolutionsByTaskId(taskDTO.getId());
+            response.setTask(taskDTO);
+            response.setSolutions(solutions);
         }
 
-        List<SolutionDTO> solutions = solutionService.getSolutionsByTaskId(taskDTO.getId());
-        response.setTask(taskDTO);
-        response.setSolutions(solutions);
         return response;
     }
 
@@ -68,16 +70,18 @@ public class LessonService {
         StudentLessonDTO lesson = lessonMapper.toDTO(lessonProjection, fullName);
         StudentLessonResponse response = new StudentLessonResponse(lesson, null, null);
 
-        TaskDTO taskDTO = taskService.getTaskByLessonId(lessonId);
-        if (taskDTO == null) {
-            return response;
+        Optional<TaskDTO> optionalTask = taskService.getTaskByLessonId(lessonId);
+        if (optionalTask.isPresent()) {
+            TaskDTO taskDTO = optionalTask.get();
+            response.setTask(taskDTO);
+
+            Optional<SolutionDTO> optionalSolution = solutionService.getSolutionByTaskId(taskDTO.getId(), studentId);
+            optionalSolution.ifPresent(response::setSolution);
         }
 
-        SolutionDTO solution = solutionService.getSolutionByTaskId(taskDTO.getId(), studentId);
-        response.setTask(taskDTO);
-        response.setSolution(solution);
         return response;
     }
+
 
     private LessonProjection getLessonProjectionById(UUID lessonId) {
         LessonProjection projection = lessonRepository.findLessonProjectionById(lessonId);

@@ -12,7 +12,9 @@ import com.example.UniAssist.repository.SolutionRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.Collections;
 import java.util.List;
+import java.util.Optional;
 import java.util.UUID;
 
 @Service
@@ -30,13 +32,14 @@ public class SolutionService {
     }
 
     public List<SolutionDTO> getSolutionsByTaskId(UUID taskId) {
-        List<Solution> solutionEntities = solutionRepository.findSolutionsByTaskId(taskId);
-        return solutionMapper.toDto(solutionEntities);
+        return Optional.ofNullable(solutionRepository.findSolutionsByTaskId(taskId))
+                .map(solutionMapper::toDto)
+                .orElse(Collections.emptyList());
     }
 
-    public SolutionDTO getSolutionByTaskId(UUID taskId, UUID studentId) {
-        Solution solutionEntity = solutionRepository.findSolutionByTaskIdAndStudentId(taskId, studentId);
-        return solutionMapper.toDto(solutionEntity);
+    public Optional<SolutionDTO> getSolutionByTaskId(UUID taskId, UUID studentId) {
+        return Optional.ofNullable(solutionRepository.findSolutionByTaskIdAndStudentId(taskId, studentId))
+                .map(solutionMapper::toDto);
     }
 
     public void handleStudentSolution(UUID studentId, StudentSolutionRequest request) {

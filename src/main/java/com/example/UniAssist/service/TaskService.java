@@ -2,11 +2,11 @@ package com.example.UniAssist.service;
 
 import com.example.UniAssist.mapper.TaskMapper;
 import com.example.UniAssist.model.dto.TaskDTO;
-import com.example.UniAssist.model.entity.Task;
 import com.example.UniAssist.repository.TaskRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.Optional;
 import java.util.UUID;
 
 @Service
@@ -21,8 +21,8 @@ public class TaskService {
         this.taskMapper = taskMapper;
     }
 
-    public TaskDTO getTaskByLessonId(UUID lessonId) {
-        Task taskEntity = taskRepository.findTaskByLessonId(lessonId);
-        return taskEntity != null ? taskMapper.toDTO(taskEntity) : null;
+    public Optional<TaskDTO> getTaskByLessonId(UUID lessonId) {
+        return Optional.ofNullable(taskRepository.findTaskByLessonId(lessonId))
+                .map(taskMapper::toDTO);
     }
 }
