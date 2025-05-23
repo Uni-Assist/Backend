@@ -29,6 +29,8 @@ dependencies {
 	implementation("io.jsonwebtoken:jjwt-jackson:0.12.6")
 	implementation("org.postgresql:postgresql")
 	implementation("org.mapstruct:mapstruct:1.6.3")
+	implementation("org.slf4j:slf4j-api:2.0.7")
+	implementation("ch.qos.logback:logback-classic:1.5.13")
 	liquibaseRuntime("org.liquibase:liquibase-core")
 	liquibaseRuntime("info.picocli:picocli:4.6.3")
 	annotationProcessor("org.mapstruct:mapstruct-processor:1.6.3")
