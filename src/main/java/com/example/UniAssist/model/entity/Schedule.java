@@ -1,7 +1,15 @@
 package com.example.UniAssist.model.entity;
 
 import com.example.UniAssist.type.LessonType;
-import jakarta.persistence.*;
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
+import jakarta.persistence.Id;
+import jakarta.persistence.Table;
+import org.hibernate.annotations.JdbcTypeCode;
+import org.hibernate.annotations.UuidGenerator;
+import org.hibernate.type.SqlTypes;
 
 import java.util.UUID;
 
@@ -10,6 +18,7 @@ import java.util.UUID;
 public class Schedule {
 
     @Id
+    @UuidGenerator
     @Column(name = "id", updatable = false, nullable = false)
     private UUID id;
 
@@ -24,6 +33,7 @@ public class Schedule {
 
     @Enumerated(EnumType.STRING)
     @Column(name = "type", nullable = false)
+    @JdbcTypeCode(SqlTypes.NAMED_ENUM)
     private LessonType type;
 
     public UUID getId() {

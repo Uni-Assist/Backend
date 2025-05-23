@@ -5,6 +5,7 @@ import com.example.UniAssist.model.dto.TeacherLessonResponse;
 import com.example.UniAssist.service.LessonService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -27,7 +28,9 @@ public class LessonController {
     }
 
     @GetMapping("/student/{lessonId}")
-    public ResponseEntity<StudentLessonResponse> getStudentLesson(@PathVariable("lessonId") UUID lessonId) {
-        return ResponseEntity.ok(lessonService.getStudentLesson(lessonId));
+    public ResponseEntity<StudentLessonResponse> getStudentLesson(
+            @PathVariable("lessonId") UUID lessonId,
+            @AuthenticationPrincipal UUID studentId) {
+        return ResponseEntity.ok(lessonService.getStudentLesson(lessonId, studentId));
     }
 }

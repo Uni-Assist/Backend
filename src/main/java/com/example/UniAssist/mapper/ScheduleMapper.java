@@ -9,6 +9,6 @@ import org.mapstruct.MappingConstants;
 
 @Mapper(componentModel = MappingConstants.ComponentModel.SPRING)
 public interface ScheduleMapper {
-    StudentScheduleDTO toDTO(ScheduleProjection projection, String header, FullNameDTO fullName);
-    TeacherScheduleDTO toDTO(ScheduleProjection projection, String header, String groupName);
+    StudentScheduleDTO toDTO(ScheduleProjection projection, FullNameDTO fullName);
+    TeacherScheduleDTO toDTO(ScheduleProjection projection, String groupName);
 }
