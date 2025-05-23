@@ -15,11 +15,13 @@ import java.util.UUID;
 public interface SolutionRepository extends JpaRepository<Solution, UUID> {
     List<Solution> findSolutionsByTaskId(UUID taskId);
 
-    Solution findSolutionByTaskId(UUID taskId);
+    Solution findSolutionByTaskIdAndStudentId(UUID taskId, UUID studentId);
+
+    boolean existsByStudentIdAndTaskId(UUID studentId, UUID taskId);
 
     @Modifying
     @Transactional
     @Query("UPDATE Solution s SET s.mark=:mark WHERE s.id=:id")
-    void updateMark(@Param("id") UUID id, @Param("mark") Integer mark);
+    Integer updateMark(@Param("id") UUID id, @Param("mark") Integer mark);
 
 }

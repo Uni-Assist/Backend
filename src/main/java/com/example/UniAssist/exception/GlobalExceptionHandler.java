@@ -5,7 +5,7 @@ import io.jsonwebtoken.MalformedJwtException;
 import io.jsonwebtoken.UnsupportedJwtException;
 import io.jsonwebtoken.security.SignatureException;
 import jakarta.persistence.PersistenceException;
-import org.hibernate.exception.ConstraintViolationException;
+import jakarta.validation.ConstraintViolationException;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -16,6 +16,9 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.example.UniAssist.model.dto.ErrorResponseDTO;
+
+import java.util.List;
+import java.util.stream.Collectors;
 
 @ControllerAdvice
 public class GlobalExceptionHandler {
@@ -29,6 +32,24 @@ public class GlobalExceptionHandler {
     @ResponseBody
     public ResponseEntity<ErrorResponseDTO> handleAuthException(AuthenticationException ex) {
         return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(new ErrorResponseDTO(HttpStatus.UNAUTHORIZED, ex.getMessage()));
+    }
+
+    @ExceptionHandler(SolutionAlreadyExists.class)
+    @ResponseBody
+    public ResponseEntity<ErrorResponseDTO> handleSolutionAlreadyExists(SolutionAlreadyExists ex) {
+        return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(new ErrorResponseDTO(HttpStatus.UNAUTHORIZED, ex.getMessage()));
+    }
+
+    @ExceptionHandler(SolutionNotFound.class)
+    @ResponseBody
+    public ResponseEntity<ErrorResponseDTO> handleSolutionNotFound(SolutionNotFound ex) {
+        return ResponseEntity.status(HttpStatus.NOT_FOUND).body(new ErrorResponseDTO(HttpStatus.NOT_FOUND, ex.getMessage()));
+    }
+
+    @ExceptionHandler(UpdateMarkFailed.class)
+    @ResponseBody
+    public ResponseEntity<ErrorResponseDTO> handleUpdateMarkFailed(UpdateMarkFailed ex) {
+        return ResponseEntity.status(HttpStatus.CONFLICT).body(new ErrorResponseDTO(HttpStatus.CONFLICT, ex.getMessage()));
     }
 
     @ExceptionHandler(ExpiredJwtException.class)
@@ -58,15 +79,21 @@ public class GlobalExceptionHandler {
     @ExceptionHandler(DataIntegrityViolationException.class)
     @ResponseBody
     public ResponseEntity<ErrorResponseDTO> handleDataIntegrityViolation(DataIntegrityViolationException ex) {
-        String message = "Database integrity violation: " + ex.getMostSpecificCause().getMessage();
-        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new ErrorResponseDTO(HttpStatus.BAD_REQUEST, message));
+        Throwable rootCause = ex.getMostSpecificCause();
+        String errorMessage = rootCause.getMessage();
+
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new ErrorResponseDTO(HttpStatus.BAD_REQUEST, errorMessage));
     }
 
     @ExceptionHandler(ConstraintViolationException.class)
     @ResponseBody
     public ResponseEntity<ErrorResponseDTO> handleConstraintViolation(ConstraintViolationException ex) {
-        String message = "Validation error: " + ex.getMessage();
-        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new ErrorResponseDTO(HttpStatus.BAD_REQUEST, message));
+        List<String> errors = ex.getConstraintViolations().stream()
+                .map(violation ->
+                        violation.getPropertyPath() + ": " + violation.getMessage())
+                .collect(Collectors.toList());
+
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new ErrorResponseDTO(HttpStatus.BAD_REQUEST, errors));
     }
 
     @ExceptionHandler(TransactionSystemException.class)

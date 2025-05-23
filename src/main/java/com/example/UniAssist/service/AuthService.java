@@ -13,7 +13,6 @@ import com.example.UniAssist.repository.StudentRepository;
 import com.example.UniAssist.repository.TeacherRepository;
 import com.example.UniAssist.type.Role;
 import com.example.UniAssist.exception.AuthenticationException;
-// import jakarta.security.auth.message.AuthException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -47,7 +46,7 @@ public class AuthService {
         this.fullNameMapper = fullNameMapper;
     }
 
-    public JwtResponse login(JwtRequest authRequest) throws AuthenticationException {
+    public JwtResponse login(JwtRequest authRequest) {
         Teacher rawTeacherAuth = teacherRepository.findTeacherByLogin(authRequest.getLogin());
         JwtResponse jwtResponse = new JwtResponse();
         AuthDTO userAuth;

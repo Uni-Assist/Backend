@@ -1,5 +1,8 @@
 package com.example.UniAssist.service;
 
+import com.example.UniAssist.exception.SolutionAlreadyExists;
+import com.example.UniAssist.exception.SolutionNotFound;
+import com.example.UniAssist.exception.UpdateMarkFailed;
 import com.example.UniAssist.mapper.SolutionMapper;
 import com.example.UniAssist.model.dto.SolutionDTO;
 import com.example.UniAssist.model.dto.StudentSolutionRequest;
@@ -9,7 +12,9 @@ import com.example.UniAssist.repository.SolutionRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.Collections;
 import java.util.List;
+import java.util.Optional;
 import java.util.UUID;
 
 @Service
@@ -27,25 +32,32 @@ public class SolutionService {
     }
 
     public List<SolutionDTO> getSolutionsByTaskId(UUID taskId) {
-        List<Solution> solutionEntities = solutionRepository.findSolutionsByTaskId(taskId);
-        return solutionMapper.toDto(solutionEntities);
+        return Optional.ofNullable(solutionRepository.findSolutionsByTaskId(taskId))
+                .map(solutionMapper::toDto)
+                .orElse(Collections.emptyList());
     }
 
-    public SolutionDTO getSolutionByTaskId(UUID taskId) {
-        Solution solutionEntity = solutionRepository.findSolutionByTaskId(taskId);
-        return solutionMapper.toDto(solutionEntity);
+    public Optional<SolutionDTO> getSolutionByTaskId(UUID taskId, UUID studentId) {
+        return Optional.ofNullable(solutionRepository.findSolutionByTaskIdAndStudentId(taskId, studentId))
+                .map(solutionMapper::toDto);
     }
 
-    public String handleStudentSolution(UUID studentId, StudentSolutionRequest request) {
+    public void handleStudentSolution(UUID studentId, StudentSolutionRequest request) {
+        if (solutionRepository.existsByStudentIdAndTaskId(studentId, request.getTaskId())) {
+            throw new SolutionAlreadyExists();
+        }
         Solution solutionEntity = solutionMapper.toEntity(request, studentId);
         solutionRepository.save(solutionEntity);
 
-        return "Success";
     }
 
-    public String updateResponseMark(UpdateMarkRequest request) {
-        solutionRepository.updateMark(request.getId(), request.getMark());
+    public void updateResponseMark(UpdateMarkRequest request) {
+        if (!solutionRepository.existsById(request.getSolutionId())) {
+            throw new SolutionNotFound();
+        }
 
-        return "Success";
+        if (solutionRepository.updateMark(request.getSolutionId(), request.getMark()) != 1) {
+            throw new UpdateMarkFailed();
+        }
     }
 }

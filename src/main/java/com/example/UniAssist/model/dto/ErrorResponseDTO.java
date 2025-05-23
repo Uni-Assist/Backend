@@ -2,22 +2,29 @@ package com.example.UniAssist.model.dto;
 
 import org.springframework.http.HttpStatus;
 
+import java.util.List;
+
 public class ErrorResponseDTO {
     private String code;
     private String description;
-    private String message;
+    private List<String> messages;
 
-    public ErrorResponseDTO(String code, String description, String message) {
+    public ErrorResponseDTO(String code, String description, List<String> messages) {
         this.code = code;
-        this.message = message;
         this.description = description;
+        this.messages = messages;
     }
-
 
     public ErrorResponseDTO(HttpStatus status, String message) {
         this.code = Integer.toString(status.value());
         this.description = status.getReasonPhrase();
-        this.message = message;
+        this.messages = List.of(message);
+    }
+
+    public ErrorResponseDTO(HttpStatus status, List<String> messages) {
+        this.code = Integer.toString(status.value());
+        this.description = status.getReasonPhrase();
+        this.messages = messages;
     }
 
     public String getCode() {
@@ -36,11 +43,11 @@ public class ErrorResponseDTO {
         this.description = description;
     }
 
-    public String getMessage() {
-        return message;
+    public List<String> getMessages() {
+        return messages;
     }
-    
-    public void setMessage(String message) {
-        this.message = message;
+
+    public void setMessages(List<String> messages) {
+        this.messages = messages;
     }
 }
