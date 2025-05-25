@@ -34,15 +34,25 @@ dependencies {
 	annotationProcessor("org.mapstruct:mapstruct-processor:1.6.3")
 
 	testImplementation("org.springframework.boot:spring-boot-starter-test")
+	testImplementation("org.mockito:mockito-core:5.12.0")
+	testImplementation("org.mockito:mockito-junit-jupiter:5.12.0")
+	testImplementation("net.bytebuddy:byte-buddy-agent:1.14.14")
+	testImplementation("org.assertj:assertj-core:3.25.3")
+	testImplementation("com.h2database:h2:2.2.224")
 	testRuntimeOnly("org.junit.platform:junit-platform-launcher")
 }
-
-tasks.withType<Test> {
-	useJUnitPlatform()
-}
-
+/*
 tasks.withType<Test> {
 	enabled = false
+}*/
+tasks.withType<Test> {
+	useJUnitPlatform()
+	jvmArgs = listOf(
+		"-XX:+EnableDynamicAgentLoading",
+		"--add-opens=java.base/java.lang=ALL-UNNAMED",
+		"-Djdk.instrument.traceUsage=false"
+	)
+	systemProperty("jdk.attach.allowAttachSelf", "true")
 }
 
 tasks.register("docker", Copy::class) {
