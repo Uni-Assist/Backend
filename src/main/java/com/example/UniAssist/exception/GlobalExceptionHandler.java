@@ -26,76 +26,75 @@ import java.util.stream.Collectors;
 public class GlobalExceptionHandler {
     private static final Logger logger = LoggerFactory.getLogger(GlobalExceptionHandler.class);
 
+    private ResponseEntity<ErrorResponseDTO> buildError(HttpStatus status, String message) {
+        return ResponseEntity.status(status).body(new ErrorResponseDTO(status, message));
+    }
+
+    private ResponseEntity<ErrorResponseDTO> buildError(HttpStatus status, List<String> message) {
+        return ResponseEntity.status(status).body(new ErrorResponseDTO(status, message));
+    }
+
     @ExceptionHandler(ScheduleNotFound.class)
     @ResponseBody
     public ResponseEntity<ErrorResponseDTO> handleScheduleNotFound(ScheduleNotFound ex) {
         logger.warn(ex.getMessage());
-        return ResponseEntity.status(HttpStatus.NOT_FOUND)
-                .body(new ErrorResponseDTO(HttpStatus.NOT_FOUND, ex.getMessage()));
+        return buildError(HttpStatus.NOT_FOUND, ex.getMessage());
     }
 
     @ExceptionHandler(AuthenticationException.class)
     @ResponseBody
     public ResponseEntity<ErrorResponseDTO> handleAuthException(AuthenticationException ex) {
         logger.warn("Authentication failed: {}", ex.getMessage());
-        return ResponseEntity.status(HttpStatus.UNAUTHORIZED)
-                .body(new ErrorResponseDTO(HttpStatus.UNAUTHORIZED, ex.getMessage()));
+        return buildError(HttpStatus.UNAUTHORIZED, ex.getMessage());
     }
 
     @ExceptionHandler(SolutionAlreadyExists.class)
     @ResponseBody
     public ResponseEntity<ErrorResponseDTO> handleSolutionAlreadyExists(SolutionAlreadyExists ex) {
         logger.warn(ex.getMessage());
-        return ResponseEntity.status(HttpStatus.UNAUTHORIZED)
-                .body(new ErrorResponseDTO(HttpStatus.UNAUTHORIZED, ex.getMessage()));
+        return buildError(HttpStatus.CONFLICT, ex.getMessage());
     }
 
     @ExceptionHandler(SolutionNotFound.class)
     @ResponseBody
     public ResponseEntity<ErrorResponseDTO> handleSolutionNotFound(SolutionNotFound ex) {
         logger.warn(ex.getMessage());
-        return ResponseEntity.status(HttpStatus.NOT_FOUND)
-                .body(new ErrorResponseDTO(HttpStatus.NOT_FOUND, ex.getMessage()));
+        return buildError(HttpStatus.NOT_FOUND, ex.getMessage());
     }
 
     @ExceptionHandler(UpdateMarkFailed.class)
     @ResponseBody
     public ResponseEntity<ErrorResponseDTO> handleUpdateMarkFailed(UpdateMarkFailed ex) {
         logger.error(ex.getMessage());
-        return ResponseEntity.status(HttpStatus.CONFLICT)
-                .body(new ErrorResponseDTO(HttpStatus.CONFLICT, ex.getMessage()));
+        return buildError(HttpStatus.CONFLICT, ex.getMessage());
     }
 
     @ExceptionHandler(ExpiredJwtException.class)
     @ResponseBody
     public ResponseEntity<ErrorResponseDTO> handleExpiredJwtException() {
         logger.warn("JWT token expired");
-        return ResponseEntity.status(HttpStatus.UNAUTHORIZED)
-                .body(new ErrorResponseDTO(HttpStatus.UNAUTHORIZED, "Token expired"));
+        return buildError(HttpStatus.UNAUTHORIZED, "Token expired");
     }
 
     @ExceptionHandler(UnsupportedJwtException.class)
     @ResponseBody
     public ResponseEntity<ErrorResponseDTO> handleUnsupportedJwtException() {
         logger.warn("Unsupported JWT token");
-        return ResponseEntity.status(HttpStatus.UNAUTHORIZED)
-                .body(new ErrorResponseDTO(HttpStatus.UNAUTHORIZED, "Unsupported JWT token"));
+        return buildError(HttpStatus.UNAUTHORIZED, "Unsupported JWT token");
     }
 
     @ExceptionHandler(MalformedJwtException.class)
     @ResponseBody
     public ResponseEntity<ErrorResponseDTO> handleMalformedJwtException() {
         logger.warn("Malformed JWT token");
-        return ResponseEntity.status(HttpStatus.UNAUTHORIZED)
-                .body(new ErrorResponseDTO(HttpStatus.UNAUTHORIZED, "Malformed JWT token"));
+        return buildError(HttpStatus.UNAUTHORIZED, "Malformed JWT token");
     }
 
     @ExceptionHandler(SignatureException.class)
     @ResponseBody
     public ResponseEntity<ErrorResponseDTO> handleSignatureException() {
         logger.warn("Invalid JWT signature");
-        return ResponseEntity.status(HttpStatus.UNAUTHORIZED)
-                .body(new ErrorResponseDTO(HttpStatus.UNAUTHORIZED, "Invalid signature"));
+        return buildError(HttpStatus.UNAUTHORIZED, "Invalid signature");
     }
 
     @ExceptionHandler(DataIntegrityViolationException.class)
@@ -104,8 +103,7 @@ public class GlobalExceptionHandler {
         Throwable rootCause = ex.getMostSpecificCause();
         String errorMessage = rootCause.getMessage();
         logger.error("Data integrity violation: {}", errorMessage, ex);
-        return ResponseEntity.status(HttpStatus.BAD_REQUEST)
-                .body(new ErrorResponseDTO(HttpStatus.BAD_REQUEST, errorMessage));
+        return buildError(HttpStatus.BAD_REQUEST, errorMessage);
     }
 
     @ExceptionHandler(ConstraintViolationException.class)
@@ -114,10 +112,8 @@ public class GlobalExceptionHandler {
         List<String> errors = ex.getConstraintViolations().stream()
                 .map(violation -> violation.getPropertyPath() + ": " + violation.getMessage())
                 .collect(Collectors.toList());
-
         logger.warn("Validation errors: {}", errors);
-        return ResponseEntity.status(HttpStatus.BAD_REQUEST)
-                .body(new ErrorResponseDTO(HttpStatus.BAD_REQUEST, errors));
+        return buildError(HttpStatus.BAD_REQUEST, errors);
     }
 
     @ExceptionHandler(TransactionSystemException.class)
@@ -125,8 +121,7 @@ public class GlobalExceptionHandler {
     public ResponseEntity<ErrorResponseDTO> handleTransactionException(TransactionSystemException ex) {
         String message = "Transaction error: " + (ex.getCause() != null ? ex.getCause().getMessage() : ex.getMessage());
         logger.error("Transaction system error: {}", message, ex);
-        return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
-                .body(new ErrorResponseDTO(HttpStatus.INTERNAL_SERVER_ERROR, message));
+        return buildError(HttpStatus.INTERNAL_SERVER_ERROR, message);
     }
 
     @ExceptionHandler(JpaSystemException.class)
@@ -134,8 +129,7 @@ public class GlobalExceptionHandler {
     public ResponseEntity<ErrorResponseDTO> handleJpaSystemException(JpaSystemException ex) {
         String message = "JPA error: " + ex.getMessage();
         logger.error("JPA system error: {}", message, ex);
-        return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
-                .body(new ErrorResponseDTO(HttpStatus.INTERNAL_SERVER_ERROR, message));
+        return buildError(HttpStatus.INTERNAL_SERVER_ERROR, message);
     }
 
     @ExceptionHandler(PersistenceException.class)
@@ -143,8 +137,7 @@ public class GlobalExceptionHandler {
     public ResponseEntity<ErrorResponseDTO> handlePersistenceException(PersistenceException ex) {
         String message = "Database persistence error: " + ex.getMessage();
         logger.error("Persistence error: {}", message, ex);
-        return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
-                .body(new ErrorResponseDTO(HttpStatus.INTERNAL_SERVER_ERROR, message));
+        return buildError(HttpStatus.INTERNAL_SERVER_ERROR, message);
     }
 
     @ExceptionHandler(IllegalArgumentException.class)
@@ -152,7 +145,14 @@ public class GlobalExceptionHandler {
     public ResponseEntity<ErrorResponseDTO> handleIllegalArgumentException(IllegalArgumentException ex) {
         String message = "Invalid arguments: " + ex.getMessage();
         logger.warn("Illegal argument: {}", message);
-        return ResponseEntity.status(HttpStatus.BAD_REQUEST)
-                .body(new ErrorResponseDTO(HttpStatus.BAD_REQUEST, message));
+        return buildError(HttpStatus.BAD_REQUEST, message);
+    }
+
+    @ExceptionHandler(Exception.class)
+    @ResponseBody
+    public ResponseEntity<ErrorResponseDTO> handleGenericException(Exception ex) {
+        String message = "Unexpected error occurred: " + ex.getMessage();
+        logger.error("Unhandled exception: {}", message, ex);
+        return buildError(HttpStatus.INTERNAL_SERVER_ERROR, message);
     }
 }
