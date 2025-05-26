@@ -1,14 +1,18 @@
 package com.example.UniAssist.service;
 
 import com.example.UniAssist.exception.ScheduleNotFound;
-import com.example.UniAssist.mapper.StudentScheduleMapper;
-import com.example.UniAssist.mapper.TeacherScheduleMapper;
+import com.example.UniAssist.mapper.FullNameMapper;
+import com.example.UniAssist.mapper.ScheduleMapper;
+import com.example.UniAssist.model.dto.FullNameDTO;
 import com.example.UniAssist.model.dto.StudentScheduleDTO;
 import com.example.UniAssist.model.dto.TeacherScheduleDTO;
-import com.example.UniAssist.projection.FullNameProjection;
-import com.example.UniAssist.projection.GroupNameProjection;
-import com.example.UniAssist.projection.TaskHeaderProjection;
-import com.example.UniAssist.repository.*;
+import com.example.UniAssist.model.projection.FullNameProjection;
+import com.example.UniAssist.model.projection.GroupNameProjection;
+import com.example.UniAssist.model.projection.ScheduleProjection;
+import com.example.UniAssist.repository.GroupRepository;
+import com.example.UniAssist.repository.ScheduleRepository;
+import com.example.UniAssist.repository.StudentRepository;
+import com.example.UniAssist.repository.TeacherRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -24,72 +28,63 @@ public class ScheduleService {
     private final ScheduleRepository scheduleRepository;
     private final StudentRepository studentRepository;
     private final TeacherRepository teacherRepository;
-    private final TaskRepository taskRepository;
     private final GroupRepository groupRepository;
+    private final FullNameMapper fullNameMapper;
+    private final ScheduleMapper scheduleMapper;
 
     @Autowired
     public ScheduleService(
             ScheduleRepository scheduleRepository,
             StudentRepository studentRepository,
             TeacherRepository teacherRepository,
-            TaskRepository taskRepository,
-            GroupRepository groupRepository) {
+            GroupRepository groupRepository,
+            FullNameMapper fullNameMapper,
+            ScheduleMapper scheduleMapper) {
         this.scheduleRepository = scheduleRepository;
         this.studentRepository = studentRepository;
         this.teacherRepository = teacherRepository;
-        this.taskRepository = taskRepository;
         this.groupRepository = groupRepository;
+        this.fullNameMapper = fullNameMapper;
+        this.scheduleMapper = scheduleMapper;
     }
 
     public List<StudentScheduleDTO> getStudentSchedule(UUID studentId, LocalDate date) {
         UUID groupId = studentRepository.findGroupIdByStudentId(studentId);
-        List<StudentScheduleDTO> schedule = scheduleRepository.findScheduleByGroupAndDate(groupId, date);
+        List<ScheduleProjection> schedule = scheduleRepository.findScheduleByGroupAndDate(groupId, date);
         if (schedule.isEmpty()) {
-            throw new ScheduleNotFound("No lessons found");
+            throw new ScheduleNotFound();
         }
 
-        List<UUID> lessonsIds = schedule.stream().map(StudentScheduleDTO::getId).collect(Collectors.toList());
-        Map<UUID, String> taskHeaders = fetchTaskHeaders(lessonsIds);
-
-        List<UUID> teacherIds = schedule.stream().map(StudentScheduleDTO::getTeacherId).collect(Collectors.toList());
-        Map<UUID, String> fullNames = fetchFullNames(teacherIds);
+        List<UUID> teacherIds = schedule.stream().map(ScheduleProjection::getTeacherId).collect(Collectors.toList());
+        Map<UUID, FullNameDTO> fullNames = fetchFullNames(teacherIds);
 
         return schedule.stream()
-                .map(lesson -> StudentScheduleMapper.toDTO(lesson,
-                        taskHeaders.getOrDefault(lesson.getId(), null),
+                .map(lesson -> scheduleMapper.toDTO(
+                        lesson,
                         fullNames.getOrDefault(lesson.getTeacherId(), null)))
                 .collect(Collectors.toList());
     }
 
     public List<TeacherScheduleDTO> getTeacherSchedule(UUID teacherId, LocalDate date) {
-        List<TeacherScheduleDTO> schedule = scheduleRepository.findScheduleByTeacherAndDate(teacherId, date);
+        List<ScheduleProjection> schedule = scheduleRepository.findScheduleByTeacherAndDate(teacherId, date);
         if (schedule.isEmpty()) {
-            throw new ScheduleNotFound("No lessons found");
+            throw new ScheduleNotFound();
         }
 
-        List<UUID> lessonsIds = schedule.stream().map(TeacherScheduleDTO::getId).collect(Collectors.toList());
-        Map<UUID, String> taskHeaders = fetchTaskHeaders(lessonsIds);
-
-        List<UUID> groupIds = schedule.stream().map(TeacherScheduleDTO::getGroupId).collect(Collectors.toList());
+        List<UUID> groupIds = schedule.stream().map(ScheduleProjection::getGroupId).collect(Collectors.toList());
         Map<UUID, String> groupNames = fetchGroupNames(groupIds);
 
-        return schedule.stream().map(lesson -> TeacherScheduleMapper.toDTO(lesson,
-                        taskHeaders.getOrDefault(lesson.getId(), null),
+        return schedule.stream()
+                .map(lesson -> scheduleMapper.toDTO(
+                        lesson,
                         groupNames.getOrDefault(lesson.getGroupId(), null)))
                 .collect(Collectors.toList());
     }
 
-    private Map<UUID, String> fetchTaskHeaders(List<UUID> lessonIds) {
-        List<TaskHeaderProjection> rawTaskHeaders = taskRepository.findTaskHeadersByLessonIds(lessonIds);
-        return rawTaskHeaders.stream()
-                .collect(Collectors.toMap(TaskHeaderProjection::getLessonId, TaskHeaderProjection::getHeader));
-    }
-
-    private Map<UUID, String> fetchFullNames(List<UUID> userIds) {
+    private Map<UUID, FullNameDTO> fetchFullNames(List<UUID> userIds) {
         List<FullNameProjection> rawFullNames = teacherRepository.findFullNamesByTeacherIds(userIds);
-        return rawFullNames.stream().collect(Collectors.toMap(
-                FullNameProjection::getId, fullName -> fullName.getLastName() + " " + fullName.getFirstName() + " " + fullName.getMiddleName())
-        );
+        return rawFullNames.stream()
+                .collect(Collectors.toMap(FullNameProjection::getId, fullNameMapper::toDTO));
     }
 
     private Map<UUID, String> fetchGroupNames(List<UUID> groupIds) {

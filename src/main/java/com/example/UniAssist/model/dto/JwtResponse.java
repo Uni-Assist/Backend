@@ -7,11 +7,11 @@ public class JwtResponse {
     private String token;
     private Role role;
     private String unit;
-    private String fullName;
+    private FullNameDTO fullName;
 
     public JwtResponse () {}
 
-    public JwtResponse(String token, Role role, String unit, String fullName) {
+    public JwtResponse(String token, Role role, String unit, FullNameDTO fullName) {
         this.token = token;
         this.role = role;
         this.unit = unit;
@@ -46,11 +46,11 @@ public class JwtResponse {
         this.unit = unit;
     }
 
-    public String getFullName() {
+    public FullNameDTO getFullName() {
         return fullName;
     }
 
-    public void setFullName(String fullName) {
+    public void setFullName(FullNameDTO fullName) {
         this.fullName = fullName;
     }
 }

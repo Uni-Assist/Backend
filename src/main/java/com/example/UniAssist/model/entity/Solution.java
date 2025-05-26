@@ -1,18 +1,24 @@
 package com.example.UniAssist.model.entity;
 
-import com.example.UniAssist.type.ResponseType;
-import jakarta.persistence.*;
+import com.example.UniAssist.type.SolutionType;
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
+import jakarta.persistence.Id;
+import jakarta.persistence.Table;
 import org.hibernate.annotations.JdbcTypeCode;
+import org.hibernate.annotations.UuidGenerator;
 import org.hibernate.type.SqlTypes;
 
 import java.util.UUID;
 
 @Entity
-@Table(name = "responses")
-public class Response {
+@Table(name = "solutions")
+public class Solution {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @UuidGenerator
     @Column(name = "id", updatable = false, nullable = false)
     private UUID id;
 
@@ -31,7 +37,7 @@ public class Response {
     @Enumerated(EnumType.STRING)
     @Column(name = "type", nullable = false)
     @JdbcTypeCode(SqlTypes.NAMED_ENUM)
-    private ResponseType type;
+    private SolutionType type;
 
     public UUID getId() {
         return id;
@@ -73,11 +79,11 @@ public class Response {
         this.mark = mark;
     }
 
-    public ResponseType getType() {
+    public SolutionType getType() {
         return type;
     }
 
-    public void setType(ResponseType type) {
+    public void setType(SolutionType type) {
         this.type = type;
     }
 }

@@ -3,10 +3,8 @@ package com.example.UniAssist.model.dto;
 import com.example.UniAssist.type.LessonType;
 
 import java.time.LocalTime;
-import java.util.UUID;
 
-public class StudentScheduleDTO {
-    private UUID id;
+public class StudentLessonDTO {
     private String subjectName;
     private FullNameDTO fullName;
     private LocalTime startTime;
@@ -14,24 +12,15 @@ public class StudentScheduleDTO {
     private String classroom;
     private LessonType type;
 
-    public StudentScheduleDTO() {}
+    public StudentLessonDTO() {}
 
-    public StudentScheduleDTO(UUID id, String subjectName, FullNameDTO fullName, LocalTime startTime, LocalTime endTime, String classroom, LessonType type) {
-        this.id = id;
+    public StudentLessonDTO(String subjectName, FullNameDTO fullName, LocalTime startTime, LocalTime endTime, String classroom, LessonType type) {
         this.subjectName = subjectName;
         this.fullName = fullName;
         this.startTime = startTime;
         this.endTime = endTime;
         this.classroom = classroom;
         this.type = type;
-    }
-
-    public UUID getId() {
-        return id;
-    }
-
-    public void setId(UUID id) {
-        this.id = id;
     }
 
     public String getSubjectName() {
