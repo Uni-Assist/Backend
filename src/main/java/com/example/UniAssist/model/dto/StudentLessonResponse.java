@@ -3,11 +3,11 @@ package com.example.UniAssist.model.dto;
 public class StudentLessonResponse {
     private StudentLessonDTO lesson;
     private TaskDTO task;
-    private SolutionDTO solution;
+    private StudentSolutionDTO solution;
 
     public StudentLessonResponse() {}
 
-    public StudentLessonResponse(StudentLessonDTO lesson, TaskDTO task, SolutionDTO solution) {
+    public StudentLessonResponse(StudentLessonDTO lesson, TaskDTO task, StudentSolutionDTO solution) {
         this.lesson = lesson;
         this.task = task;
         this.solution = solution;
@@ -29,11 +29,11 @@ public class StudentLessonResponse {
         this.task = task;
     }
 
-    public SolutionDTO getSolution() {
+    public StudentSolutionDTO getSolution() {
         return solution;
     }
 
-    public void setSolution(SolutionDTO solution) {
+    public void setSolution(StudentSolutionDTO solution) {
         this.solution = solution;
     }
 }

@@ -26,7 +26,7 @@ public class SolutionController {
     }
 
     @PostMapping("/student")
-    public ResponseEntity<Void> submitResponse(
+    public ResponseEntity<Void> submitSolution(
             @RequestBody StudentSolutionRequest request,
             @AuthenticationPrincipal UUID studentId) {
         solutionService.handleStudentSolution(studentId, request);
@@ -34,9 +34,9 @@ public class SolutionController {
     }
 
     @PatchMapping("/teacher")
-    public ResponseEntity<Void> updateResponseMark(
+    public ResponseEntity<Void> updateSolutionMark(
             @RequestBody UpdateMarkRequest request) {
-        solutionService.updateResponseMark(request);
+        solutionService.updateSolutionMark(request);
         return ResponseEntity.ok().build();
     }
 }

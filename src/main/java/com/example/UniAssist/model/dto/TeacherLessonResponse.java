@@ -5,11 +5,11 @@ import java.util.List;
 public class TeacherLessonResponse {
     private TeacherLessonDTO lesson;
     private TaskDTO task;
-    private List<SolutionDTO> solutions;
+    private List<TeacherSolutionDTO> solutions;
 
     public TeacherLessonResponse() {}
 
-    public TeacherLessonResponse(TeacherLessonDTO lesson, TaskDTO task, List<SolutionDTO> solutions) {
+    public TeacherLessonResponse(TeacherLessonDTO lesson, TaskDTO task, List<TeacherSolutionDTO> solutions) {
         this.lesson = lesson;
         this.task = task;
         this.solutions = solutions;
@@ -31,11 +31,11 @@ public class TeacherLessonResponse {
         this.task = task;
     }
 
-    public List<SolutionDTO> getSolutions() {
+    public List<TeacherSolutionDTO> getSolutions() {
         return solutions;
     }
 
-    public void setSolutions(List<SolutionDTO> solutions) {
+    public void setSolutions(List<TeacherSolutionDTO> solutions) {
         this.solutions = solutions;
     }
 }

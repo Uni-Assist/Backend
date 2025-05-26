@@ -4,7 +4,7 @@ import com.example.UniAssist.exception.SolutionAlreadyExists;
 import com.example.UniAssist.exception.SolutionNotFound;
 import com.example.UniAssist.exception.UpdateMarkFailed;
 import com.example.UniAssist.mapper.SolutionMapper;
-import com.example.UniAssist.model.dto.SolutionDTO;
+import com.example.UniAssist.model.dto.StudentSolutionDTO;
 import com.example.UniAssist.model.dto.StudentSolutionRequest;
 import com.example.UniAssist.model.dto.UpdateMarkRequest;
 import com.example.UniAssist.model.entity.Solution;
@@ -31,13 +31,12 @@ public class SolutionService {
         this.solutionMapper = solutionMapper;
     }
 
-    public List<SolutionDTO> getSolutionsByTaskId(UUID taskId) {
+    public List<Solution> getSolutionsByTaskId(UUID taskId) {
         return Optional.ofNullable(solutionRepository.findSolutionsByTaskId(taskId))
-                .map(solutionMapper::toDto)
                 .orElse(Collections.emptyList());
     }
 
-    public Optional<SolutionDTO> getSolutionByTaskId(UUID taskId, UUID studentId) {
+    public Optional<StudentSolutionDTO> getSolutionByTaskId(UUID taskId, UUID studentId) {
         return Optional.ofNullable(solutionRepository.findSolutionByTaskIdAndStudentId(taskId, studentId))
                 .map(solutionMapper::toDto);
     }
@@ -51,7 +50,7 @@ public class SolutionService {
 
     }
 
-    public void updateResponseMark(UpdateMarkRequest request) {
+    public void updateSolutionMark(UpdateMarkRequest request) {
         if (!solutionRepository.existsById(request.getSolutionId())) {
             throw new SolutionNotFound();
         }

@@ -1,6 +1,7 @@
 package com.example.UniAssist.service;
 
 import com.example.UniAssist.component.JwtProvider;
+import com.example.UniAssist.exception.AuthenticationException;
 import com.example.UniAssist.mapper.AuthMapper;
 import com.example.UniAssist.mapper.FullNameMapper;
 import com.example.UniAssist.model.dto.AuthDTO;
@@ -12,7 +13,6 @@ import com.example.UniAssist.repository.GroupRepository;
 import com.example.UniAssist.repository.StudentRepository;
 import com.example.UniAssist.repository.TeacherRepository;
 import com.example.UniAssist.type.Role;
-import com.example.UniAssist.exception.AuthenticationException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
