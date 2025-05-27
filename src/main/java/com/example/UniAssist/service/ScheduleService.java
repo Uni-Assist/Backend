@@ -1,18 +1,15 @@
 package com.example.UniAssist.service;
 
 import com.example.UniAssist.exception.ScheduleNotFound;
-import com.example.UniAssist.mapper.FullNameMapper;
 import com.example.UniAssist.mapper.ScheduleMapper;
 import com.example.UniAssist.model.dto.FullNameDTO;
 import com.example.UniAssist.model.dto.StudentScheduleDTO;
 import com.example.UniAssist.model.dto.TeacherScheduleDTO;
-import com.example.UniAssist.model.projection.FullNameProjection;
 import com.example.UniAssist.model.projection.GroupNameProjection;
 import com.example.UniAssist.model.projection.ScheduleProjection;
 import com.example.UniAssist.repository.GroupRepository;
 import com.example.UniAssist.repository.ScheduleRepository;
 import com.example.UniAssist.repository.StudentRepository;
-import com.example.UniAssist.repository.TeacherRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -27,25 +24,22 @@ public class ScheduleService {
 
     private final ScheduleRepository scheduleRepository;
     private final StudentRepository studentRepository;
-    private final TeacherRepository teacherRepository;
     private final GroupRepository groupRepository;
-    private final FullNameMapper fullNameMapper;
     private final ScheduleMapper scheduleMapper;
+    private final TeacherService teacherService;
 
     @Autowired
     public ScheduleService(
             ScheduleRepository scheduleRepository,
             StudentRepository studentRepository,
-            TeacherRepository teacherRepository,
             GroupRepository groupRepository,
-            FullNameMapper fullNameMapper,
-            ScheduleMapper scheduleMapper) {
+            ScheduleMapper scheduleMapper,
+            TeacherService teacherService) {
         this.scheduleRepository = scheduleRepository;
         this.studentRepository = studentRepository;
-        this.teacherRepository = teacherRepository;
         this.groupRepository = groupRepository;
-        this.fullNameMapper = fullNameMapper;
         this.scheduleMapper = scheduleMapper;
+        this.teacherService = teacherService;
     }
 
     public List<StudentScheduleDTO> getStudentSchedule(UUID studentId, LocalDate date) {
@@ -56,7 +50,7 @@ public class ScheduleService {
         }
 
         List<UUID> teacherIds = schedule.stream().map(ScheduleProjection::getTeacherId).collect(Collectors.toList());
-        Map<UUID, FullNameDTO> fullNames = fetchFullNames(teacherIds);
+        Map<UUID, FullNameDTO> fullNames = teacherService.fetchFullNames(teacherIds);
 
         return schedule.stream()
                 .map(lesson -> scheduleMapper.toDTO(
@@ -79,12 +73,6 @@ public class ScheduleService {
                         lesson,
                         groupNames.getOrDefault(lesson.getGroupId(), null)))
                 .collect(Collectors.toList());
-    }
-
-    private Map<UUID, FullNameDTO> fetchFullNames(List<UUID> userIds) {
-        List<FullNameProjection> rawFullNames = teacherRepository.findFullNamesByTeacherIds(userIds);
-        return rawFullNames.stream()
-                .collect(Collectors.toMap(FullNameProjection::getId, fullNameMapper::toDTO));
     }
 
     private Map<UUID, String> fetchGroupNames(List<UUID> groupIds) {

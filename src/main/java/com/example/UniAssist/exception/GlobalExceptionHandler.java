@@ -1,5 +1,6 @@
 package com.example.UniAssist.exception;
 
+import com.example.UniAssist.model.dto.ErrorResponseDTO;
 import io.jsonwebtoken.ExpiredJwtException;
 import io.jsonwebtoken.MalformedJwtException;
 import io.jsonwebtoken.UnsupportedJwtException;
@@ -16,8 +17,6 @@ import org.springframework.transaction.TransactionSystemException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseBody;
-
-import com.example.UniAssist.model.dto.ErrorResponseDTO;
 
 import java.util.List;
 import java.util.stream.Collectors;
@@ -37,6 +36,13 @@ public class GlobalExceptionHandler {
     @ExceptionHandler(ScheduleNotFound.class)
     @ResponseBody
     public ResponseEntity<ErrorResponseDTO> handleScheduleNotFound(ScheduleNotFound ex) {
+        logger.warn(ex.getMessage());
+        return buildError(HttpStatus.NOT_FOUND, ex.getMessage());
+    }
+
+    @ExceptionHandler(LessonNotFound.class)
+    @ResponseBody
+    public ResponseEntity<ErrorResponseDTO> handleLessonNotFound(LessonNotFound ex) {
         logger.warn(ex.getMessage());
         return buildError(HttpStatus.NOT_FOUND, ex.getMessage());
     }
@@ -66,6 +72,13 @@ public class GlobalExceptionHandler {
     @ResponseBody
     public ResponseEntity<ErrorResponseDTO> handleUpdateMarkFailed(UpdateMarkFailed ex) {
         logger.error(ex.getMessage());
+        return buildError(HttpStatus.CONFLICT, ex.getMessage());
+    }
+
+    @ExceptionHandler(TaskAlreadyExists.class)
+    @ResponseBody
+    public ResponseEntity<ErrorResponseDTO> handleTaskAlreadyExists(TaskAlreadyExists ex) {
+        logger.warn(ex.getMessage());
         return buildError(HttpStatus.CONFLICT, ex.getMessage());
     }
 
